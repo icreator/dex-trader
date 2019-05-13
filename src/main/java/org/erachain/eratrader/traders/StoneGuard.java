@@ -19,10 +19,7 @@ public class StoneGuard extends Trader {
 
     public StoneGuard(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
                       HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
-        super(tradersManager, accountStr, sleepSec, scheme, haveKey, wantKey, cleanAllOnStart);
-
-        this.limitUP = limitUP;
-        this.limitDown = limitDown;
+        super(tradersManager, accountStr, sleepSec, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
 
     }
 

@@ -37,7 +37,7 @@ ext {
 }
 
 group 'org.erachain'
-version '0.01'
+version ''
 
 sourceCompatibility = 1.8
 
@@ -62,9 +62,17 @@ sourceSets {
 
 }
 
+
 //bootJar {
 jar {
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
     //mainClassName = "org.erachain.eratrader.Start"
+    baseName = "eratrader"
+    destinationDir project.file('build/libs/EraTrader')
     manifest{
         attributes(
                 'Main-Class': 'org.erachain.eratrader.Start',
@@ -96,19 +104,19 @@ task CopyResourse {
 
     copy {
         from 'TRADE'
-        into 'build/libs/EraTrade'
+        into 'build/libs/EraTrader'
         include 'peers*'
     }
 
     copy {
         from 'TRADE/resources'
-        into 'build/libs/EraTrade/resources'
+        into 'build/libs/EraTrader/resources'
     }
 }
 
 task CreateZip(type: Zip) {
     from 'build/libs/'
-    include 'EraTrade/'
-    archiveName 'EraTrade' + '.zip'
+    include 'EraTrader/'
+    archiveName 'EraTrader' + '.zip'
     destinationDir(file('build/libs/'))
 }

@@ -1,5 +1,7 @@
 package org.erachain.eratrader.controller;
 
+import org.erachain.eratrader.api.ApiClient;
+import org.erachain.eratrader.settings.Settings;
 import org.erachain.eratrader.traders.TradersManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,8 @@ public class Controller extends Observable {
 
     public static final int GENERATING_MIN_BLOCK_TIME = DEVELOP_USE ? 120 : 288; // 300 PER DAY
     public static final int GENERATING_MIN_BLOCK_TIME_MS = GENERATING_MIN_BLOCK_TIME * 1000;
+
+    public ApiClient apiClient;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
     public boolean useGui = true;
@@ -108,6 +112,16 @@ public class Controller extends Observable {
             return;
         this.isStopping = true;
 
+        if (par != -999999) {
+            LOGGER.info("EXIT parameter:" + par);
+            System.exit(par);
+            //System.
+            // bat
+            // if %errorlevel% neq 0 exit /b %errorlevel%
+        } else {
+            LOGGER.info("EXIT parameter:" + 0);
+        }
+
     }
 
     public void startApplication(String args[]) {
@@ -141,7 +155,13 @@ public class Controller extends Observable {
             LOGGER.info("Starting %app%".replace("%app%", Controller.APP_NAME));
             LOGGER.info(version + " build " + buildTime);
 
-            this.tradersManager = new TradersManager();
+            this.apiClient = new ApiClient();
+
+            Settings.getInstance().readTradersJSON();
+            this.tradersManager = new TradersManager(this);
+
+            // START
+            this.status = 1;
 
 
         } catch (Exception e) {

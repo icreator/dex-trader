@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -92,6 +93,7 @@ public class Settings {
 
     private static Settings instance;
     private JSONObject settingsJSON;
+    public  JSONArray tradersJSON;
     private JSONObject peersJSON;
     private String userPath = "";
     private InetAddress localAddress;
@@ -594,5 +596,40 @@ public class Settings {
         return this.settingsJSON;
     }
 
+    ////////////////////////////////
+    public List<JSONObject> readTradersJSON() {
+
+        File file = new File(this.userPath + "traders.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                return null;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            //OPEN FILE
+            //READ SETTINS JSON FILE
+            List<String> lines = Files.readLines(file, Charsets.UTF_8);
+
+            String jsonString = "";
+            for (String line : lines) {
+                jsonString += line;
+            }
+
+            //CREATE JSON OBJECT
+            tradersJSON = (JSONArray) JSONValue.parse(jsonString);
+
+        } catch (Exception e) {
+            LOGGER.info("Error while reading/creating settings.json " + file.getAbsolutePath() + " using default!");
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return tradersJSON;
+
+    }
 
 }

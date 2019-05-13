@@ -32,7 +32,6 @@ public abstract class Trader extends Thread {
 
     protected Controller cnt;
     protected CallRemoteApi caller;
-    protected ApiClient apiClient;
 
     protected boolean cleanAllOnStart;
     protected String address;
@@ -44,6 +43,8 @@ public abstract class Trader extends Thread {
     protected String wantAssetName;
     protected int wantAssetScale;
 
+    protected BigDecimal limitUP;
+    protected BigDecimal limitDown;
 
     protected BigDecimal rate;
 
@@ -66,11 +67,10 @@ public abstract class Trader extends Thread {
 
     public Trader(TradersManager tradersManager, String accountStr, int sleepSec,
                   HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
-            boolean cleanAllOnStart) {
+            boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
 
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
-        this.apiClient = new ApiClient();
 
         this.cleanAllOnStart = cleanAllOnStart;
         this.address = accountStr;
@@ -85,7 +85,10 @@ public abstract class Trader extends Thread {
         this.haveAssetName = "haveA";
         this.wantAssetName = "wantA";
 
-        this.setName("Thread Trader - " + this.getClass().getName());
+        this.limitUP = limitUP;
+        this.limitDown = limitDown;
+
+        this.setName("Trader - " + this.getClass().getName() + " pair: " + haveAssetKey + "/" + wantAssetKey + " on " + address);
 
         this.start();
     }
@@ -143,7 +146,7 @@ public abstract class Trader extends Thread {
         // TRY MAKE ORDER in LOOP
         do {
 
-            result = this.apiClient.executeCommand("GET trade/create/" + this.address + "/" + haveKey + "/" + wantKey
+            result = cnt.apiClient.executeCommand("GET trade/create/" + this.address + "/" + haveKey + "/" + wantKey
                     + "/" + amountHave + "/" + amountWant + "?password=" + TradersManager.WALLET_PASSWORD);
 
             try {
@@ -153,7 +156,7 @@ public abstract class Trader extends Thread {
                 //JSON EXCEPTION
                 LOGGER.error(e.getMessage());
             } finally {
-                this.apiClient.executeCommand("GET wallet/lock");
+                cnt.apiClient.executeCommand("GET wallet/lock");
             }
 
             if (jsonObject == null)
@@ -188,7 +191,7 @@ public abstract class Trader extends Thread {
 
         String result;
 
-        result = this.apiClient.executeCommand("GET trade/get/" + orderID);
+        result = cnt.apiClient.executeCommand("GET trade/get/" + orderID);
         //logger.info("GET: " + Base58.encode(orderID) + "\n" + result);
 
         JSONObject jsonObject = null;
@@ -208,7 +211,7 @@ public abstract class Trader extends Thread {
         jsonObject = null;
 
         do {
-            result = this.apiClient.executeCommand("GET trade/cancel/" + this.address + "/" + orderID
+            result = cnt.apiClient.executeCommand("GET trade/cancel/" + this.address + "/" + orderID
                     + "?password=" + TradersManager.WALLET_PASSWORD);
 
             try {
@@ -219,7 +222,7 @@ public abstract class Trader extends Thread {
                 LOGGER.error(e.getMessage());
                 //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
             } finally {
-                this.apiClient.executeCommand("GET wallet/lock");
+                cnt.apiClient.executeCommand("GET wallet/lock");
             }
 
             if (jsonObject == null)
@@ -256,8 +259,8 @@ public abstract class Trader extends Thread {
 
         String sendRequest;
 
-        sendRequest = this.apiClient.executeCommand("GET trade/getbyaddress/" + address
-                    + '/' + haveAssetName + '/' + wantAssetName);
+        sendRequest = cnt.apiClient.executeCommand("GET trade/getbyaddress/" + address
+                    + '/' + haveAssetKey + '/' + wantAssetKey);
         //logger.info("GET by address: " + "\n" + sendRequest);
 
         JSONArray jsonArray = null;
@@ -288,7 +291,7 @@ public abstract class Trader extends Thread {
             JSONObject transactionJSON = (JSONObject) array.get(i);
 
             // IF that TRANSACTION exist in CHAIN or queue
-            result = this.apiClient.executeCommand("GET transactions/signature/" + transactionJSON.get("signature"));
+            result = cnt.apiClient.executeCommand("GET transactions/signature/" + transactionJSON.get("signature"));
             try {
                 //READ JSON
                 transaction = (JSONObject) JSONValue.parse(result);
@@ -321,7 +324,7 @@ public abstract class Trader extends Thread {
     // REMOVE ALL ORDERS
     protected void removaAll() {
 
-        String result = this.apiClient.executeCommand("GET transactions/unconfirmedof/" + this.address);
+        String result = cnt.apiClient.executeCommand("GET transactions/unconfirmedof/" + this.address);
 
         JSONArray arrayUnconfirmed = null;
         try {
@@ -461,7 +464,7 @@ public abstract class Trader extends Thread {
             for (String orderID: schemeItems) {
 
                 // IF that TRANSACTION exist in CHAIN or queue
-                result = this.apiClient.executeCommand("GET transactions/signature/" + orderID);
+                result = cnt.apiClient.executeCommand("GET transactions/signature/" + orderID);
                 try {
                     //READ JSON
                     transaction = (JSONObject) JSONValue.parse(result);
@@ -506,7 +509,7 @@ public abstract class Trader extends Thread {
 
             // make copy of LIST - for concerent DELETE
             for (String orderID: new ArrayList<>(schemeItems)) {
-                result = this.apiClient.executeCommand("GET trade/get/" + orderID);
+                result = cnt.apiClient.executeCommand("GET trade/get/" + orderID);
                 //logger.info("GET: " + Base58.encode(orderID) + "\n" + result);
 
                 JSONObject jsonObject = null;
@@ -539,21 +542,15 @@ public abstract class Trader extends Thread {
 
     public void run() {
 
+        LOGGER.info("START " + this.getName());
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
         while(cnt.getStatus() == 0) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
                 //FAILED TO SLEEP
             }
-        }
-
-        // WAIT for making ACCOUNTS in WALLET (if wallet is new)
-        try {
-            Thread.sleep(5000);
-        } catch (Exception e) {
-            //FAILED TO SLEEP
         }
 
         if (cleanAllOnStart) {

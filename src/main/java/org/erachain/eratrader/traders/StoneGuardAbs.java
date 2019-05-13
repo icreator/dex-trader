@@ -14,16 +14,11 @@ public class StoneGuardAbs extends Trader {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoneGuardAbs.class);
 
     // in ABSOLUT
-    protected BigDecimal limitUP;
-    protected BigDecimal limitDown;
 
     public StoneGuardAbs(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
                          HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
-        super(tradersManager, accountStr, sleepSec, scheme, haveKey, wantKey, cleanAllOnStart);
-
-        this.limitUP = limitUP;
-        this.limitDown = limitDown;
-
+        super(tradersManager, accountStr, sleepSec, scheme, haveKey, wantKey, cleanAllOnStart,
+                limitUP, limitDown);
     }
 
     protected boolean createOrder(BigDecimal schemeAmount) {
@@ -103,7 +98,7 @@ public class StoneGuardAbs extends Trader {
 
         if (newRate == null) {
             // если курса нет то отменим все ордера и ждем
-            LOGGER.info("Rate " + this.haveAssetName + "/" + this.wantAssetName +  " not found - clear all orders anr awaiting...");
+            LOGGER.info("Rate " + this.haveAssetName + "/" + this.wantAssetName +  " not found - clear all orders and awaiting...");
             cleanSchemeOrders();
             return false;
         }
