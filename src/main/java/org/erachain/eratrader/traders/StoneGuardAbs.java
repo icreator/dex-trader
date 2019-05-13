@@ -98,7 +98,7 @@ public class StoneGuardAbs extends Trader {
 
         if (newRate == null) {
             // если курса нет то отменим все ордера и ждем
-            LOGGER.info("Rate " + this.haveAssetName + "/" + this.wantAssetName +  " not found - clear all orders and awaiting...");
+            LOGGER.info("Rate " + this.haveAssetKey + "/" + this.wantAssetKey +  " not found - clear all orders and awaiting...");
             cleanSchemeOrders();
             return false;
         }

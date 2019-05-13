@@ -88,7 +88,31 @@ public abstract class Trader extends Thread {
         this.limitUP = limitUP;
         this.limitDown = limitDown;
 
-        this.setName("Trader - " + this.getClass().getName() + " pair: " + haveAssetKey + "/" + wantAssetKey + " on " + address);
+        // IF that TRANSACTION exist in CHAIN or queue
+        String result = cnt.apiClient.executeCommand("GET assets/" + haveAssetKey);
+        try {
+            //READ JSON
+            JSONObject json = (JSONObject) JSONValue.parse(result);
+            haveAssetName = json.get("name").toString();
+        } catch (NullPointerException | ClassCastException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage());
+            return;
+        }
+        result = cnt.apiClient.executeCommand("GET assets/" + wantAssetKey);
+        try {
+            //READ JSON
+            JSONObject json = (JSONObject) JSONValue.parse(result);
+            wantAssetName = json.get("name").toString();
+            wantAssetScale = (int)(long)json.get("scale");
+        } catch (NullPointerException | ClassCastException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage());
+            return;
+        }
+
+        this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
+                + " / [" + wantAssetKey + "]" + wantAssetName + " on " + address);
 
         this.start();
     }

@@ -45,6 +45,8 @@ public abstract class Rater extends Thread {
         this.courseName = courseName;
 
         this.setName("Thread Rater - " + this.getClass().getName() + ": " + this.courseName);
+        LOGGER.info("start RATER" + this.courseName);
+
         this.start();
     }
 
@@ -99,8 +101,9 @@ public abstract class Rater extends Thread {
 
     }
 
-    protected static synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
+    protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
             Rater.rates.put(haveKey + "." + wantKey + " " + courseName, rate);
+            LOGGER.info("set RATE" + haveKey + "/" + wantKey + " on " + courseName + " = " + rate.toPlainString());
     }
 
     public void setRun(boolean status) {
