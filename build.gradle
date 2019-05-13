@@ -1,0 +1,85 @@
+import org.ajoberstar.grgit.Grgit
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.ajoberstar:grgit:1.7.2'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'groovy'
+    id 'org.springframework.boot' version '2.1.4.RELEASE'
+}
+
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+    }
+}
+
+ext {
+    //git = org.ajoberstar.grgit.Grgit.open()
+    slf4jVersion = '1.7.25'
+    git = Grgit.open(dir: rootProject.rootDir)
+    //rev = git.head().id
+    //rev = git.head().getAbbreviatedId(8)
+    springbootVersion = '2.1.4.RELEASE'
+}
+
+group 'org.erachain'
+version '0.01'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+
+}
+
+bootJar {
+    mainClassName = "org.erachain.erapay.Start"
+    manifest{
+        attributes(
+                'Implementation-Title' : 'Gradle Build: ' + project.name,
+                'Implementation-Version' : project.version,
+                'Build-Time' : new Date().format("yyyy-MM-dd HH:mm:ssZ"),
+//                'Git-Commit': git.head().abbreviatedId,
+//                'Git-Branch': git.branch.current().name
+        )
+    }
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+//    compile "org.springframework.boot:spring-boot-starter-web:${springbootVersion}"
+//    compile "org.springframework.boot:spring-boot:${springbootVersion}"
+}
