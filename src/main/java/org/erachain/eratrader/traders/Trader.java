@@ -1,6 +1,7 @@
 package org.erachain.eratrader.traders;
 // 30/03
 
+import org.erachain.eratrader.api.ApiClient;
 import org.erachain.eratrader.controller.Controller;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,13 +34,10 @@ public abstract class Trader extends Thread {
     protected ApiClient apiClient;
 
     protected boolean cleanAllOnStart;
-    protected Account account;
     protected String address;
     protected BigDecimal shiftRate = BigDecimal.ONE;
     protected Long haveKey;
     protected Long wantKey;
-    protected AssetCls haveAsset;
-    protected AssetCls wantAsset;
     protected BigDecimal rate;
 
     protected static final int STATUS_INCHAIN = 2;

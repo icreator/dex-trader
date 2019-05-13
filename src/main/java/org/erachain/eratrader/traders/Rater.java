@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 public abstract class Rater extends Thread {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Rater.class);
+    protected final Logger LOGGER;
 
     // HAVE KEY + WANT KEY + COURSE NAME
     private static TreeMap<Fun.Tuple3<Long, Long, String>, BigDecimal> rates = new TreeMap<Fun.Tuple3<Long, Long, String>, BigDecimal>();
@@ -33,6 +33,8 @@ public abstract class Rater extends Thread {
 
 
     public Rater(TradersManager tradersManager, String courseName, int sleepSec) {
+
+        LOGGER = LoggerFactory.getLogger(this.getClass().getName());
 
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
@@ -77,11 +79,6 @@ public abstract class Rater extends Thread {
                 Thread.sleep(1000);
             } catch (Exception e) {
                 //FAILED TO SLEEP
-            }
-
-            if (!cntr.isStatusOK() ||
-                    !this.run) {
-                continue;
             }
 
             try {

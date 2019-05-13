@@ -1,23 +1,13 @@
 package org.erachain.eratrader.traders;
 // 30/03 ++
 
-import org.erachain.controller.Controller;
-import org.erachain.core.BlockChain;
-import org.erachain.core.account.Account;
 import org.erachain.eratrader.controller.Controller;
-import org.erachain.utils.ObserverMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.*;
 
-// import org.slf4j.LoggerFactory;
-
-//import org.erachain.core.BlockChain;
-//import org.erachain.database.DLSet;
-//import database.TransactionMap;
-//import org.erachain.lang.Lang;
 
 public class TradersManager extends Observable {
 
@@ -40,11 +30,6 @@ public class TradersManager extends Observable {
 
         Controller cnt = Controller.getInstance();
         String address = "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP";
-
-        if (!cnt.isMyAccountByAddress(address))
-            return;
-
-        Account account = new Account(address);
 
         try {
             Thread.sleep(3000);
@@ -89,8 +74,8 @@ public class TradersManager extends Observable {
             schemeUSD_RUB.put(new BigDecimal(-10), new BigDecimal("0.01"));
             schemeUSD_RUB.put(new BigDecimal(-100), new BigDecimal("0.03"));
             schemeUSD_RUB.put(new BigDecimal(-1000), new BigDecimal("0.1"));
-            Trader trader1 = new StoneGuardAbs(this, account.getAddress(),
-                    BlockChain.GENERATING_MIN_BLOCK_TIME_MS,
+            Trader trader1 = new StoneGuardAbs(this, address,
+                    Controller.GENERATING_MIN_BLOCK_TIME_MS,
             1077, 1078, schemeUSD_RUB, limit1, limit1,true);
             this.knownTraders.add(trader1);
 
@@ -111,8 +96,8 @@ public class TradersManager extends Observable {
             schemeUSD_RUB.put(new BigDecimal(-100), new BigDecimal("0.3"));
             schemeUSD_RUB.put(new BigDecimal(-10000), new BigDecimal("0.7"));
             schemeUSD_RUB.put(new BigDecimal(-30000), new BigDecimal("1.0"));
-            Trader trader1 = new StoneGuardAbs(this, account.getAddress(),
-                    BlockChain.GENERATING_MIN_BLOCK_TIME_MS<<1,
+            Trader trader1 = new StoneGuardAbs(this, address,
+                    Controller.GENERATING_MIN_BLOCK_TIME_MS<<1,
             1077, 1078, schemeUSD_RUB, limit, limit,true);
             this.knownTraders.add(trader1);
 
@@ -131,8 +116,8 @@ public class TradersManager extends Observable {
             schemeBTC_USD.put(new BigDecimal("-0.01"), new BigDecimal("0.05"));
             schemeBTC_USD.put(new BigDecimal("-0.1"), new BigDecimal("0.2"));
             schemeBTC_USD.put(new BigDecimal(-1), new BigDecimal("0.5"));
-            Trader trader2 = new StoneGuard(this, account.getAddress(),
-                    BlockChain.GENERATING_MIN_BLOCK_TIME_MS,
+            Trader trader2 = new StoneGuard(this, address,
+                    Controller.GENERATING_MIN_BLOCK_TIME_MS,
                     1079, 1077, schemeBTC_USD, limit1, limit1, true);
             this.knownTraders.add(trader2);
 
@@ -149,8 +134,8 @@ public class TradersManager extends Observable {
             schemeBTC_USD.put(new BigDecimal(3), new BigDecimal("0.8"));
             schemeBTC_USD.put(new BigDecimal(-3), new BigDecimal("0.8"));
             schemeBTC_USD.put(new BigDecimal(-7), new BigDecimal("1.0"));
-            Trader trader2 = new StoneGuard(this, account.getAddress(),
-                    BlockChain.GENERATING_MIN_BLOCK_TIME_MS<<1,
+            Trader trader2 = new StoneGuard(this, address,
+                    Controller.GENERATING_MIN_BLOCK_TIME_MS<<1,
                     1079, 1077, schemeBTC_USD, limit, limit, true);
             this.knownTraders.add(trader2);
 
@@ -167,8 +152,8 @@ public class TradersManager extends Observable {
             schemeCOMPU_ERA.put(new BigDecimal("0.01"), new BigDecimal("1"));
             schemeCOMPU_ERA.put(new BigDecimal("-0.01"), new BigDecimal("1"));
             schemeCOMPU_ERA.put(new BigDecimal("-0.1"), new BigDecimal("2"));
-            Trader trader = new StoneGuard(this, account.getAddress(),
-                    BlockChain.GENERATING_MIN_BLOCK_TIME_MS,
+            Trader trader = new StoneGuard(this, address,
+                    Controller.GENERATING_MIN_BLOCK_TIME_MS,
                     2, 1, schemeCOMPU_ERA, limit2, limit2, true);
             this.knownTraders.add(trader);
 
