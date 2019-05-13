@@ -2,14 +2,14 @@ package org.erachain.eratrader;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.erachain.eratrader.controller.Controller;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class Start {
 
     public static void main(String[] args) {
@@ -30,7 +30,7 @@ public class Start {
 
         Controller.getInstance().startApplication(args);
 
-        SpringApplication.run(Start.class, args);
+        ///SpringApplication.run(Start.class, args);
 
     }
 

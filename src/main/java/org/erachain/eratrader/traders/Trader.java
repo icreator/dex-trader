@@ -3,6 +3,7 @@ package org.erachain.eratrader.traders;
 
 import org.erachain.eratrader.api.ApiClient;
 import org.erachain.eratrader.controller.Controller;
+import org.erachain.eratrader.core.transaction.Transaction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -281,28 +282,34 @@ public abstract class Trader extends Thread {
         if (array == null || array.isEmpty())
             return cancelingArray;
 
-        DCSet fork = this.dcSet.fork();
-
+        String result;
+        JSONObject transaction;
         for (int i=0; i < array.size(); i++) {
             JSONObject transactionJSON = (JSONObject) array.get(i);
-            Transaction transaction = dcSet.getTransactionMap().get(Base58.decode((String) transactionJSON.get("signature")));
-            if (transaction == null)
-                continue;
 
-            // TEST in FORK
-            ///transaction.setDC(fork, Transaction.FOR_NETWORK);
-            if (transaction.isValid(Transaction.FOR_NETWORK, 0l) != Transaction.VALIDATE_OK) {
-
-                // DELETE in DC SET
-                dcSet.getTransactionMap().delete(transaction.getSignature());
-                continue;
+            // IF that TRANSACTION exist in CHAIN or queue
+            result = this.apiClient.executeCommand("GET transactions/signature/" + transactionJSON.get("signature"));
+            try {
+                //READ JSON
+                transaction = (JSONObject) JSONValue.parse(result);
+            } catch (NullPointerException | ClassCastException e) {
+                //JSON EXCEPTION
+                LOGGER.error(e.getMessage());
+                break;
             }
 
-            // PROCESS in FORK
-            transaction.process(null, Transaction.FOR_NETWORK);
+            if (transaction == null || !transaction.containsKey("signature"))
+                continue;
 
-            if (transaction.getType() == Transaction.CANCEL_ORDER_TRANSACTION) {
-                if (transaction.getTimestamp() > transaction.getCreator().getLastTimestamp())
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                //FAILED TO SLEEP
+            }
+
+            if ((int) transaction.get("type") == Transaction.CANCEL_ORDER_TRANSACTION) {
+                if (true //// || (long)transaction.get("timestamp") > transaction.getCreator().getLastTimestamp()
+                        )
                     cancelingArray.add(transactionJSON.get("orderID").toString());
             }
         }
