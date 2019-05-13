@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 
@@ -15,7 +16,7 @@ public abstract class Rater extends Thread {
     protected final Logger LOGGER;
 
     // HAVE KEY + WANT KEY + COURSE NAME
-    private static TreeMap<Fun.Tuple3<Long, Long, String>, BigDecimal> rates = new TreeMap<Fun.Tuple3<Long, Long, String>, BigDecimal>();
+    private static HashMap<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
 
     private TradersManager tradersManager;
     private long sleepTimestep;
@@ -49,8 +50,11 @@ public abstract class Rater extends Thread {
 
     protected abstract void parse(String result);
 
-    public static TreeMap<Fun.Tuple3<Long, Long, String>, BigDecimal> getRates() {
+    public static HashMap<String, BigDecimal> getRates() {
         return rates;
+    }
+    public static BigDecimal getRate(long haveKey, long wantKey, String exchange) {
+        return rates.get(haveKey + "." + wantKey + " " + exchange);
     }
 
     public boolean tryGetRate() {
@@ -69,11 +73,7 @@ public abstract class Rater extends Thread {
 
     public void run() {
 
-        int sleepTimeFull = Settings.getInstance().getPingInterval();
-
-        Controller cntr = Controller.getInstance();
-
-        while (true) {
+        while (this.run) {
 
             try {
                 Thread.sleep(1000);
@@ -92,6 +92,7 @@ public abstract class Rater extends Thread {
                 Thread.sleep(sleepTimestep);
             } catch (InterruptedException e) {
                 //FAILED TO SLEEP
+                break;
             }
 
         }
@@ -99,7 +100,7 @@ public abstract class Rater extends Thread {
     }
 
     protected static synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
-            Rater.rates.put(new Fun.Tuple3<Long, Long, String>(haveKey, wantKey, courseName), rate);
+            Rater.rates.put(haveKey + "." + wantKey + " " + courseName, rate);
     }
 
     public void setRun(boolean status) {

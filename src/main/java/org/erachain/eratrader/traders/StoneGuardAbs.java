@@ -1,20 +1,12 @@
 package org.erachain.eratrader.traders;
 // 30/03 ++
 
-import org.mapdb.Fun;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.TreeMap;
 
-// import org.slf4j.LoggerFactory;
-
-//import org.erachain.core.BlockChain;
-//import org.erachain.database.DLSet;
-//import database.TransactionMap;
-//import org.erachain.lang.Lang;
 
 // shift as ABSOLUTE in scheme
 public class StoneGuardAbs extends Trader {
@@ -46,27 +38,27 @@ public class StoneGuardAbs extends Trader {
         BigDecimal amountWant;
 
         if (schemeAmount.signum() > 0) {
-            haveKey = this.haveKey;
-            wantKey = this.wantKey;
+            haveKey = this.haveAssetKey;
+            wantKey = this.wantAssetKey;
 
             amountHave = schemeAmount.stripTrailingZeros();
             amountWant = amountHave.multiply(this.rate.add(shiftAbsolute)).stripTrailingZeros();
 
             // NEED SCALE for VALIDATE
-            if (amountWant.scale() > this.wantAsset.getScale()) {
-                amountWant = amountWant.setScale(wantAsset.getScale(), BigDecimal.ROUND_HALF_UP);
+            if (amountWant.scale() > this.wantAssetScale) {
+                amountWant = amountWant.setScale(wantAssetScale, BigDecimal.ROUND_HALF_UP);
             }
 
         } else {
-            haveKey = this.wantKey;
-            wantKey = this.haveKey;
+            haveKey = this.wantAssetKey;
+            wantKey = this.haveAssetKey;
 
             amountWant = schemeAmount.negate().stripTrailingZeros();
             amountHave = amountWant.multiply(this.rate.subtract(shiftAbsolute)).stripTrailingZeros();
 
             // NEED SCALE for VALIDATE
-            if (amountHave.scale() > this.wantAsset.getScale()) {
-                amountHave = amountHave.setScale(wantAsset.getScale(), BigDecimal.ROUND_HALF_UP);
+            if (amountHave.scale() > this.wantAssetScale) {
+                amountHave = amountHave.setScale(wantAssetScale, BigDecimal.ROUND_HALF_UP);
             }
         }
 
@@ -76,8 +68,8 @@ public class StoneGuardAbs extends Trader {
 
     private void shiftAll() {
 
-        LOGGER.info(">>>>> shift ALL for " + this.haveAsset.viewName()
-                + "/" + this.wantAsset.viewName() + " to " + this.rate.toString());
+        LOGGER.info(">>>>> shift ALL for " + this.haveAssetName
+                + "/" + this.wantAssetName + " to " + this.rate.toString());
 
         // REMOVE ALL ORDERS
         if (cleanSchemeOrders()) {
@@ -107,12 +99,11 @@ public class StoneGuardAbs extends Trader {
 
         String callerResult = null;
 
-        TreeMap<Fun.Tuple3<Long, Long, String>, BigDecimal> rates = Rater.getRates();
-        BigDecimal newRate = rates.get(new Fun.Tuple3<Long, Long, String>(this.haveKey, this.wantKey, "wex"));
+        BigDecimal newRate = Rater.getRate(this.haveAssetKey, this.wantAssetKey, "wex");
 
         if (newRate == null) {
             // если курса нет то отменим все ордера и ждем
-            LOGGER.info("Rate " + this.haveAsset.getName() + "/" + this.wantAsset.getName() +  " not found - clear all orders anr awaiting...");
+            LOGGER.info("Rate " + this.haveAssetName + "/" + this.wantAssetName +  " not found - clear all orders anr awaiting...");
             cleanSchemeOrders();
             return false;
         }

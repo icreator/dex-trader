@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 
-public class TradersManager extends Observable {
+public class TradersManager {
 
     protected static final String WALLET_PASSWORD = "123456789";
 
@@ -162,21 +162,6 @@ public class TradersManager extends Observable {
             } catch (Exception e) {
             }
         }
-
-    }
-
-    @Override
-    public void addObserver(Observer o) {
-        super.addObserver(o);
-
-        //SEND CONNECTEDPEERS ON REGISTER
-        o.update(this, new ObserverMessage(ObserverMessage.TRADERS_UPDATE_TYPE, this.knownRaters));
-    }
-
-    public void notifyObserveUpdateRater(Rater rater) {
-        //NOTIFY OBSERVERS
-        this.setChanged();
-        this.notifyObservers(new ObserverMessage(ObserverMessage.TRADERS_UPDATE_TYPE, rater));
 
     }
 

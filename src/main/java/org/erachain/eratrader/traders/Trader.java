@@ -35,9 +35,15 @@ public abstract class Trader extends Thread {
 
     protected boolean cleanAllOnStart;
     protected String address;
+
     protected BigDecimal shiftRate = BigDecimal.ONE;
-    protected Long haveKey;
-    protected Long wantKey;
+    protected long haveAssetKey;
+    protected long wantAssetKey;
+    protected String haveAssetName;
+    protected String wantAssetName;
+    protected int wantAssetScale;
+
+
     protected BigDecimal rate;
 
     protected static final int STATUS_INCHAIN = 2;
@@ -62,24 +68,21 @@ public abstract class Trader extends Thread {
             boolean cleanAllOnStart) {
 
         this.cnt = Controller.getInstance();
-        this.dcSet = DCSet.getInstance();
-        this.ordersMap = this.dcSet.getOrderMap();
         this.caller = new CallRemoteApi();
         this.apiClient = new ApiClient();
 
         this.cleanAllOnStart = cleanAllOnStart;
-        this.account = new Account(accountStr);
         this.address = accountStr;
         this.tradersManager = tradersManager;
         this.sleepTimestep = sleepSec * 1000;
 
         this.scheme = scheme;
 
-        this.haveKey = haveKey;
-        this.wantKey = wantKey;
+        this.haveAssetKey = haveKey;
+        this.wantAssetKey = wantKey;
 
-        this.haveAsset = dcSet.getItemAssetMap().get(haveKey);
-        this.wantAsset = dcSet.getItemAssetMap().get(wantKey);
+        this.haveAssetName = "haveA";
+        this.wantAssetName = "wantA";
 
         this.setName("Thread Trader - " + this.getClass().getName());
 
@@ -253,7 +256,7 @@ public abstract class Trader extends Thread {
         String sendRequest;
 
         sendRequest = this.apiClient.executeCommand("GET trade/getbyaddress/" + address
-                    + '/' + haveKey + '/' + wantKey);
+                    + '/' + haveAssetName + '/' + wantAssetName);
         //logger.info("GET by address: " + "\n" + sendRequest);
 
         JSONArray jsonArray = null;
@@ -337,10 +340,10 @@ public abstract class Trader extends Thread {
 
             JSONObject transaction = (JSONObject)json;
             if (((Long)transaction.get("type")).intValue() == Transaction.CREATE_ORDER_TRANSACTION) {
-                if (((Long)transaction.get("haveKey")).equals(this.haveKey)
-                        && ((Long)transaction.get("wantKey")).equals(this.wantKey)
-                    || ((Long)transaction.get("haveKey")).equals(this.wantKey)
-                        && ((Long)transaction.get("wantKey")).equals(this.wantKey)) {
+                if (((Long)transaction.get("haveAssetKey")).equals(this.haveAssetKey)
+                        && ((Long)transaction.get("wantAssetKey")).equals(this.wantAssetKey)
+                    || ((Long)transaction.get("haveAssetKey")).equals(this.wantAssetKey)
+                        && ((Long)transaction.get("wantAssetKey")).equals(this.wantAssetKey)) {
 
                     orderID = (String)transaction.get("signature");
                     // IF not aldeady CANCEL in WAITING
@@ -361,7 +364,7 @@ public abstract class Trader extends Thread {
         }
 
         // CHECK MY SELL ORDERS in CAP
-        JSONArray list =  this.getMyOrders(this.address, this.haveKey, this.wantKey);
+        JSONArray list =  this.getMyOrders(this.address, this.haveAssetKey, this.wantAssetKey);
         if (list != null)
             for (Object item: list) {
 
@@ -390,7 +393,7 @@ public abstract class Trader extends Thread {
             }
 
         // CHECK MY BUY ORDERS in CAP
-        list = this.getMyOrders(this.address, this.wantKey, this.haveKey);
+        list = this.getMyOrders(this.address, this.wantAssetKey, this.haveAssetKey);
         if (list != null)
             for (Object item: list) {
 
@@ -420,7 +423,7 @@ public abstract class Trader extends Thread {
 
         if (updated) {
             try {
-                Thread.sleep(BlockChain.GENERATING_MIN_BLOCK_TIME_MS << 1);
+                Thread.sleep(Controller.GENERATING_MIN_BLOCK_TIME_MS << 1);
             } catch (Exception e) {
                 //FAILED TO SLEEP
             }
@@ -511,7 +514,7 @@ public abstract class Trader extends Thread {
                 if (jsonObject != null && jsonObject.containsKey("completed")) {
                     // in crete it removing this.schemeOrdersRemove(schemeAmount,  (String)jsonObject.get("signature"));
 
-                    this.createOrder(schemeAmount, this.haveKey, this.wantKey,
+                    this.createOrder(schemeAmount, this.haveAssetKey, this.wantAssetKey,
                             new BigDecimal(jsonObject.get("amountHave").toString()),
                             new BigDecimal(jsonObject.get("amountWant").toString())
                     );
@@ -531,7 +534,7 @@ public abstract class Trader extends Thread {
 
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
-        while(!cnt.doesWalletDatabaseExists()) {
+        while(cnt.getStatus() == 0) {
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {
@@ -545,15 +548,10 @@ public abstract class Trader extends Thread {
         } catch (Exception e) {
             //FAILED TO SLEEP
         }
-        Account account = Controller.getInstance().wallet.getAccounts().get(1);
-        if (!account.equals(this.account))
-            return;
 
         if (cleanAllOnStart) {
             removaAll();
         }
-
-        Controller cntr = Controller.getInstance();
 
         while (this.run) {
 
@@ -563,7 +561,7 @@ public abstract class Trader extends Thread {
                 //FAILED TO SLEEP
             }
 
-            if (!cntr.isStatusOK() ||
+            if (cnt.getStatus() == 0 ||
                     !this.run) {
                 continue;
             }
@@ -581,6 +579,7 @@ public abstract class Trader extends Thread {
                 Thread.sleep(sleepTimestep);
             } catch (InterruptedException e) {
                 //FAILED TO SLEEP
+                break;
             }
 
         }
