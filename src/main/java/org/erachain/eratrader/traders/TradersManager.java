@@ -72,10 +72,25 @@ public class TradersManager {
             }
 
         }
+        if (true) {
+            RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 600);
+            this.knownRaters.add(raterLiveCoinRUR);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+
+        }
 
         if (true) {
             RaterPolonex raterPolonex = new RaterPolonex(this, 600);
             this.knownRaters.add(raterPolonex);
+        }
+
+
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
         }
 
         for (Object obj: Settings.getInstance().tradersJSON) {

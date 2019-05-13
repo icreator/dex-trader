@@ -2,13 +2,11 @@ package org.erachain.eratrader.traders;
 // 30/03
 
 import org.erachain.eratrader.controller.Controller;
-import org.erachain.eratrader.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 
 public abstract class Rater extends Thread {
@@ -19,7 +17,7 @@ public abstract class Rater extends Thread {
     private static HashMap<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
 
     private TradersManager tradersManager;
-    private long sleepTimestep;
+    private long sleepTimeStep;
 
     protected Controller cnt;
     protected CallRemoteApi caller;
@@ -41,7 +39,7 @@ public abstract class Rater extends Thread {
         this.caller = new CallRemoteApi();
 
         this.tradersManager = tradersManager;
-        this.sleepTimestep = sleepSec * 1000;
+        this.sleepTimeStep = sleepSec * 1000;
         this.courseName = courseName;
 
         this.setName("Thread Rater - " + this.getClass().getName() + ": " + this.courseName);
@@ -91,7 +89,7 @@ public abstract class Rater extends Thread {
 
             //SLEEP
             try {
-                Thread.sleep(sleepTimestep);
+                Thread.sleep(sleepTimeStep);
             } catch (InterruptedException e) {
                 //FAILED TO SLEEP
                 break;
@@ -103,7 +101,7 @@ public abstract class Rater extends Thread {
 
     protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
             Rater.rates.put(haveKey + "." + wantKey + " " + courseName, rate);
-            LOGGER.info("set RATE" + haveKey + "/" + wantKey + " on " + courseName + " = " + rate.toPlainString());
+            LOGGER.info("set RATE " + haveKey + "/" + wantKey + " on " + courseName + " = " + rate.toPlainString());
     }
 
     public void setRun(boolean status) {

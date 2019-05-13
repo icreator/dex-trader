@@ -102,9 +102,8 @@ public class StoneGuard extends Trader {
 
         BigDecimal newRate = Rater.getRate(this.haveAssetKey, this.wantAssetKey, "wex");
 
-        if (newRate == null) {
-            // если курса нет то отменим все ордера и ждем
-            LOGGER.info("Rate " + this.haveAssetKey + "/" + this.wantAssetKey +  " not found - clear all orders anr awaiting...");
+        if (newRate == null) {            // если курса нет то отменим все ордера и ждем
+            LOGGER.info("Rate " + this.haveAssetKey + "/" + this.wantAssetKey +  " not found - clear all orders and awaiting...");
             cleanSchemeOrders();
             return false;
         }
