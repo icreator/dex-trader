@@ -1,7 +1,6 @@
 package org.erachain.eratrader.traders;
 // 30/03 ++
 
-import org.erachain.eratrader.api.ApiClient;
 import org.erachain.eratrader.controller.Controller;
 import org.erachain.eratrader.settings.Settings;
 import org.json.simple.JSONArray;
@@ -121,6 +120,7 @@ public class TradersManager {
                         (int)(long)json.get("sleepTime"),
                         (long)json.get("haveAssetKey"),
                         (long)json.get("wantAssetKey"),
+                        json.get("sourceExchange").toString(),
                         (JSONObject)json.get("scheme"),
                         new BigDecimal(json.get("limitUP").toString()),
                         new BigDecimal(json.get("limitDown").toString()),
@@ -130,6 +130,7 @@ public class TradersManager {
                         (int)(long)json.get("sleepTime"),
                         (long)json.get("haveAssetKey"),
                         (long)json.get("wantAssetKey"),
+                        json.get("sourceExchange").toString(),
                         (JSONObject)json.get("scheme"),
                         new BigDecimal(json.get("limitUP").toString()),
                         new BigDecimal(json.get("limitDown").toString()),
@@ -140,6 +141,8 @@ public class TradersManager {
         }
 
         if (false) {
+
+            String sourceExchange = "polonex";
             String address = "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP";
 
             BigDecimal limit1 = new BigDecimal("0.01");
@@ -155,7 +158,7 @@ public class TradersManager {
                 schemeUSD_RUB.put(new BigDecimal(-1000), new BigDecimal("0.1"));
                 Trader trader1 = new StoneGuardAbs(this, address,
                         Controller.GENERATING_MIN_BLOCK_TIME_MS,
-                        1077, 1078, schemeUSD_RUB, limit1, limit1, true);
+                        1077, 1078, sourceExchange, schemeUSD_RUB, limit1, limit1, true);
                 this.knownTraders.add(trader1);
 
                 try {
@@ -177,7 +180,7 @@ public class TradersManager {
                 schemeUSD_RUB.put(new BigDecimal(-30000), new BigDecimal("1.0"));
                 Trader trader1 = new StoneGuardAbs(this, address,
                         Controller.GENERATING_MIN_BLOCK_TIME_MS << 1,
-                        1077, 1078, schemeUSD_RUB, limit, limit, true);
+                        1077, 1078, sourceExchange, schemeUSD_RUB, limit, limit, true);
                 this.knownTraders.add(trader1);
 
                 try {
@@ -197,7 +200,7 @@ public class TradersManager {
                 schemeBTC_USD.put(new BigDecimal(-1), new BigDecimal("0.5"));
                 Trader trader2 = new StoneGuard(this, address,
                         Controller.GENERATING_MIN_BLOCK_TIME_MS,
-                        1079, 1077, schemeBTC_USD, limit1, limit1, true);
+                        1079, 1077, sourceExchange, schemeBTC_USD, limit1, limit1, true);
                 this.knownTraders.add(trader2);
 
                 try {
@@ -215,7 +218,7 @@ public class TradersManager {
                 schemeBTC_USD.put(new BigDecimal(-7), new BigDecimal("1.0"));
                 Trader trader2 = new StoneGuard(this, address,
                         Controller.GENERATING_MIN_BLOCK_TIME_MS << 1,
-                        1079, 1077, schemeBTC_USD, limit, limit, true);
+                        1079, 1077, sourceExchange, schemeBTC_USD, limit, limit, true);
                 this.knownTraders.add(trader2);
 
                 try {
@@ -233,7 +236,7 @@ public class TradersManager {
                 schemeCOMPU_ERA.put(new BigDecimal("-0.1"), new BigDecimal("2"));
                 Trader trader = new StoneGuard(this, address,
                         Controller.GENERATING_MIN_BLOCK_TIME_MS,
-                        2, 1, schemeCOMPU_ERA, limit2, limit2, true);
+                        2, 1, sourceExchange, schemeCOMPU_ERA, limit2, limit2, true);
                 this.knownTraders.add(trader);
 
                 try {

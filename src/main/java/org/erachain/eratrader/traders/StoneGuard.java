@@ -18,8 +18,8 @@ public class StoneGuard extends Trader {
     protected BigDecimal limitDown;
 
     public StoneGuard(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
-                      HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
-        super(tradersManager, accountStr, sleepSec, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
+                      String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
+        super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
 
     }
 
@@ -100,7 +100,7 @@ public class StoneGuard extends Trader {
 
         String callerResult = null;
 
-        BigDecimal newRate = Rater.getRate(this.haveAssetKey, this.wantAssetKey, "wex");
+        BigDecimal newRate = Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange);
 
         if (newRate == null) {            // если курса нет то отменим все ордера и ждем
             LOGGER.info("Rate " + this.haveAssetKey + "/" + this.wantAssetKey +  " not found - clear all orders and awaiting...");

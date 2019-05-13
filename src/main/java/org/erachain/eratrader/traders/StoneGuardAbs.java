@@ -16,8 +16,8 @@ public class StoneGuardAbs extends Trader {
     // in ABSOLUT
 
     public StoneGuardAbs(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
-                         HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
-        super(tradersManager, accountStr, sleepSec, scheme, haveKey, wantKey, cleanAllOnStart,
+                         String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
+        super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart,
                 limitUP, limitDown);
     }
 
@@ -94,7 +94,7 @@ public class StoneGuardAbs extends Trader {
 
         String callerResult = null;
 
-        BigDecimal newRate = Rater.getRate(this.haveAssetKey, this.wantAssetKey, "wex");
+        BigDecimal newRate = Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange);
 
         if (newRate == null) {
             // если курса нет то отменим все ордера и ждем

@@ -1,7 +1,6 @@
 package org.erachain.eratrader.traders;
 // 30/03
 
-import org.erachain.eratrader.api.ApiClient;
 import org.erachain.eratrader.controller.Controller;
 import org.erachain.eratrader.core.transaction.Transaction;
 import org.json.simple.JSONArray;
@@ -33,6 +32,7 @@ public abstract class Trader extends Thread {
     protected Controller cnt;
     protected CallRemoteApi caller;
 
+    protected String sourceExchange;
     protected boolean cleanAllOnStart;
     protected String address;
 
@@ -66,12 +66,13 @@ public abstract class Trader extends Thread {
     private boolean run = true;
 
     public Trader(TradersManager tradersManager, String accountStr, int sleepSec,
-                  HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
-            boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
+                  String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
+                  boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
 
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
 
+        this.sourceExchange = sourceExchange;
         this.cleanAllOnStart = cleanAllOnStart;
         this.address = accountStr;
         this.tradersManager = tradersManager;
@@ -112,7 +113,7 @@ public abstract class Trader extends Thread {
         }
 
         this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
-                + " / [" + wantAssetKey + "]" + wantAssetName + " on " + address);
+                + " / [" + wantAssetKey + "]" + wantAssetName + " @" + sourceExchange + " on " + address);
 
         this.start();
     }
