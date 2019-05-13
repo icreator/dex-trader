@@ -114,6 +114,13 @@ public class TradersManager {
 
             }
 
+            HashMap<BigDecimal, BigDecimal> scheme = new HashMap<>();
+            JSONObject schemeJSON = (JSONObject) json.get("scheme");
+            for (Object key: schemeJSON.keySet()) {
+                scheme.put(new BigDecimal(key.toString()),
+                        new BigDecimal(schemeJSON.get(key).toString()));
+            }
+
             Trader trader;
             if (absolute) {
                 trader = new StoneGuardAbs(this, traderAddress,
@@ -121,7 +128,7 @@ public class TradersManager {
                         (long)json.get("haveAssetKey"),
                         (long)json.get("wantAssetKey"),
                         json.get("sourceExchange").toString(),
-                        (JSONObject)json.get("scheme"),
+                        scheme,
                         new BigDecimal(json.get("limitUP").toString()),
                         new BigDecimal(json.get("limitDown").toString()),
                         cleanAllOnStart);
@@ -131,7 +138,7 @@ public class TradersManager {
                         (long)json.get("haveAssetKey"),
                         (long)json.get("wantAssetKey"),
                         json.get("sourceExchange").toString(),
-                        (JSONObject)json.get("scheme"),
+                        scheme,
                         new BigDecimal(json.get("limitUP").toString()),
                         new BigDecimal(json.get("limitDown").toString()),
                         cleanAllOnStart);
