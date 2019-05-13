@@ -13,12 +13,12 @@ plugins {
     id 'java'
     id 'idea'
     id 'groovy'
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
+//    id 'org.springframework.boot' version '2.1.4.RELEASE'
 }
 
 
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.springframework.boot'
+//apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'org.springframework.boot'
 
 repositories {
     mavenCentral()
@@ -47,7 +47,7 @@ sourceSets {
             srcDir 'src/main/java'
         }
         resources {
-            srcDir 'src/main/resources'
+            srcDir 'TRADE/resources'
         }
     }
 
@@ -56,16 +56,18 @@ sourceSets {
             srcDir 'src/test/java'
         }
         resources {
-            srcDir 'src/test/resources'
+            srcDir 'TRADE/resources'
         }
     }
 
 }
 
-bootJar {
-    mainClassName = "org.erachain.eratrader.Start"
+//bootJar {
+jar {
+    //mainClassName = "org.erachain.eratrader.Start"
     manifest{
         attributes(
+                'Main-Class': 'org.erachain.eratrader.Start',
                 'Implementation-Title' : 'Gradle Build: ' + project.name,
                 'Implementation-Version' : project.version,
                 'Build-Time' : new Date().format("yyyy-MM-dd HH:mm:ssZ"),
@@ -77,8 +79,8 @@ bootJar {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //implementation 'org.springframework.boot:spring-boot-starter'
+    //testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 //    compile "org.springframework.boot:spring-boot-starter-web:${springbootVersion}"
 //    compile "org.springframework.boot:spring-boot:${springbootVersion}"
@@ -88,4 +90,25 @@ dependencies {
 
     compile "org.slf4j:slf4j-log4j12:${slf4jVersion}"
 
+}
+
+task CopyResourse {
+
+    copy {
+        from 'TRADE'
+        into 'build/libs/EraTrade'
+        include 'peers*'
+    }
+
+    copy {
+        from 'TRADE/resources'
+        into 'build/libs/EraTrade/resources'
+    }
+}
+
+task CreateZip(type: Zip) {
+    from 'build/libs/'
+    include 'EraTrade/'
+    archiveName 'EraTrade' + '.zip'
+    destinationDir(file('build/libs/'))
 }
