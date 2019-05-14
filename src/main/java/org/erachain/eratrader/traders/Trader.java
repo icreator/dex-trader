@@ -97,7 +97,7 @@ public abstract class Trader extends Thread {
             haveAssetName = json.get("name").toString();
         } catch (NullPointerException | ClassCastException e) {
             //JSON EXCEPTION
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
             return;
         }
         result = cnt.apiClient.executeCommand("GET assets/" + wantAssetKey);
@@ -108,7 +108,7 @@ public abstract class Trader extends Thread {
             wantAssetScale = (int)(long)json.get("scale");
         } catch (NullPointerException | ClassCastException e) {
             //JSON EXCEPTION
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
             return;
         }
 

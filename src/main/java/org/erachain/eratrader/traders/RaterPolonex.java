@@ -50,8 +50,8 @@ public class RaterPolonex extends Rater {
             }
         }
 
-        if (json.containsKey("BTC_ETC")) {
-            pair = (JSONObject) json.get("BTC_ETC");
+        if (json.containsKey("BTC_ETH")) {
+            pair = (JSONObject) json.get("BTC_ETH");
             price = new BigDecimal(pair.get("last").toString());
             price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {

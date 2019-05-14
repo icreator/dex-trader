@@ -53,8 +53,9 @@ public abstract class Rater extends Thread {
     public static HashMap<String, BigDecimal> getRates() {
         return rates;
     }
+
     public static BigDecimal getRate(long haveKey, long wantKey, String exchange) {
-        return rates.get(haveKey + "." + wantKey + " " + exchange);
+        return rates.get(makeKey(haveKey, wantKey, exchange));
     }
 
     public boolean tryGetRate() {
@@ -99,9 +100,18 @@ public abstract class Rater extends Thread {
 
     }
 
+    public static String makeKey(Long haveKey, Long wantKey, String courseName) {
+        return haveKey + "." + wantKey + " " + courseName;
+    }
+
     protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
-            Rater.rates.put(haveKey + "." + wantKey + " " + courseName, rate);
-            LOGGER.info("set RATE " + haveKey + "/" + wantKey + " on " + courseName + " = " + rate.toPlainString());
+        Rater.rates.put(makeKey(haveKey, wantKey, courseName), rate);
+
+        // STORE BACK PRICE
+        BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
+        Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
+
+        LOGGER.info("set RATE " + haveKey + "/" + wantKey + " on " + courseName + " = " + rate.toPlainString());
     }
 
     public void setRun(boolean status) {
