@@ -38,7 +38,7 @@ public class RaterLiveCoinRUR extends Rater {
             price = new BigDecimal(json.get("vwap").toString()).setScale(10, BigDecimal.ROUND_HALF_UP);
             price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {
-                setRate(1104L, 1107L, this.courseName, price);
+                setRate(1108L, 1107L, this.courseName, price);
             } else {
                 setRate(12L, 95L, this.courseName, price);
             }

@@ -26,6 +26,14 @@ public class StoneGuardAbs extends Trader {
         String result;
         BigDecimal shiftAbsolute = this.scheme.get(schemeAmount);
 
+        // защита от слишком маленьких значений
+        int percentage = new BigDecimal("100").multiply(shiftAbsolute).divide(this.rate, 0, BigDecimal.ROUND_HALF_UP).abs().intValue();
+        if (percentage > 10) {
+            LOGGER.error(">>>>> SO BIG SHIFT for " + this.haveAssetName
+                    + "/" + this.wantAssetName + " to " + this.rate.toString() + " - " + shiftAbsolute.toPlainString());
+            return true;
+        }
+
         long haveKey;
         long wantKey;
 

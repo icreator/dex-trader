@@ -167,6 +167,9 @@ public abstract class Trader extends Thread {
 
         LOGGER.debug("TRY CREATE " + amountHave.toString() + " : " + amountWant.toString());
 
+        if (amountHave.signum() < 0 || amountWant.signum() < 0) {
+            Long err = 1l;
+        }
         JSONObject jsonObject = null;
         // TRY MAKE ORDER in LOOP
         do {
@@ -207,7 +210,7 @@ public abstract class Trader extends Thread {
 
         } while (true);
 
-        this.schemeOrdersPut(schemeAmount, (String)jsonObject.get("signature"));
+        this.schemeOrdersPut(schemeAmount, jsonObject.get("signature").toString());
         return true;
 
     }
