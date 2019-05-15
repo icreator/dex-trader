@@ -275,25 +275,35 @@ public abstract class Trader extends Thread {
 
     protected JSONArray getMyOrders(String address, long haveKey, long wantKey) {
 
+        JSONArray result = new JSONArray();
+
         String sendRequest;
 
-        sendRequest = cnt.apiClient.executeCommand("GET trade/getbyaddress/" + address
-                    + '/' + haveAssetKey + '/' + wantAssetKey);
-        //logger.info("GET by address: " + "\n" + sendRequest);
-
-        JSONArray jsonArray = null;
+        JSONParser jsonParser = new JSONParser();
         try {
+            sendRequest = cnt.apiClient.executeCommand("GET trade/getbyaddress/" + address
+                    + '/' + haveAssetKey + '/' + wantAssetKey);
+            //logger.info("GET by address: " + "\n" + sendRequest);
             //READ JSON
-            JSONParser jsonParser = new JSONParser();
-            jsonArray = (JSONArray) jsonParser.parse(sendRequest);
+            result.addAll((JSONArray) jsonParser.parse(sendRequest));
         } catch (NullPointerException | ClassCastException | ParseException e) {
             //JSON EXCEPTION
             LOGGER.error(e.getMessage());
-            //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
-            return null;
         }
 
-        return jsonArray;
+        JSONArray jsonArrayWant = null;
+        try {
+            //READ JSON
+            sendRequest = cnt.apiClient.executeCommand("GET trade/getbyaddress/" + address
+                    + '/' + wantAssetKey + '/' + haveAssetKey);
+            //logger.info("GET by address: " + "\n" + sendRequest);
+            result.addAll((JSONArray) jsonParser.parse(sendRequest));
+        } catch (NullPointerException | ClassCastException | ParseException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage());
+        }
+
+        return result;
 
     }
 
@@ -353,55 +363,59 @@ public abstract class Trader extends Thread {
             LOGGER.error(e.getMessage());
         }
 
-        if (arrayUnconfirmed == null)
-            return;
-
-        // GET CANCELS in UNCONFIRMEDs
-        HashSet<String> cancelsIsUnconfirmed = makeCancelingArray(arrayUnconfirmed);
         BigDecimal amount;
         String orderID;
-
+        HashSet<String> cancelsIsUnconfirmed;
         boolean updated = false;
 
-        // CHECK MY ORDERs in UNCONFIRMED
-        for (Object json: arrayUnconfirmed) {
+        if (arrayUnconfirmed != null) {
 
-            JSONObject transaction = (JSONObject)json;
-            if (((Long)transaction.get("type")).intValue() == Transaction.CREATE_ORDER_TRANSACTION) {
-                if (((Long)transaction.get("haveAssetKey")).equals(this.haveAssetKey)
-                        && ((Long)transaction.get("wantAssetKey")).equals(this.wantAssetKey)
-                    || ((Long)transaction.get("haveAssetKey")).equals(this.wantAssetKey)
-                        && ((Long)transaction.get("wantAssetKey")).equals(this.wantAssetKey)) {
+            // GET CANCELS in UNCONFIRMEDs
+            cancelsIsUnconfirmed = makeCancelingArray(arrayUnconfirmed);
 
-                    orderID = (String)transaction.get("signature");
-                    // IF not aldeady CANCEL in WAITING
-                    if (cancelsIsUnconfirmed.contains(orderID))
-                        continue;
+            // CHECK MY ORDERs in UNCONFIRMED
+            for (Object json : arrayUnconfirmed) {
 
-                    // CANCEL ORDER
-                    if(cancelOrder(orderID) && !updated)
-                        updated = true;
+                JSONObject transaction = (JSONObject) json;
+                if (((Long) transaction.get("type")).intValue() == Transaction.CREATE_ORDER_TRANSACTION) {
+                    if (((Long) transaction.get("haveAssetKey")).equals(this.haveAssetKey)
+                            && ((Long) transaction.get("wantAssetKey")).equals(this.wantAssetKey)
+                            || ((Long) transaction.get("haveAssetKey")).equals(this.wantAssetKey)
+                            && ((Long) transaction.get("wantAssetKey")).equals(this.wantAssetKey)) {
 
-                    try {
-                        Thread.sleep(100);
-                    } catch (Exception e) {
-                        //FAILED TO SLEEP
+                        orderID = (String) transaction.get("signature");
+                        // IF not aldeady CANCEL in WAITING
+                        if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderID))
+                            continue;
+
+                        // CANCEL ORDER
+                        if (cancelOrder(orderID) && !updated)
+                            updated = true;
+
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception e) {
+                            //FAILED TO SLEEP
+                        }
                     }
                 }
             }
+        } else {
+            cancelsIsUnconfirmed = null;
         }
 
         // CHECK MY SELL ORDERS in CAP
         JSONArray list =  this.getMyOrders(this.address, this.haveAssetKey, this.wantAssetKey);
-        if (list != null)
-            for (Object item: list) {
+        if (list != null) {
+
+            for (Object item : list) {
 
                 JSONObject order = (JSONObject) item;
                 if (!order.containsKey("signature"))
                     continue;
 
                 orderID = (String) order.get("signature");
-                if (cancelsIsUnconfirmed.contains(orderID))
+                if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderID))
                     continue;
 
                 if (this.scheme.containsKey(orderID)) {
@@ -409,7 +423,7 @@ public abstract class Trader extends Thread {
                 }
 
                 // CANCEL ORDER
-                if(cancelOrder(orderID) && !updated)
+                if (cancelOrder(orderID) && !updated)
                     updated = true;
 
                 try {
@@ -417,8 +431,8 @@ public abstract class Trader extends Thread {
                 } catch (Exception e) {
                     //FAILED TO SLEEP
                 }
-
             }
+        }
 
         // CHECK MY BUY ORDERS in CAP
         list = this.getMyOrders(this.address, this.wantAssetKey, this.haveAssetKey);
@@ -430,7 +444,7 @@ public abstract class Trader extends Thread {
                 continue;
 
                 orderID = (String) order.get("signature");
-                if (cancelsIsUnconfirmed.contains(orderID))
+                if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderID))
                     continue;
 
                 if (this.scheme.containsKey(orderID)) {
