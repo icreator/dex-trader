@@ -22,6 +22,9 @@ public class TradersManager {
     private List<Rater> knownRaters;
     private List<Trader> knownTraders;
 
+    // ID -> NAME, SCALE
+    protected HashMap<Long, Pair<String, Integer>> assets = new HashMap<>();
+
     Controller cnt;
 
     public TradersManager(Controller cnt) {
@@ -30,6 +33,18 @@ public class TradersManager {
         this.knownTraders = new ArrayList<Trader>();
 
         this.start();
+    }
+
+    public class Pair<T, U> {
+
+        public final T a;
+        public final U b;
+
+        public Pair(T a, U b) {
+            this.a = a;
+            this.b = b;
+        }
+
     }
 
     private void start() {
@@ -257,6 +272,28 @@ public class TradersManager {
         if ( this.knownTraders.isEmpty()) {
             LOGGER.error("not found traders Accounts");
             cnt.stopAll(-13);
+        }
+    }
+
+    public Pair<String, Integer> getAsset(Long key) {
+
+        if (assets.containsKey(key)) {
+            return assets.get(key);
+        }
+
+        // IF that TRANSACTION exist in CHAIN or queue
+        String result = cnt.apiClient.executeCommand("GET assets/" + key);
+        try {
+            //READ JSON
+            JSONObject json = (JSONObject) JSONValue.parse(result);
+            Pair pair = new Pair<String, Integer>(json.get("name").toString(), (int)(long)json.get("scale"));
+            assets.put(key, pair);
+            return pair;
+
+        } catch (NullPointerException | ClassCastException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage(), e);
+            return null;
         }
     }
 

@@ -107,11 +107,21 @@ public abstract class Rater extends Thread {
     protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
         Rater.rates.put(makeKey(haveKey, wantKey, courseName), rate);
 
+        TradersManager.Pair<String, Integer> pair = tradersManager.getAsset(haveKey);
+        if (pair == null)
+            return;
+        String haveName = pair.a;
+
+        pair = tradersManager.getAsset(wantKey);
+        if (pair == null)
+            return;
+        String wantName = pair.a;
+
         // STORE BACK PRICE
         BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
         Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
 
-        LOGGER.info("set RATE " + haveKey + "/" + wantKey + " on " + courseName + " = " + rate.toPlainString());
+        LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " on " + courseName + " = " + rate.toPlainString());
     }
 
     public void setRun(boolean status) {

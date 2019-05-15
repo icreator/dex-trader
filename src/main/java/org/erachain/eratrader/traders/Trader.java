@@ -90,27 +90,17 @@ public abstract class Trader extends Thread {
         this.limitDown = limitDown;
 
         // IF that TRANSACTION exist in CHAIN or queue
-        String result = cnt.apiClient.executeCommand("GET assets/" + haveAssetKey);
-        try {
-            //READ JSON
-            JSONObject json = (JSONObject) JSONValue.parse(result);
-            haveAssetName = json.get("name").toString();
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
+        TradersManager.Pair pair = tradersManager.getAsset(haveAssetKey);
+        if (pair == null)
             return;
-        }
-        result = cnt.apiClient.executeCommand("GET assets/" + wantAssetKey);
-        try {
-            //READ JSON
-            JSONObject json = (JSONObject) JSONValue.parse(result);
-            wantAssetName = json.get("name").toString();
-            wantAssetScale = (int)(long)json.get("scale");
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
+        haveAssetName = (String)pair.a;
+
+        pair = tradersManager.getAsset(wantAssetKey);
+        if (pair == null)
             return;
-        }
+        wantAssetName = (String)pair.a;
+        wantAssetScale = (int)pair.b;
+
 
         this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
                 + " / [" + wantAssetKey + "]" + wantAssetName + " @" + sourceExchange + " on " + address);
@@ -160,22 +150,20 @@ public abstract class Trader extends Thread {
     }
     */
 
-    protected boolean createOrder(BigDecimal schemeAmount, Long haveKey, Long wantKey,
-                                  BigDecimal amountHave, BigDecimal amountWant) {
+    protected boolean createOrder(BigDecimal schemeAmount, Long haveKey, String haveName, BigDecimal amountHave, Long wantKey,
+                                  String wantName, BigDecimal amountWant) {
 
         String result;
 
-        LOGGER.debug("TRY CREATE " + amountHave.toString() + " : " + amountWant.toString());
+        LOGGER.debug("TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString() + " -> " + amountWant.toPlainString());
 
-        if (amountHave.signum() < 0 || amountWant.signum() < 0) {
-            Long err = 1l;
-        }
         JSONObject jsonObject = null;
         // TRY MAKE ORDER in LOOP
         do {
 
-            result = cnt.apiClient.executeCommand("GET trade/create/" + this.address + "/" + haveKey + "/" + wantKey
-                    + "/" + amountHave + "/" + amountWant + "?password=" + TradersManager.WALLET_PASSWORD);
+            String urlCommand = "GET trade/create/" + this.address + "/" + haveKey + "/" + wantKey
+                    + "/" + amountHave.toPlainString() + "/" + amountWant.toPlainString();
+            result = cnt.apiClient.executeCommand(urlCommand + "?password=" + TradersManager.WALLET_PASSWORD);
 
             try {
                 //READ JSON
@@ -190,8 +178,9 @@ public abstract class Trader extends Thread {
             if (jsonObject == null)
                 return false;
 
-            if (jsonObject.containsKey("signature"))
+            if (jsonObject.containsKey("signature")) {
                 break;
+            }
 
             int error = ((Long)jsonObject.get("error")).intValue();
             if (error == INVALID_TIMESTAMP) {
@@ -205,7 +194,8 @@ public abstract class Trader extends Thread {
                 continue;
             }
 
-            LOGGER.error("CREATE: " + result);
+            //LOGGER.error("CREATE: " + urlCommand);
+            LOGGER.error("MESS: " + result);
             return false;
 
         } while (true);
@@ -552,9 +542,8 @@ public abstract class Trader extends Thread {
                 if (jsonObject != null && jsonObject.containsKey("completed")) {
                     // in crete it removing this.schemeOrdersRemove(schemeAmount,  (String)jsonObject.get("signature"));
 
-                    this.createOrder(schemeAmount, this.haveAssetKey, this.wantAssetKey,
-                            new BigDecimal(jsonObject.get("amountHave").toString()),
-                            new BigDecimal(jsonObject.get("amountWant").toString())
+                    this.createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                            wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString())
                     );
 
                     updated = true;

@@ -63,7 +63,7 @@ public class StoneGuard extends Trader {
             }
         }
 
-        return super.createOrder(schemeAmount, haveKey, wantKey, amountHave, amountWant);
+        return super.createOrder(schemeAmount, haveKey, haveAssetName, amountHave, wantKey, wantAssetName, amountWant);
 
     }
 
