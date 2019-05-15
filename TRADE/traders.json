@@ -44,7 +44,7 @@
     "cleanAllOnStart": true,
     "haveAssetKey": 1105,
     "wantAssetKey": 1108,
-    "sourceExchange":"livecoin",
+    "sourceExchange":"polonex",
     "limitUP": "0.5",
     "limitDown": "0.5",
     "scheme": {

@@ -205,11 +205,11 @@ public abstract class Trader extends Thread {
 
     }
 
-    protected boolean cancelOrder(String orderID) {
+    protected boolean cancelOrder(String orderSignature) {
 
         String result;
 
-        result = cnt.apiClient.executeCommand("GET trade/get/" + orderID);
+        result = cnt.apiClient.executeCommand("GET trade/get/" + orderSignature);
         //logger.info("GET: " + Base58.encode(orderID) + "\n" + result);
 
         JSONObject jsonObject = null;
@@ -229,7 +229,7 @@ public abstract class Trader extends Thread {
         jsonObject = null;
 
         do {
-            result = cnt.apiClient.executeCommand("GET trade/cancel/" + this.address + "/" + orderID
+            result = cnt.apiClient.executeCommand("GET trade/cancel/" + this.address + "/" + orderSignature
                     + "?password=" + TradersManager.WALLET_PASSWORD);
 
             try {
@@ -264,7 +264,7 @@ public abstract class Trader extends Thread {
                 return true;
             }
 
-            LOGGER.info("CANCEL: " + orderID + "\n" + result);
+            LOGGER.info("CANCEL: " + orderSignature + "\n" + result);
             return false;
 
         } while(true);
@@ -282,22 +282,9 @@ public abstract class Trader extends Thread {
         JSONParser jsonParser = new JSONParser();
         try {
             sendRequest = cnt.apiClient.executeCommand("GET trade/getbyaddress/" + address
-                    + '/' + haveAssetKey + '/' + wantAssetKey);
-            //logger.info("GET by address: " + "\n" + sendRequest);
+                    + '/' + haveKey + '/' + wantKey);
             //READ JSON
-            result.addAll((JSONArray) jsonParser.parse(sendRequest));
-        } catch (NullPointerException | ClassCastException | ParseException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage());
-        }
-
-        JSONArray jsonArrayWant = null;
-        try {
-            //READ JSON
-            sendRequest = cnt.apiClient.executeCommand("GET trade/getbyaddress/" + address
-                    + '/' + wantAssetKey + '/' + haveAssetKey);
-            //logger.info("GET by address: " + "\n" + sendRequest);
-            result.addAll((JSONArray) jsonParser.parse(sendRequest));
+            result = (JSONArray) jsonParser.parse(sendRequest);
         } catch (NullPointerException | ClassCastException | ParseException e) {
             //JSON EXCEPTION
             LOGGER.error(e.getMessage());
@@ -338,10 +325,13 @@ public abstract class Trader extends Thread {
                 //FAILED TO SLEEP
             }
 
-            if ((int) transaction.get("type") == Transaction.CANCEL_ORDER_TRANSACTION) {
+            if ((int) (long) transaction.get("type") == Transaction.CANCEL_ORDER_TRANSACTION) {
                 if (true //// || (long)transaction.get("timestamp") > transaction.getCreator().getLastTimestamp()
-                        )
-                    cancelingArray.add(transactionJSON.get("orderID").toString());
+                        ) {
+                    String txID = transaction.get("orderID").toString();
+                    if (!txID.equals("null"))
+                        cancelingArray.add(txID);
+                }
             }
         }
 
@@ -378,10 +368,10 @@ public abstract class Trader extends Thread {
 
                 JSONObject transaction = (JSONObject) json;
                 if (((Long) transaction.get("type")).intValue() == Transaction.CREATE_ORDER_TRANSACTION) {
-                    if (((Long) transaction.get("haveAssetKey")).equals(this.haveAssetKey)
-                            && ((Long) transaction.get("wantAssetKey")).equals(this.wantAssetKey)
-                            || ((Long) transaction.get("haveAssetKey")).equals(this.wantAssetKey)
-                            && ((Long) transaction.get("wantAssetKey")).equals(this.wantAssetKey)) {
+                    if (transaction.get("haveAssetKey").equals(this.haveAssetKey)
+                            && transaction.get("wantAssetKey").equals(this.wantAssetKey)
+                            || transaction.get("haveAssetKey").equals(this.wantAssetKey)
+                            && transaction.get("wantAssetKey").equals(this.wantAssetKey)) {
 
                         orderID = (String) transaction.get("signature");
                         // IF not aldeady CANCEL in WAITING
