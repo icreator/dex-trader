@@ -111,30 +111,21 @@ public class Controller extends Observable {
 
         tradersManager.stop();
 
-        if (par == -999999) {
-            par = 0;
+        // FORCE CLOSE
+        if (par != -999999) {
+            LOGGER.info("EXIT parameter:" + par);
+            System.exit(par);
+            //System.
+            // bat
+            // if %errorlevel% neq 0 exit /b %errorlevel%
+        } else {
+            LOGGER.info("EXIT parameter:" + 0);
         }
-
-        LOGGER.info("EXIT parameter:" + par);
-        //System.
-        // bat
-        // if %errorlevel% neq 0 exit /b %errorlevel%
-        System.exit(par);
 
     }
 
     public void startApplication(String args[]) {
         boolean cli = false;
-
-        // CLOSE ON UNEXPECTED SHUTDOWN
-        Runtime.getRuntime().addShutdownHook(new Thread(null, null, "ShutdownHook") {
-            @Override
-            public void run() {
-                // -999999 - not use System.exit() - if freeze exit
-                stopAll(0);
-                //Runtime.getRuntime().removeShutdownHook(currentThread());
-            }
-        });
 
         // get GRADLE bild time
         getManifestInfo();
@@ -190,6 +181,16 @@ public class Controller extends Observable {
             //FORCE SHUTDOWN
             System.exit(0);
         }
+
+        // CLOSE ON UNEXPECTED SHUTDOWN
+        Runtime.getRuntime().addShutdownHook(new Thread(null, null, "ShutdownHook") {
+            @Override
+            public void run() {
+                // -999999 - not use System.exit() - if freeze exit
+                stopAll(-999999);
+            }
+        });
+
 
     }
 
