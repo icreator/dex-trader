@@ -321,19 +321,10 @@ public abstract class Trader extends Thread {
             if (transaction == null || !transaction.containsKey("signature"))
                 continue;
 
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                //FAILED TO SLEEP
-                return null;
-            }
-
             if ((int) (long) transaction.get("type") == Transaction.CANCEL_ORDER_TRANSACTION) {
                 if (true //// || (long)transaction.get("timestamp") > transaction.getCreator().getLastTimestamp()
                         ) {
-                    String txID = transaction.get("orderID").toString();
-                    if (!txID.equals("null"))
-                        cancelingArray.add(txID);
+                    cancelingArray.add(transaction.get("orderSignature").toString());
                 }
             }
         }
@@ -357,7 +348,7 @@ public abstract class Trader extends Thread {
         }
 
         BigDecimal amount;
-        String orderID;
+        String orderSignature;
         HashSet<String> cancelsIsUnconfirmed;
         boolean updated = false;
 
@@ -372,19 +363,23 @@ public abstract class Trader extends Thread {
             for (Object json : arrayUnconfirmed) {
 
                 JSONObject transaction = (JSONObject) json;
-                if (((Long) transaction.get("type")).intValue() == Transaction.CREATE_ORDER_TRANSACTION) {
-                    if (transaction.get("haveAssetKey").equals(this.haveAssetKey)
-                            && transaction.get("wantAssetKey").equals(this.wantAssetKey)
-                            || transaction.get("haveAssetKey").equals(this.wantAssetKey)
-                            && transaction.get("wantAssetKey").equals(this.wantAssetKey)) {
+                if (((int)(long) transaction.get("type")) == Transaction.CREATE_ORDER_TRANSACTION) {
+                    Object haveKeyObj = transaction.get("haveAssetKey");
+                    Object wantKeyObj = transaction.get("wantAssetKey");
+                    if (haveKeyObj != null && wantKeyObj != null && (
+                            haveKeyObj.equals(this.haveAssetKey)
+                                && wantKeyObj.equals(this.wantAssetKey)
+                            || haveKeyObj.equals(this.wantAssetKey)
+                                && wantKeyObj.equals(this.wantAssetKey))
+                    ) {
 
-                        orderID = (String) transaction.get("signature");
+                        orderSignature = (String) transaction.get("signature");
                         // IF not aldeady CANCEL in WAITING
-                        if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderID))
+                        if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderSignature))
                             continue;
 
                         // CANCEL ORDER
-                        if (cancelOrder(orderID) && !updated)
+                        if (cancelOrder(orderSignature) && !updated)
                             updated = true;
 
                         try {
@@ -410,16 +405,16 @@ public abstract class Trader extends Thread {
                 if (!order.containsKey("signature"))
                     continue;
 
-                orderID = (String) order.get("signature");
-                if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderID))
+                orderSignature = (String) order.get("signature");
+                if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderSignature))
                     continue;
 
-                if (this.scheme.containsKey(orderID)) {
-                    schemeOrdersRemove(new BigDecimal(order.get("amountHave").toString()), orderID);
+                if (this.scheme.containsKey(orderSignature)) {
+                    schemeOrdersRemove(new BigDecimal(order.get("amountHave").toString()), orderSignature);
                 }
 
                 // CANCEL ORDER
-                if (cancelOrder(orderID) && !updated)
+                if (cancelOrder(orderSignature) && !updated)
                     updated = true;
 
                 try {
@@ -440,16 +435,16 @@ public abstract class Trader extends Thread {
                 if (!order.containsKey("signature"))
                 continue;
 
-                orderID = (String) order.get("signature");
-                if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderID))
+                orderSignature = (String) order.get("signature");
+                if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderSignature))
                     continue;
 
-                if (this.scheme.containsKey(orderID)) {
-                    schemeOrdersRemove(new BigDecimal(order.get("amountWant").toString()).negate(), orderID);
+                if (this.scheme.containsKey(orderSignature)) {
+                    schemeOrdersRemove(new BigDecimal(order.get("amountWant").toString()).negate(), orderSignature);
                 }
 
                 // CANCEL ORDER
-                if(cancelOrder(orderID) && !updated)
+                if(cancelOrder(orderSignature) && !updated)
                     updated = true;
 
                 try {
