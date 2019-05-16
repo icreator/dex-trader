@@ -1,0 +1,69 @@
+@ECHO OFF
+set app=eratrader
+set xms=128
+
+:start
+
+IF EXIST java (
+	java -Xms%xms%m -jar %app%.jar
+	if %ERRORLEVEL% == 0 GOTO end
+	goto continue
+)
+
+REG QUERY "HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\1.7" /v "JavaHome" >nul 2>nul || ( GOTO NOTFOUND1 )
+	for /f "tokens=1,2,*" %%a in ('reg query "HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\1.7" /v "JavaHome"') do if "%%a"=="JavaHome" set JAVAHOME=%%c
+
+IF EXIST "%JAVAHOME%\bin\java.exe" (
+	"%JAVAHOME%\bin\java.exe" -Xms%xms%m -jar %app%.jar
+	if %ERRORLEVEL% == 0 GOTO end
+	goto continue
+)
+
+:NOTFOUND1
+
+REG QUERY "HKLM\SOFTWARE\WOW6432NODE\JavaSoft\Java Runtime Environment\1.7" /v "JavaHome" >nul 2>nul || ( GOTO NOTFOUND2 )
+	for /f "tokens=1,2,*" %%a in ('reg query "HKLM\SOFTWARE\WOW6432NODE\JavaSoft\Java Runtime Environment\1.7" /v "JavaHome"') do if "%%a"=="JavaHome" set JAVAHOME=%%c
+
+IF EXIST "%JAVAHOME%\bin\java.exe" (
+	"%JAVAHOME%\bin\java.exe" -Xms%xms%m -jar %app%.jar
+	if %ERRORLEVEL% == 0 GOTO end
+	goto continue
+)
+
+:NOTFOUND2
+
+REG QUERY "HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\1.8" /v "JavaHome" >nul 2>nul || ( GOTO NOTFOUND3 )
+	for /f "tokens=1,2,*" %%a in ('reg query "HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\1.8" /v "JavaHome"') do if "%%a"=="JavaHome" set JAVAHOME=%%c
+	
+IF EXIST "%JAVAHOME%\bin\java.exe" (
+	"%JAVAHOME%\bin\java.exe" -Xms%xms%m -jar %app%.jar
+	if %ERRORLEVEL% == 0 GOTO end
+	goto continue
+)
+
+:NOTFOUND3
+
+REG QUERY "HKLM\SOFTWARE\WOW6432NODE\JavaSoft\Java Runtime Environment\1.8" /v "JavaHome" >nul 2>nul || ( GOTO NOTFOUND4 )
+	for /f "tokens=1,2,*" %%a in ('reg query "HKLM\SOFTWARE\WOW6432NODE\JavaSoft\Java Runtime Environment\1.8" /v "JavaHome"') do if "%%a"=="JavaHome" set JAVAHOME=%%c
+
+IF EXIST "%JAVAHOME%\bin\java.exe" (
+	"%JAVAHOME%\bin\java.exe" -Xms%xms%m -jar %app%.jar
+	if %ERRORLEVEL% == 0 GOTO end
+	goto continue
+)
+	
+:NOTFOUND4
+
+ECHO Java software not found on your system. Please go to http://java.com to download a copy of Java.
+PAUSE
+
+goto end
+
+:continue
+
+timeout /t 30
+goto start
+
+:end
+
+pause
