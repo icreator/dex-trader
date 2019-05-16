@@ -9,5 +9,5 @@
 
 Вставьте ссылку
 
-
+![enter image description here](TRADER/help/001.png)
 
