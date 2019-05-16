@@ -74,12 +74,13 @@ public abstract class Rater extends Thread {
 
     public void run() {
 
-        while (this.run) {
+        while (!isInterrupted() && !cnt.isOnStopping() && this.run) {
 
             try {
                 Thread.sleep(1000);
             } catch (Exception e) {
                 //FAILED TO SLEEP
+                break;
             }
 
             try {
@@ -124,11 +125,9 @@ public abstract class Rater extends Thread {
         LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " on " + courseName + " = " + rate.toPlainString());
     }
 
-    public void setRun(boolean status) {
-        this.run = status;
-    }
-
     public void close() {
         this.run = false;
+        interrupt();
+        LOGGER.error("STOP:" + getName());
     }
 }

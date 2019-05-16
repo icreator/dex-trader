@@ -297,17 +297,23 @@ public class TradersManager {
         }
     }
 
-    public void setRun(boolean status) {
-
-        for (Rater rater: this.knownRaters) {
-            rater.setRun(status);
-        }
-    }
-
     public void stop() {
 
         for (Rater rater: this.knownRaters) {
-            rater.setRun(false);
+            rater.close();
+            try {
+                rater.join();
+            } catch (Exception e) {
+
+            }
+        }
+        for (Trader trader: this.knownTraders) {
+            trader.close();
+            try {
+                trader.join();
+            } catch (Exception e) {
+
+            }
         }
     }
 }

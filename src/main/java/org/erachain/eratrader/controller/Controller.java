@@ -94,10 +94,6 @@ public class Controller extends Observable {
         return instance;
     }
 
-    public List<String> getAccounts() {
-        return null;
-    }
-
     public int getStatus() {
         return this.status;
     }
@@ -112,6 +108,8 @@ public class Controller extends Observable {
         if (this.isStopping)
             return;
         this.isStopping = true;
+
+        tradersManager.stop();
 
         if (par == -999999) {
             par = 0;

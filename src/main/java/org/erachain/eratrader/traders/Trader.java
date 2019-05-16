@@ -188,8 +188,9 @@ public abstract class Trader extends Thread {
                 //logger.info("CREATE - TRY ANEW");
                 try {
                     Thread.sleep(100);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     //FAILED TO SLEEP
+                    return true;
                 }
                 continue;
             }
@@ -255,8 +256,9 @@ public abstract class Trader extends Thread {
                 //logger.info("CANCEL - TRY ANEW");
                 try {
                     Thread.sleep(100);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     //FAILED TO SLEEP
+                    return true;
                 }
                 continue;
             } else if (error == ORDER_DOES_NOT_EXIST) {
@@ -321,8 +323,9 @@ public abstract class Trader extends Thread {
 
             try {
                 Thread.sleep(100);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 //FAILED TO SLEEP
+                return null;
             }
 
             if ((int) (long) transaction.get("type") == Transaction.CANCEL_ORDER_TRANSACTION) {
@@ -362,6 +365,8 @@ public abstract class Trader extends Thread {
 
             // GET CANCELS in UNCONFIRMEDs
             cancelsIsUnconfirmed = makeCancelingArray(arrayUnconfirmed);
+            if (cancelsIsUnconfirmed == null)
+                return;
 
             // CHECK MY ORDERs in UNCONFIRMED
             for (Object json : arrayUnconfirmed) {
@@ -384,8 +389,9 @@ public abstract class Trader extends Thread {
 
                         try {
                             Thread.sleep(100);
-                        } catch (Exception e) {
+                        } catch (InterruptedException e) {
                             //FAILED TO SLEEP
+                            return;
                         }
                     }
                 }
@@ -418,8 +424,9 @@ public abstract class Trader extends Thread {
 
                 try {
                     Thread.sleep(100);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     //FAILED TO SLEEP
+                    return;
                 }
             }
         }
@@ -447,8 +454,9 @@ public abstract class Trader extends Thread {
 
                 try {
                     Thread.sleep(100);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     //FAILED TO SLEEP
+                    return;
                 }
 
             }
@@ -456,8 +464,9 @@ public abstract class Trader extends Thread {
         if (updated) {
             try {
                 Thread.sleep(Controller.GENERATING_MIN_BLOCK_TIME_MS << 1);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 //FAILED TO SLEEP
+                return;
             }
         }
 
@@ -502,8 +511,9 @@ public abstract class Trader extends Thread {
 
                 try {
                     Thread.sleep(100);
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     //FAILED TO SLEEP
+                    return false;
                 }
             }
 
@@ -569,8 +579,8 @@ public abstract class Trader extends Thread {
         while(cnt.getStatus() == 0) {
             try {
                 Thread.sleep(500);
-            } catch (Exception e) {
-                //FAILED TO SLEEP
+            } catch (InterruptedException e) {
+                return;
             }
         }
 
@@ -578,12 +588,13 @@ public abstract class Trader extends Thread {
             removaAll();
         }
 
-        while (this.run) {
+        while (!isInterrupted() && !cnt.isOnStopping() && this.run) {
 
             try {
                 Thread.sleep(1000);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 //FAILED TO SLEEP
+                break;
             }
 
             if (cnt.getStatus() == 0 ||
@@ -613,5 +624,7 @@ public abstract class Trader extends Thread {
 
     public void close() {
         this.run = false;
+        interrupt();
+        LOGGER.error("STOP:" + getName());
     }
 }
