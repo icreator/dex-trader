@@ -27,7 +27,7 @@ import java.util.jar.Manifest;
 public class Controller extends Observable {
 
     public static final boolean DEVELOP_USE = true;
-    public static final String APP_NAME = DEVELOP_USE ? "EraTrader-dev" : "EraTrader";
+    public static final String APP_NAME = DEVELOP_USE ? "DEX Trader TESTNET" : "DEX Trader";
 
     public static String version = "0.01.01";
     public static String buildTime = "2019-05-19 13:33:33 UTC";
@@ -108,7 +108,8 @@ public class Controller extends Observable {
             return;
         this.isStopping = true;
 
-        tradersManager.stop();
+        if (tradersManager != null)
+            tradersManager.stop();
 
         // FORCE CLOSE
         if (par != -999999) {
