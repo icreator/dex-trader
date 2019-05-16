@@ -1,8 +1,8 @@
-package org.erachain.eratrader.traders;
+package org.erachain.dextrader.traders;
 // 30/03
 
-import org.erachain.eratrader.controller.Controller;
-import org.erachain.eratrader.core.transaction.Transaction;
+import org.erachain.dextrader.controller.Controller;
+import org.erachain.dextrader.core.transaction.Transaction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;

@@ -70,12 +70,12 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
-    //mainClassName = "org.erachain.eratrader.Start"
-    baseName = "eratrader"
-    destinationDir project.file('build/libs/EraTrader')
+    //mainClassName = "org.erachain.dextrader.Start"
+    baseName = "dextrader"
+    destinationDir project.file('build/libs/DEXTrader')
     manifest{
         attributes(
-                'Main-Class': 'org.erachain.eratrader.Start',
+                'Main-Class': 'org.erachain.dextrader.Start',
                 'Implementation-Title' : 'Gradle Build: ' + project.name,
                 'Implementation-Version' : project.version,
                 'Build-Time' : new Date().format("yyyy-MM-dd HH:mm:ssZ"),
@@ -103,21 +103,21 @@ dependencies {
 task CopyResourse {
 
     copy {
-        from 'TRADE'
-        into 'build/libs/EraTrader'
+        from 'TRADER'
+        into 'build/libs/DEXTrader'
         include 'traders.json', 'run.bat'
         //include 'run.but'
     }
 
     copy {
-        from 'TRADE/resources'
-        into 'build/libs/EraTrader/resources'
+        from 'TRADER/resources'
+        into 'build/libs/DEXTrader/resources'
     }
 }
 
 task CreateZip(type: Zip) {
     from 'build/libs/'
-    include 'EraTrader/'
-    archiveName 'EraTrader' + '.zip'
+    include 'DEXTrader/'
+    archiveName 'DEXTrader' + '.zip'
     destinationDir(file('build/libs/'))
 }

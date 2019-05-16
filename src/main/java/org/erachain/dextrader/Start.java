@@ -1,7 +1,7 @@
-package org.erachain.eratrader;
+package org.erachain.dextrader;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.erachain.eratrader.controller.Controller;
+import org.erachain.dextrader.controller.Controller;
 //import org.springframework.boot.SpringApplication;
 //import org.springframework.boot.autoconfigure.SpringBootApplication;
 

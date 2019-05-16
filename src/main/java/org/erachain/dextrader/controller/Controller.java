@@ -1,8 +1,8 @@
-package org.erachain.eratrader.controller;
+package org.erachain.dextrader.controller;
 
-import org.erachain.eratrader.api.ApiClient;
-import org.erachain.eratrader.settings.Settings;
-import org.erachain.eratrader.traders.TradersManager;
+import org.erachain.dextrader.api.ApiClient;
+import org.erachain.dextrader.settings.Settings;
+import org.erachain.dextrader.traders.TradersManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 

@@ -1,5 +1,5 @@
 @ECHO OFF
-set app=eratrader
+set app=dextrader
 set xms=128
 
 :start

@@ -1,4 +1,4 @@
-package org.erachain.eratrader.settings;
+package org.erachain.dextrader.settings;
 // 17/03 Qj1vEeuz7iJADzV2qrxguSFGzamZiYZVUP
 // 30/03 ++
 
@@ -6,21 +6,16 @@ import java.io.File;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.erachain.eratrader.controller.Controller;
+import org.erachain.dextrader.controller.Controller;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.naming.ldap.Control;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.*;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 

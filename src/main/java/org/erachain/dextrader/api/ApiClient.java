@@ -1,7 +1,7 @@
-package org.erachain.eratrader.api;
+package org.erachain.dextrader.api;
 // 30/03
 
-import org.erachain.eratrader.settings.Settings;
+import org.erachain.dextrader.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

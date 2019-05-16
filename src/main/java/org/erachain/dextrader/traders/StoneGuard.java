@@ -1,7 +1,7 @@
-package org.erachain.eratrader.traders;
+package org.erachain.dextrader.traders;
 // 30/03 ++
 
-import org.erachain.eratrader.controller.Controller;
+import org.erachain.dextrader.controller.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

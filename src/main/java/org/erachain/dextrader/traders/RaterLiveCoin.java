@@ -1,4 +1,4 @@
-package org.erachain.eratrader.traders;
+package org.erachain.dextrader.traders;
 // 30/03 ++
 
 import org.json.simple.JSONObject;
@@ -7,12 +7,12 @@ import org.json.simple.JSONValue;
 import java.math.BigDecimal;
 
 
-public class RaterLiveCoinRUR extends Rater {
+public class RaterLiveCoin extends Rater {
 
-    public RaterLiveCoinRUR(TradersManager tradersManager, int sleepSec) {
+    public RaterLiveCoin(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, "livecoin", sleepSec);
 
-        this.apiURL = "https://api.livecoin.net/exchange/ticker?currencyPair=BTC/RUR";
+        this.apiURL = "https://api.livecoin.net/exchange/ticker?currencyPair=ETH/BTC";
 
     }
 
@@ -34,13 +34,13 @@ public class RaterLiveCoinRUR extends Rater {
         BigDecimal price;
 
         if (json.containsKey("symbol")
-                && "BTC/RUR".equals((String)json.get("symbol"))) {
+                && "ETH/BTC".equals((String)json.get("symbol"))) {
             price = new BigDecimal(json.get("vwap").toString()).setScale(10, BigDecimal.ROUND_HALF_UP);
             price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {
-                setRate(1108L, 1107L, this.courseName, price);
+                setRate(1105L, 1108L, this.courseName, price);
             } else {
-                setRate(12L, 95L, this.courseName, price);
+                setRate(14L, 12L, this.courseName, price);
             }
         }
 

@@ -1,4 +1,4 @@
-package org.erachain.eratrader.core.transaction;
+package org.erachain.dextrader.core.transaction;
 
 public class Transaction {
 
