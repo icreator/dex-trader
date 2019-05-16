@@ -105,7 +105,8 @@ task CopyResourse {
     copy {
         from 'TRADE'
         into 'build/libs/EraTrader'
-        include 'peers*'
+        include 'traders.json', 'run.bat'
+        //include 'run.but'
     }
 
     copy {
