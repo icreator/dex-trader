@@ -78,7 +78,7 @@ public class TradersManager {
         }
 
         if (true) {
-            RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 600);
+            RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
             this.knownRaters.add(raterLiveCoin);
             try {
                 Thread.sleep(1000);
@@ -87,7 +87,7 @@ public class TradersManager {
 
         }
         if (true) {
-            RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 600);
+            RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 300);
             this.knownRaters.add(raterLiveCoinRUR);
             try {
                 Thread.sleep(1000);
@@ -97,7 +97,7 @@ public class TradersManager {
         }
 
         if (true) {
-            RaterPolonex raterPolonex = new RaterPolonex(this, 600);
+            RaterPolonex raterPolonex = new RaterPolonex(this, 300);
             this.knownRaters.add(raterPolonex);
         }
 

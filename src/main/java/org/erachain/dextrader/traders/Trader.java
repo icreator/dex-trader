@@ -161,6 +161,12 @@ public abstract class Trader extends Thread {
         // TRY MAKE ORDER in LOOP
         do {
 
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                return true;
+            }
+
             String urlCommand = "GET trade/create/" + this.address + "/" + haveKey + "/" + wantKey
                     + "/" + amountHave.toPlainString() + "/" + amountWant.toPlainString();
             result = cnt.apiClient.executeCommand(urlCommand + "?password=" + TradersManager.WALLET_PASSWORD);
@@ -183,15 +189,9 @@ public abstract class Trader extends Thread {
             }
 
             int error = ((Long)jsonObject.get("error")).intValue();
+
             if (error == INVALID_TIMESTAMP) {
                 // INVALIT TIMESTAMP
-                //logger.info("CREATE - TRY ANEW");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    //FAILED TO SLEEP
-                    return true;
-                }
                 continue;
             }
 
@@ -230,6 +230,13 @@ public abstract class Trader extends Thread {
         jsonObject = null;
 
         do {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                //FAILED TO SLEEP
+                return true;
+            }
+
             result = cnt.apiClient.executeCommand("GET trade/cancel/" + this.address + "/" + orderSignature
                     + "?password=" + TradersManager.WALLET_PASSWORD);
 
@@ -253,13 +260,6 @@ public abstract class Trader extends Thread {
             int error = ((Long) jsonObject.get("error")).intValue();
             if (error == INVALID_TIMESTAMP) {
                 // INVALIT TIMESTAMP
-                //logger.info("CANCEL - TRY ANEW");
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    //FAILED TO SLEEP
-                    return true;
-                }
                 continue;
             } else if (error == ORDER_DOES_NOT_EXIST) {
                 // ORDER not EXIST - as DELETED
@@ -417,12 +417,6 @@ public abstract class Trader extends Thread {
                 if (cancelOrder(orderSignature) && !updated)
                     updated = true;
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    //FAILED TO SLEEP
-                    return;
-                }
             }
         }
 

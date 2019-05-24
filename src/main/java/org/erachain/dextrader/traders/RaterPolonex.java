@@ -42,22 +42,24 @@ public class RaterPolonex extends Rater {
         if (json.containsKey("USDT_BTC")) {
             pair = (JSONObject) json.get("USDT_BTC");
             price = new BigDecimal(pair.get("last").toString());
-            price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
+            /// BACK price
+            //price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {
                 setRate(1105L, 1107L, this.courseName, price);
             } else {
-                setRate(95L, 12L, this.courseName, price);
+                setRate(12L, 95L, this.courseName, price);
             }
         }
 
         if (json.containsKey("BTC_ETH")) {
             pair = (JSONObject) json.get("BTC_ETH");
             price = new BigDecimal(pair.get("last").toString());
-            price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
+            /// BACK price
+            //price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {
-                setRate(1108L, 1105L, this.courseName, price);
+                setRate(1106L, 1105L, this.courseName, price);
             } else {
-                setRate(12L, 14L, this.courseName, price);
+                setRate(14L, 12L, this.courseName, price);
             }
         }
 
