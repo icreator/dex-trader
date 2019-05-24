@@ -44,7 +44,7 @@ public class RaterPolonex extends Rater {
             price = new BigDecimal(pair.get("last").toString());
             price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {
-                setRate(1108L, 1106L, this.courseName, price);
+                setRate(1105L, 1107L, this.courseName, price);
             } else {
                 setRate(95L, 12L, this.courseName, price);
             }

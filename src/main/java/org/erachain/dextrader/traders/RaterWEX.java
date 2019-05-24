@@ -66,8 +66,11 @@ public class RaterWEX extends Rater {
 
             if (rateBuy != null) {
                 price = calcPrice(rateBuy, rateSell, rateLast);
-                setRate(1079L, 1078L, this.courseName, price);
-                LOGGER.info("WEX rate: BTC - RUB " + price);
+                if (cnt.DEVELOP_USE) {
+                    setRate(1105L, 1108L, this.courseName, price);
+                } else {
+                    setRate(12L, 95L, this.courseName, price);
+                }
             }
 
         }
@@ -85,16 +88,11 @@ public class RaterWEX extends Rater {
 
             if (rateBuy != null) {
                 price = calcPrice(rateBuy, rateSell, rateLast);
-                setRate(1079L, 1077L, this.courseName, price);
-                if (true) {
-                    /// MAKE COMPU - ERA rate
-                    setRate(2L, 1L, this.courseName,
-                            price.divide(new BigDecimal(245),8, BigDecimal.ROUND_HALF_UP));
-                    /// MAKE COMPU - BTC rate
-                    setRate(1079L, 2L, this.courseName,
-                            price.divide(new BigDecimal(245),8, BigDecimal.ROUND_HALF_UP));
+                if (cnt.DEVELOP_USE) {
+                    setRate(1105L, 1107L, this.courseName, price);
+                } else {
+                    setRate(12L, 95L, this.courseName, price);
                 }
-                LOGGER.info("WEX rate: BTC - USD " + price);
             }
 
         }
