@@ -1,11 +1,11 @@
 [
   {
     "absoluteAmount": false,
-    "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
+    "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7",
     "sleepTime": 300,
     "cleanAllOnStart": true,
-    "haveAssetKey": 1108,
-    "wantAssetKey": 1105,
+    "haveAssetKey": 12,
+    "wantAssetKey": 95,
     "sourceExchange":"livecoin",
     "limitUP": "0.03",
     "limitDown": "0.03",
@@ -20,26 +20,24 @@
   },
   {
     "absoluteAmount": false,
-    "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
+    "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
     "sleepTime": 300,
     "cleanAllOnStart": true,
-    "haveAssetKey": 1107,
-    "wantAssetKey": 1105,
+    "haveAssetKey": 12,
+    "wantAssetKey": 95,
     "sourceExchange":"polonex",
-    "limitUP": "0.01",
-    "limitDown": "0.02",
+    "limitUP": "0.5",
+    "limitDown": "0.5",
     "scheme": {
-      "1000":"0.1",
-      "100":"0.03",
-      "10":"0.001",
-      "-10":"0.001",
-      "-100":"0.03",
-      "-1000":"0.1"
+      "0.1":"1",
+      "0.01":"0.3",
+      "-0.01":"0.3",
+      "-0.1":"1"
     }
   },
   {
     "absoluteAmount": false,
-    "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
+    "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
     "sleepTime": 300,
     "cleanAllOnStart": true,
     "haveAssetKey": 1106,

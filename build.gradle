@@ -47,7 +47,7 @@ sourceSets {
             srcDir 'src/main/java'
         }
         resources {
-            srcDir 'TRADE/resources'
+            srcDir 'TRADER/resources'
         }
     }
 
@@ -56,7 +56,7 @@ sourceSets {
             srcDir 'src/test/java'
         }
         resources {
-            srcDir 'TRADE/resources'
+            srcDir 'TRADER/resources'
         }
     }
 
