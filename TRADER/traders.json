@@ -26,8 +26,8 @@
     "haveAssetKey": 12,
     "wantAssetKey": 95,
     "sourceExchange":"polonex",
-    "limitUP": "0.5",
-    "limitDown": "0.5",
+    "limitUP": "1.0",
+    "limitDown": "1.0",
     "scheme": {
       "0.1":"1",
       "0.01":"0.3",

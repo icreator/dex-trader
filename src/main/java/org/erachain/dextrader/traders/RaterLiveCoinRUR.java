@@ -40,7 +40,7 @@ public class RaterLiveCoinRUR extends Rater {
             if (cnt.DEVELOP_USE) {
                 setRate(1105L, 1108L, this.courseName, price);
             } else {
-                setRate(12L, 95L, this.courseName, price);
+                setRate(12L, 92L, this.courseName, price);
             }
         }
 
