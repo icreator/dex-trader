@@ -21,7 +21,7 @@
   {
     "absoluteAmount": false,
     "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
-    "sleepTime": 300,
+    "sleepTime": 3000,
     "cleanAllOnStart": true,
     "haveAssetKey": 12,
     "wantAssetKey": 95,
@@ -29,10 +29,10 @@
     "limitUP": "1.0",
     "limitDown": "1.0",
     "scheme": {
-      "0.1":"1",
-      "0.01":"0.3",
-      "-0.01":"0.3",
-      "-0.1":"1"
+      "0.1":"0.5",
+      "0.01":"0.2",
+      "-0.01":"0.2",
+      "-0.1":"0.5"
     }
   },
   {

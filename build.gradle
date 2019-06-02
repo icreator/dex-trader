@@ -105,7 +105,7 @@ task CopyResourse {
     copy {
         from 'TRADER'
         into 'build/libs/DEXTrader'
-        include 'traders.json', 'run.bat'
+        include '*orig.json', '*readme.txt', 'run.bat'
         //include 'run.but'
     }
 
