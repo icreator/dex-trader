@@ -544,7 +544,7 @@ public abstract class Trader extends Thread {
                     //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
                 }
 
-                if (jsonObject != null && jsonObject.containsKey("completed")) {
+                if (jsonObject != null && (jsonObject.containsKey("completed") || jsonObject.containsKey("canceled"))) {
 
                     // remake Order if it COMPLETED
                     boolean created = false;
