@@ -150,8 +150,9 @@ public abstract class Trader extends Thread {
     }
     */
 
-    protected boolean createOrder(BigDecimal schemeAmount, Long haveKey, String haveName, BigDecimal amountHave, Long wantKey,
-                                  String wantName, BigDecimal amountWant) {
+    protected boolean createOrder(BigDecimal schemeAmount,
+                                  Long haveKey, String haveName, BigDecimal amountHave,
+                                  Long wantKey, String wantName, BigDecimal amountWant) {
 
         String result;
 
@@ -542,12 +543,25 @@ public abstract class Trader extends Thread {
                     LOGGER.error(e.getMessage());
                     //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
                 }
-                if (jsonObject != null && jsonObject.containsKey("completed")) {
-                    // in crete it removing this.schemeOrdersRemove(schemeAmount,  (String)jsonObject.get("signature"));
 
-                    this.createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
-                            wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString())
-                    );
+                if (jsonObject != null && jsonObject.containsKey("completed")) {
+
+                    // remake Order if it COMPLETED
+                    boolean created = false;
+
+                    if (schemeAmount.signum() > 0) {
+                        created = createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                                wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
+                    } else {
+                        // в другую сторону
+                        created = createOrder(schemeAmount, wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                                haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
+                    }
+
+                    if (created) {
+                        // если был создан новый ордер то сслыку на старый нужно удалить - чтобы еще раз не создавать потом
+                        schemeOrdersRemove(schemeAmount, orderID);
+                    }
 
                     updated = true;
                 }
@@ -562,6 +576,9 @@ public abstract class Trader extends Thread {
 
     public void run() {
 
+        // можно отключить при отладке
+        boolean removaAllOn = true;
+
         LOGGER.info("START " + this.getName());
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
@@ -573,7 +590,7 @@ public abstract class Trader extends Thread {
             }
         }
 
-        if (cleanAllOnStart) {
+        if (cleanAllOnStart && removaAllOn) {
             removaAll();
         }
 
@@ -607,6 +624,11 @@ public abstract class Trader extends Thread {
                 break;
             }
 
+        }
+
+        // ON EXIT remove all
+        if (removaAllOn) {
+            cleanSchemeOrders();
         }
 
     }

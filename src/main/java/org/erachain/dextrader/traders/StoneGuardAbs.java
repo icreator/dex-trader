@@ -37,12 +37,17 @@ public class StoneGuardAbs extends Trader {
         long haveKey;
         long wantKey;
 
+        String haveName;
+        String wantName;
+
         BigDecimal amountHave;
         BigDecimal amountWant;
 
         if (schemeAmount.signum() > 0) {
             haveKey = this.haveAssetKey;
+            haveName = this.haveAssetName;
             wantKey = this.wantAssetKey;
+            wantName = this.wantAssetName;
 
             amountHave = schemeAmount.stripTrailingZeros();
             amountWant = amountHave.multiply(this.rate.add(shiftAbsolute)).stripTrailingZeros();
@@ -54,7 +59,9 @@ public class StoneGuardAbs extends Trader {
 
         } else {
             haveKey = this.wantAssetKey;
+            haveName = this.wantAssetName;
             wantKey = this.haveAssetKey;
+            wantName = this.haveAssetName;
 
             amountWant = schemeAmount.negate().stripTrailingZeros();
             amountHave = amountWant.multiply(this.rate.subtract(shiftAbsolute)).stripTrailingZeros();
@@ -65,7 +72,7 @@ public class StoneGuardAbs extends Trader {
             }
         }
 
-        return super.createOrder(schemeAmount, haveKey, haveAssetName, amountHave, wantKey, wantAssetName, amountWant);
+        return super.createOrder(schemeAmount, haveKey, haveName, amountHave, wantKey, wantName, amountWant);
 
     }
 

@@ -21,7 +21,7 @@
   {
     "absoluteAmount": false,
     "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
-    "sleepTime": 3000,
+    "sleepTime": 300,
     "cleanAllOnStart": true,
     "haveAssetKey": 12,
     "wantAssetKey": 95,
