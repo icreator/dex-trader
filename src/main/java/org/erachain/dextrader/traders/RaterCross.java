@@ -37,6 +37,13 @@ public class RaterCross extends Rater {
     @Override
     public boolean tryGetRate() {
 
+        try {
+            // задержка для имитации опроса
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            return true;
+        }
+
         BigDecimal rate = BigDecimal.ONE;
         for (String path: crossPath) {
             BigDecimal ratePath = Rater.rates.get(path);
@@ -45,6 +52,8 @@ public class RaterCross extends Rater {
 
             rate = rate.multiply(ratePath);
         }
+
+        rate = rate.setScale(12, BigDecimal.ROUND_HALF_DOWN);
 
         setRate(startKey, endKey, this.courseName, rate);
 
