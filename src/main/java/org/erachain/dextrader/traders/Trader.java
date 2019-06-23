@@ -1,6 +1,7 @@
 package org.erachain.dextrader.traders;
 // 30/03
 
+import org.erachain.dextrader.Raters.Rater;
 import org.erachain.dextrader.api.CallRemoteApi;
 import org.erachain.dextrader.controller.Controller;
 import org.erachain.dextrader.core.transaction.Transaction;
@@ -143,8 +144,12 @@ public abstract class Trader extends Thread {
         this.haveAssetName = "haveA";
         this.wantAssetName = "wantA";
 
-        this.limitUP = new BigDecimal(json.get("limitUP").toString());
-        this.limitDown = new BigDecimal(json.get("limitDown").toString());
+        try {
+            this.limitUP = new BigDecimal(json.get("limitUP").toString());
+            this.limitDown = new BigDecimal(json.get("limitDown").toString());
+        } catch (Exception e) {
+
+        }
 
         // IF that TRANSACTION exist in CHAIN or queue
         TradersManager.Pair pair = tradersManager.getAsset(haveAssetKey);
@@ -164,17 +169,12 @@ public abstract class Trader extends Thread {
 
         }
 
-
         this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
                 + " / [" + wantAssetKey + "]" + wantAssetName + " @" + sourceExchange + " on " + address);
 
         this.start();
 
     }
-
-                  //public HashSet<BigInteger> getOrders() {
-    //    return this.orders;
-   // }
 
     protected synchronized void schemeOrdersPut(BigDecimal amount, String orderID) {
         HashSet<String> set = schemeOrders.get(amount);
@@ -646,12 +646,13 @@ public abstract class Trader extends Thread {
         LOGGER.info("START " + this.getName());
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
-        while(cnt.getStatus() == 0) {
+        while(cnt.getStatus() == 0 || Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange) == null) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 return;
             }
+
         }
 
         if (cleanAllOnStart && removaAllOn) {

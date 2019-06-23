@@ -1,60 +1,35 @@
 [
   {
     "Guard": {
-      "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7",
-      "startDelay": 20,
-      "sleepTime": 300,
-      "cleanAllOnStart": true,
-      "haveAssetKey": 12,
-      "wantAssetKey": 95,
-      "sourceExchange": "livecoin",
-      "limitUP": "0.03",
-      "limitDown": "0.03",
-      "scheme": {
-        "60000": "1",
-        "10000": "0.7",
-        "1000": "0.3",
-        "-1000": "0.3",
-        "-10000": "0.7",
-        "-60000": "1"
-      }
-    }
-  },
-  {
-    "Guard": {
-      "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
-      "startDelay": 50,
+      "traderAddress": "79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
+      "startDelay": 2,
       "sleepTime": 300,
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,
       "sourceExchange": "polonex",
-      "limitUP": "1.0",
-      "limitDown": "1.0",
+      "limitUP": "0.3",
+      "limitDown": "0.3",
       "scheme": {
-        "0.1": "0.5",
-        "0.01": "0.2",
-        "-0.01": "0.2",
-        "-0.1": "0.5"
+        "1000": "0.9",
+        "100": "0.1",
+        "-100": "0.1",
+        "-1000": "0.9"
       }
     }
   },
   {
     "RandomHit": {
-      "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
-      "startDelay": 10,
-      "sleepTime": 6000,
+      "traderAddress": "74YmjcgZUiHv7HCr5giq3r8d2M1ABBM27G",
+      "startDelay": 1,
+      "sleepTime": 1000,
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,
       "sourceExchange": "polonex",
-      "limitUP": "0.5",
-      "limitDown": "0.5",
       "scheme": {
-        "100": "-2",
-        "10": "-1",
-        "-10": "-1",
-        "-100": "-2"
+        "50": "-2.0",
+        "-50": "-2.0"
       }
     }
   }

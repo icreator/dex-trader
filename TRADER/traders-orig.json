@@ -47,15 +47,11 @@
       "startDelay": 10,
       "sleepTime": 200,
       "cleanAllOnStart": true,
-      "haveAssetKey": 12,
-      "wantAssetKey": 95,
+      "haveAssetKey": 95,
+      "wantAssetKey": 12,
       "sourceExchange": "polonex",
-      "limitUP": "0.5",
-      "limitDown": "0.5",
       "scheme": {
         "70": "-1",
-        "1": "-0.3",
-        "-1": "-0.3",
         "-70": "-1"
       }
     }
