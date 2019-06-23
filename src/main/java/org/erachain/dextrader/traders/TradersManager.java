@@ -1,6 +1,7 @@
 package org.erachain.dextrader.traders;
 // 30/03 ++
 
+import org.erachain.dextrader.Raters.*;
 import org.erachain.dextrader.controller.Controller;
 import org.erachain.dextrader.settings.Settings;
 import org.json.simple.JSONArray;
@@ -9,7 +10,6 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 

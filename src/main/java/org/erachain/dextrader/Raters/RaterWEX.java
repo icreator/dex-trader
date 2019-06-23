@@ -1,6 +1,7 @@
-package org.erachain.dextrader.traders;
+package org.erachain.dextrader.Raters;
 // 30/03 ++
 
+import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
