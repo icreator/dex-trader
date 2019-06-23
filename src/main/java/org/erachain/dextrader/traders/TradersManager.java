@@ -107,63 +107,74 @@ public class TradersManager {
         } catch (Exception e) {
         }
 
-        for (Object obj: Settings.getInstance().tradersJSON) {
-            JSONObject json = (JSONObject) obj;
+        for (Object obj : Settings.getInstance().tradersJSON) {
+            JSONObject jsonItems = (JSONObject) obj;
 
-            String traderAddress = json.get("traderAddress").toString();
-            if (!walletAddresses.contains(traderAddress)) {
-                LOGGER.error("not found traders Account - " + traderAddress);
-                continue;
+            for (Object jsonKey : jsonItems.keySet()) {
+
+                JSONObject item = (JSONObject) jsonItems.get(jsonKey);
+                String traderAddress = item.get("traderAddress").toString();
+                if (!walletAddresses.contains(traderAddress)) {
+                    LOGGER.error("not found traders Account - " + traderAddress);
+                    continue;
+                }
+
+                boolean cleanAllOnStart = false;
+                try {
+                    cleanAllOnStart = (boolean) item.get("cleanAllOnStart");
+                } catch (Exception e) {
+
+                }
+
+                Trader trader = null;
+
+                if (jsonKey.equals("Guard")) {
+
+                    HashMap<BigDecimal, BigDecimal> scheme = new HashMap<>();
+                    JSONObject schemeJSON = (JSONObject) item.get("scheme");
+                    for (Object key : schemeJSON.keySet()) {
+                        scheme.put(new BigDecimal(key.toString()),
+                                new BigDecimal(schemeJSON.get(key).toString()));
+                    }
+
+                    trader = new StoneGuard(this, traderAddress,
+                            (int) (long) item.get("sleepTime"),
+                            (long) item.get("haveAssetKey"),
+                            (long) item.get("wantAssetKey"),
+                            item.get("sourceExchange").toString(),
+                            scheme,
+                            new BigDecimal(item.get("limitUP").toString()),
+                            new BigDecimal(item.get("limitDown").toString()),
+                            cleanAllOnStart);
+
+                } else if (jsonKey.equals("GuardAbs")) {
+
+                    HashMap<BigDecimal, BigDecimal> scheme = new HashMap<>();
+                    JSONObject schemeJSON = (JSONObject) item.get("scheme");
+                    for (Object key : schemeJSON.keySet()) {
+                        scheme.put(new BigDecimal(key.toString()),
+                                new BigDecimal(schemeJSON.get(key).toString()));
+                    }
+
+                    trader = new StoneGuardAbs(this, traderAddress,
+                            (int) (long) item.get("sleepTime"),
+                            (long) item.get("haveAssetKey"),
+                            (long) item.get("wantAssetKey"),
+                            item.get("sourceExchange").toString(),
+                            scheme,
+                            new BigDecimal(item.get("limitUP").toString()),
+                            new BigDecimal(item.get("limitDown").toString()),
+                            cleanAllOnStart);
+                }
+
+                if (trader != null)
+                    this.knownTraders.add(trader);
+
             }
-
-            boolean absolute = false;
-            try {
-                absolute = (boolean) json.get("absoluteAmount");
-            } catch (Exception e) {
-
-            }
-            boolean cleanAllOnStart = false;
-            try {
-                cleanAllOnStart = (boolean) json.get("cleanAllOnStart");
-            } catch (Exception e) {
-
-            }
-
-            HashMap<BigDecimal, BigDecimal> scheme = new HashMap<>();
-            JSONObject schemeJSON = (JSONObject) json.get("scheme");
-            for (Object key: schemeJSON.keySet()) {
-                scheme.put(new BigDecimal(key.toString()),
-                        new BigDecimal(schemeJSON.get(key).toString()));
-            }
-
-            Trader trader;
-            if (absolute) {
-                trader = new StoneGuardAbs(this, traderAddress,
-                        (int)(long)json.get("sleepTime"),
-                        (long)json.get("haveAssetKey"),
-                        (long)json.get("wantAssetKey"),
-                        json.get("sourceExchange").toString(),
-                        scheme,
-                        new BigDecimal(json.get("limitUP").toString()),
-                        new BigDecimal(json.get("limitDown").toString()),
-                        cleanAllOnStart);
-            } else {
-                trader = new StoneGuard(this, json.get("traderAddress").toString(),
-                        (int)(long)json.get("sleepTime"),
-                        (long)json.get("haveAssetKey"),
-                        (long)json.get("wantAssetKey"),
-                        json.get("sourceExchange").toString(),
-                        scheme,
-                        new BigDecimal(json.get("limitUP").toString()),
-                        new BigDecimal(json.get("limitDown").toString()),
-                        cleanAllOnStart);
-            }
-            this.knownTraders.add(trader);
-
         }
 
         if ( this.knownTraders.isEmpty()) {
-            LOGGER.error("not found traders Accounts");
+            LOGGER.error("Not found Traders Accounts or Traders in Settings");
             cnt.stopAll(-13);
         }
     }
