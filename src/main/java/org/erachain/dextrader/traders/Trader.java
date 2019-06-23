@@ -108,7 +108,62 @@ public abstract class Trader extends Thread {
         this.start();
     }
 
-    //public HashSet<BigInteger> getOrders() {
+    public Trader(TradersManager tradersManager, String accountStr, JSONObject json) {
+
+        this.cnt = Controller.getInstance();
+        this.caller = new CallRemoteApi();
+
+        try {
+            cleanAllOnStart = (boolean) json.get("cleanAllOnStart");
+        } catch (Exception e) {
+
+        }
+
+        this.sourceExchange = json.get("sourceExchange").toString();
+
+        this.address = accountStr;
+        this.tradersManager = tradersManager;
+        this.sleepTimestep = ((int) (long) json.get("sleepTime")) * 1000;
+
+        if (json.containsKey("scheme")) {
+            scheme = new HashMap<>();
+            JSONObject schemeJSON = (JSONObject) json.get("scheme");
+            for (Object key : schemeJSON.keySet()) {
+                scheme.put(new BigDecimal(key.toString()),
+                        new BigDecimal(schemeJSON.get(key).toString()));
+            }
+        }
+
+        this.haveAssetKey = (long) json.get("haveAssetKey");
+        this.wantAssetKey = (long) json.get("wantAssetKey");
+
+        this.haveAssetName = "haveA";
+        this.wantAssetName = "wantA";
+
+        this.limitUP = new BigDecimal(json.get("limitUP").toString());
+        this.limitDown = new BigDecimal(json.get("limitDown").toString());
+
+        // IF that TRANSACTION exist in CHAIN or queue
+        TradersManager.Pair pair = tradersManager.getAsset(haveAssetKey);
+        if (pair == null)
+            return;
+        haveAssetName = (String)pair.a;
+
+        pair = tradersManager.getAsset(wantAssetKey);
+        if (pair == null)
+            return;
+        wantAssetName = (String)pair.a;
+        wantAssetScale = (int)pair.b;
+
+
+        this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
+                + " / [" + wantAssetKey + "]" + wantAssetName + " @" + sourceExchange + " on " + address);
+
+        this.start();
+
+    }
+
+                  //public HashSet<BigInteger> getOrders() {
     //    return this.orders;
    // }
 

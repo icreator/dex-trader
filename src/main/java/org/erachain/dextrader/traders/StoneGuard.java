@@ -2,6 +2,7 @@ package org.erachain.dextrader.traders;
 // 30/03 ++
 
 import org.erachain.dextrader.controller.Controller;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,10 @@ public class StoneGuard extends Trader {
                       String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
 
+    }
+
+    public StoneGuard(TradersManager tradersManager, String accountStr, JSONObject json) {
+        super(tradersManager, accountStr, json);
     }
 
     protected boolean createOrder(BigDecimal schemeAmount) {

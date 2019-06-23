@@ -1,6 +1,7 @@
 package org.erachain.dextrader.traders;
 // 30/03 ++
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,10 @@ public class StoneGuardAbs extends Trader {
                          String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart,
                 limitUP, limitDown);
+    }
+
+    public StoneGuardAbs(TradersManager tradersManager, String accountStr, JSONObject json) {
+        super(tradersManager, accountStr, json);
     }
 
     protected boolean createOrder(BigDecimal schemeAmount) {
