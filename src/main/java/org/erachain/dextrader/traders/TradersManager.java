@@ -119,56 +119,17 @@ public class TradersManager {
                     continue;
                 }
 
-                boolean cleanAllOnStart = false;
-                try {
-                    cleanAllOnStart = (boolean) item.get("cleanAllOnStart");
-                } catch (Exception e) {
-
-                }
-
                 Trader trader = null;
 
                 if (jsonKey.equals("Guard")) {
-
-                    HashMap<BigDecimal, BigDecimal> scheme = new HashMap<>();
-                    JSONObject schemeJSON = (JSONObject) item.get("scheme");
-                    for (Object key : schemeJSON.keySet()) {
-                        scheme.put(new BigDecimal(key.toString()),
-                                new BigDecimal(schemeJSON.get(key).toString()));
-                    }
-
-                    trader = new StoneGuard(this, traderAddress,
-                            (int) (long) item.get("sleepTime"),
-                            (long) item.get("haveAssetKey"),
-                            (long) item.get("wantAssetKey"),
-                            item.get("sourceExchange").toString(),
-                            scheme,
-                            new BigDecimal(item.get("limitUP").toString()),
-                            new BigDecimal(item.get("limitDown").toString()),
-                            cleanAllOnStart);
-
+                    trader = new StoneGuard(this, traderAddress, item);
                 } else if (jsonKey.equals("GuardAbs")) {
-
-                    HashMap<BigDecimal, BigDecimal> scheme = new HashMap<>();
-                    JSONObject schemeJSON = (JSONObject) item.get("scheme");
-                    for (Object key : schemeJSON.keySet()) {
-                        scheme.put(new BigDecimal(key.toString()),
-                                new BigDecimal(schemeJSON.get(key).toString()));
-                    }
-
-                    trader = new StoneGuardAbs(this, traderAddress,
-                            (int) (long) item.get("sleepTime"),
-                            (long) item.get("haveAssetKey"),
-                            (long) item.get("wantAssetKey"),
-                            item.get("sourceExchange").toString(),
-                            scheme,
-                            new BigDecimal(item.get("limitUP").toString()),
-                            new BigDecimal(item.get("limitDown").toString()),
-                            cleanAllOnStart);
+                    trader = new StoneGuardAbs(this, traderAddress, item);
                 }
 
-                if (trader != null)
+                if (trader != null) {
                     this.knownTraders.add(trader);
+                }
 
             }
         }
