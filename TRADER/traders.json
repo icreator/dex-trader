@@ -1,56 +1,58 @@
 [
   {
-    "absoluteAmount": false,
-    "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7",
-    "sleepTime": 300,
-    "cleanAllOnStart": true,
-    "haveAssetKey": 12,
-    "wantAssetKey": 95,
-    "sourceExchange":"livecoin",
-    "limitUP": "0.03",
-    "limitDown": "0.03",
-    "scheme": {
-      "60000":"1",
-      "10000":"0.7",
-      "1000":"0.3",
-      "-1000":"0.3",
-      "-10000":"0.7",
-      "-60000":"1"
+    "Guard": {
+      "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7",
+      "sleepTime": 300,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 12,
+      "wantAssetKey": 95,
+      "sourceExchange": "livecoin",
+      "limitUP": "0.03",
+      "limitDown": "0.03",
+      "scheme": {
+        "60000": "1",
+        "10000": "0.7",
+        "1000": "0.3",
+        "-1000": "0.3",
+        "-10000": "0.7",
+        "-60000": "1"
+      }
     }
   },
   {
-    "absoluteAmount": false,
-    "traderAddress": "79VxBQxoddQx8ZHvikTE92yFAW3SXtnPA8",
-    "sleepTime": 300,
-    "cleanAllOnStart": true,
-    "haveAssetKey": 12,
-    "wantAssetKey": 95,
-    "sourceExchange":"polonex",
-    "limitUP": "1.0",
-    "limitDown": "1.0",
-    "scheme": {
-      "0.1":"0.5",
-      "0.01":"0.2",
-      "-0.01":"0.2",
-      "-0.1":"0.5"
+    "Guard": {
+      "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
+      "sleepTime": 300,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 12,
+      "wantAssetKey": 95,
+      "sourceExchange": "polonex",
+      "limitUP": "1.0",
+      "limitDown": "1.0",
+      "scheme": {
+        "0.1": "0.5",
+        "0.01": "0.2",
+        "-0.01": "0.2",
+        "-0.1": "0.5"
+      }
     }
   },
   {
-    "absoluteAmount": false,
-    "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
-    "sleepTime": 300,
-    "cleanAllOnStart": true,
-    "haveAssetKey": 1106,
-    "wantAssetKey": 1105,
-    "sourceExchange":"polonex",
-    "limitUP": "0.5",
-    "limitDown": "0.5",
-    "scheme": {
-      "70":"1",
-      "1":"0.3",
-      "-1":"0.3",
-      "-70":"1"
+    "GuardAbs": {
+      "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
+      "sleepTime": 300,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 1106,
+      "wantAssetKey": 1105,
+      "sourceExchange": "polonex",
+      "limitUP": "0.5",
+      "limitDown": "0.5",
+      "scheme": {
+        "70": "1",
+        "1": "0.3",
+        "-1": "0.3",
+        "-70": "1"
+      }
     }
   }
-
 ]
