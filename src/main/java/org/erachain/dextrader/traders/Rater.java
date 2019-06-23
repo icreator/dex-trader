@@ -14,7 +14,7 @@ public abstract class Rater extends Thread {
     protected final Logger LOGGER;
 
     // HAVE KEY + WANT KEY + COURSE NAME
-    private static HashMap<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
+    protected static HashMap<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
 
     private TradersManager tradersManager;
     private long sleepTimeStep;

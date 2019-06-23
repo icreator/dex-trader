@@ -59,7 +59,7 @@ public class TradersManager {
 
         } catch (NullPointerException | ClassCastException e) {
             //JSON EXCEPTION
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
             cnt.stopAll(-11);
             return;
         } finally {
@@ -101,6 +101,13 @@ public class TradersManager {
             this.knownRaters.add(raterPolonex);
         }
 
+        if (true) {
+            RaterCross raterCross_ETH_RUB = new RaterCross(this, 300, "ETH_RUB",
+                    new String[]{"14.12 polonex", "12.92 livecoin"});
+            this.knownRaters.add(raterCross_ETH_RUB);
+        }
+
+        if (true) return;
 
         try {
             Thread.sleep(5000);
