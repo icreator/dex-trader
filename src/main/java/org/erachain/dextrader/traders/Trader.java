@@ -1,6 +1,7 @@
 package org.erachain.dextrader.traders;
 // 30/03
 
+import org.erachain.dextrader.api.CallRemoteApi;
 import org.erachain.dextrader.controller.Controller;
 import org.erachain.dextrader.core.transaction.Transaction;
 import org.json.simple.JSONArray;

@@ -1,4 +1,4 @@
-package org.erachain.dextrader.traders;
+package org.erachain.dextrader.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -2,7 +2,7 @@ package org.erachain.dextrader.Raters;
 // 30/03
 
 import org.erachain.dextrader.controller.Controller;
-import org.erachain.dextrader.traders.CallRemoteApi;
+import org.erachain.dextrader.api.CallRemoteApi;
 import org.erachain.dextrader.traders.TradersManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
