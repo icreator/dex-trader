@@ -42,21 +42,21 @@
     }
   },
   {
-    "Guard": {
+    "RandomHit": {
       "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
-      "startDelay": 100,
+      "startDelay": 10,
       "sleepTime": 200,
       "cleanAllOnStart": true,
-      "haveAssetKey": 1105,
-      "wantAssetKey": 1108,
+      "haveAssetKey": 12,
+      "wantAssetKey": 95,
       "sourceExchange": "polonex",
       "limitUP": "0.5",
       "limitDown": "0.5",
       "scheme": {
-        "70": "1",
-        "1": "0.3",
-        "-1": "0.3",
-        "-70": "1"
+        "70": "-1",
+        "1": "-0.3",
+        "-1": "-0.3",
+        "-70": "-1"
       }
     }
   }

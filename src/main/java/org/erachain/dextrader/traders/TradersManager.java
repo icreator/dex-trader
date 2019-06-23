@@ -132,6 +132,8 @@ public class TradersManager {
                     trader = new StoneGuard(this, traderAddress, item);
                 } else if (jsonKey.equals("GuardAbs")) {
                     trader = new StoneGuardAbs(this, traderAddress, item);
+                } else if (jsonKey.equals("RandomHit")) {
+                    trader = new RandomHit(this, traderAddress, item);
                 }
 
                 if (trader != null) {
