@@ -26,8 +26,8 @@
       "startDelay": 50,
       "sleepTime": 300,
       "cleanAllOnStart": true,
-      "haveAssetKey": 12,
-      "wantAssetKey": 95,
+      "haveAssetKey": 95,
+      "wantAssetKey": 12,
       "sourceExchange": "polonex",
       "limitUP": "1.0",
       "limitDown": "1.0",
@@ -42,8 +42,8 @@
   {
     "RandomHit": {
       "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
-      "startDelay": 1,
-      "sleepTime": 300,
+      "startDelay": 10,
+      "sleepTime": 6000,
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,
