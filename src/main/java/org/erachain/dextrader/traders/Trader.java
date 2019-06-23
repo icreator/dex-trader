@@ -46,6 +46,8 @@ public abstract class Trader extends Thread {
     protected BigDecimal limitUP;
     protected BigDecimal limitDown;
 
+    protected long startDelay;
+
     protected BigDecimal rate;
 
     protected static final int STATUS_INCHAIN = 2;
@@ -154,6 +156,12 @@ public abstract class Trader extends Thread {
             return;
         wantAssetName = (String)pair.a;
         wantAssetScale = (int)pair.b;
+
+        try {
+            startDelay = (long) json.get("startDelay");
+        } catch (Exception e) {
+
+        }
 
 
         this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
@@ -647,6 +655,15 @@ public abstract class Trader extends Thread {
 
         if (cleanAllOnStart && removaAllOn) {
             removaAll();
+        }
+
+        if (startDelay > 0) {
+            try {
+                Thread.sleep(startDelay * 1000);
+            } catch (InterruptedException e) {
+                //FAILED TO SLEEP
+                return;
+            }
         }
 
         while (!isInterrupted() && !cnt.isOnStopping() && this.run) {

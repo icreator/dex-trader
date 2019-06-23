@@ -2,6 +2,7 @@
   {
     "Guard": {
       "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7",
+      "startDelay": 20,
       "sleepTime": 300,
       "cleanAllOnStart": true,
       "haveAssetKey": 12,
@@ -22,6 +23,7 @@
   {
     "Guard": {
       "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
+      "startDelay": 50,
       "sleepTime": 300,
       "cleanAllOnStart": true,
       "haveAssetKey": 12,
@@ -40,6 +42,7 @@
   {
     "GuardAbs": {
       "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
+      "startDelay": 100,
       "sleepTime": 300,
       "cleanAllOnStart": true,
       "haveAssetKey": 1106,
