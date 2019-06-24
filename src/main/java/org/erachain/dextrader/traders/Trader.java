@@ -72,8 +72,6 @@ public abstract class Trader extends Thread {
                   String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
                   boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
 
-        LOGGER = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
 
@@ -107,15 +105,15 @@ public abstract class Trader extends Thread {
         wantAssetScale = (int)pair.b;
 
 
-        this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
-                + " / [" + wantAssetKey + "]" + wantAssetName + " @" + sourceExchange + " on " + address);
+        this.setName(this.getClass().getSimpleName() + " [" + haveAssetKey + "]" + haveAssetName
+                + "/[" + wantAssetKey + "]" + wantAssetName + "." + sourceExchange + "." + address.substring(0, 5));
+
+        LOGGER = LoggerFactory.getLogger(this.getName());
 
         this.start();
     }
 
     public Trader(TradersManager tradersManager, String accountStr, JSONObject json) {
-
-        LOGGER = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
@@ -172,8 +170,10 @@ public abstract class Trader extends Thread {
 
         }
 
-        this.setName("Trader - " + this.getClass().getSimpleName() + " pair: [" + haveAssetKey + "]" + haveAssetName
-                + " / [" + wantAssetKey + "]" + wantAssetName + " @" + sourceExchange + " on " + address);
+        this.setName(this.getClass().getSimpleName() + " [" + haveAssetKey + "]" + haveAssetName
+                + "/[" + wantAssetKey + "]" + wantAssetName + "." + sourceExchange + "." + address.substring(0, 5));
+
+        LOGGER = LoggerFactory.getLogger(this.getName());
 
         this.start();
 
@@ -646,7 +646,7 @@ public abstract class Trader extends Thread {
         // можно отключить при отладке
         boolean removaAllOn = true;
 
-        LOGGER.info("START " + this.getName());
+        LOGGER.info("START");
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
         while(cnt.getStatus() == 0 || Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange) == null) {
@@ -713,6 +713,6 @@ public abstract class Trader extends Thread {
     public void close() {
         this.run = false;
         interrupt();
-        LOGGER.error("STOP:" + getName());
+        LOGGER.error("STOP");
     }
 }
