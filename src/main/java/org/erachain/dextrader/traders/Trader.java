@@ -1,5 +1,4 @@
 package org.erachain.dextrader.traders;
-// 30/03
 
 import org.erachain.dextrader.Raters.Rater;
 import org.erachain.dextrader.api.CallRemoteApi;
@@ -21,7 +20,7 @@ import java.util.HashSet;
 
 public abstract class Trader extends Thread {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Trader.class);
+    protected Logger LOGGER;
 
     private static final int INVALID_TIMESTAMP = 7;
     private static final int ORDER_DOES_NOT_EXIST = 36;
@@ -29,7 +28,7 @@ public abstract class Trader extends Thread {
     protected static final BigDecimal M100 = new BigDecimal(100).setScale(0);
 
     private TradersManager tradersManager;
-    private long sleepTimestep;
+    protected long sleepTimestep;
 
     protected Controller cnt;
     protected CallRemoteApi caller;
@@ -73,6 +72,8 @@ public abstract class Trader extends Thread {
                   String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
                   boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
 
+        LOGGER = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
 
@@ -113,6 +114,8 @@ public abstract class Trader extends Thread {
     }
 
     public Trader(TradersManager tradersManager, String accountStr, JSONObject json) {
+
+        LOGGER = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
@@ -220,7 +223,7 @@ public abstract class Trader extends Thread {
 
         String result;
 
-        LOGGER.debug("TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString() + " -> " + amountWant.toPlainString());
+        LOGGER.info("TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString() + " -> " + amountWant.toPlainString());
 
         JSONObject jsonObject = null;
         // TRY MAKE ORDER in LOOP

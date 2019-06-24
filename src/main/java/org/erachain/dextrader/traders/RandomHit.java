@@ -1,12 +1,7 @@
 package org.erachain.dextrader.traders;
-// 30/03 ++
 
 import org.erachain.dextrader.Raters.Rater;
-import org.erachain.dextrader.controller.Controller;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,28 +13,30 @@ import java.util.*;
  */
 public class RandomHit extends Trader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RandomHit.class);
     private int steep;
     Random random = new Random();
     private List<BigDecimal> keys;
+    private long sleepOrig;
 
     public RandomHit(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
                      String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
         keys = new ArrayList<BigDecimal>(this.scheme.keySet());
+        sleepOrig = this.sleepTimestep;
 
     }
 
     public RandomHit(TradersManager tradersManager, String accountStr, JSONObject json) {
         super(tradersManager, accountStr, json);
         keys = new ArrayList<BigDecimal>(this.scheme.keySet());
+        sleepOrig = this.sleepTimestep;
     }
 
     protected boolean createOrder(BigDecimal schemeAmount) {
 
-        String result;
         BigDecimal shiftPercentageOrig = this.scheme.get(schemeAmount);
-        BigDecimal shiftPercentageHalf = shiftPercentageOrig.setScale(5).divide(BigDecimal.valueOf(2), RoundingMode.HALF_DOWN);
+        BigDecimal shiftPercentageHalf = shiftPercentageOrig.setScale(5, RoundingMode.HALF_DOWN)
+                .divide(BigDecimal.valueOf(2), RoundingMode.HALF_DOWN);
         int randomShift = random.nextInt(1000);
         BigDecimal ggg = new BigDecimal(randomShift).multiply(new BigDecimal("0.001"));
         BigDecimal shiftPercentage = shiftPercentageOrig.subtract(shiftPercentageHalf)
@@ -116,8 +113,12 @@ public class RandomHit extends Trader {
         if (steep > 3) {
             steep = 0;
             cleanSchemeOrders();
+            this.sleepTimestep = sleepOrig >> 1;
+
             return false;
         }
+
+        this.sleepTimestep = (sleepOrig >> 1) + random.nextInt((int)sleepOrig);
 
         return updateCap();
 

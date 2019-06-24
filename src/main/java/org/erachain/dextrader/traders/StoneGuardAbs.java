@@ -15,8 +15,6 @@ import java.util.HashMap;
  */
 public class StoneGuardAbs extends Trader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoneGuardAbs.class);
-
     public StoneGuardAbs(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
                          String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart,

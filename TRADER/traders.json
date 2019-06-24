@@ -1,7 +1,7 @@
 [
   {
     "Guard": {
-      "traderAddress": "79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
+      "traderAddress": "-79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
       "startDelay": 2,
       "sleepTime": 300,
       "cleanAllOnStart": true,
@@ -22,7 +22,7 @@
     "RandomHit": {
       "traderAddress": "74YmjcgZUiHv7HCr5giq3r8d2M1ABBM27G",
       "startDelay": 1,
-      "sleepTime": 1000,
+      "sleepTime": 100,
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,

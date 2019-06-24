@@ -1,11 +1,8 @@
 package org.erachain.dextrader.traders;
-// 30/03 ++
 
 import org.erachain.dextrader.Raters.Rater;
 import org.erachain.dextrader.controller.Controller;
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -14,8 +11,6 @@ import java.util.HashMap;
  * shift as PERCENTS in scheme
  */
 public class StoneGuard extends Trader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoneGuard.class);
 
     public StoneGuard(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
                       String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
