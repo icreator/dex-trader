@@ -35,8 +35,6 @@ public abstract class Rater extends Thread {
 
     public Rater(TradersManager tradersManager, String courseName, int sleepSec) {
 
-        LOGGER = LoggerFactory.getLogger(this.getClass().getName());
-
         this.cnt = Controller.getInstance();
         this.caller = new CallRemoteApi();
 
@@ -44,8 +42,9 @@ public abstract class Rater extends Thread {
         this.sleepTimeStep = sleepSec * 1000;
         this.courseName = courseName;
 
-        this.setName("Thread Rater - " + this.getClass().getName() + ": " + this.courseName);
-        LOGGER.info("start RATER" + this.courseName);
+        this.setName(this.getClass().getName() + ": " + this.courseName);
+
+        LOGGER = LoggerFactory.getLogger(getName());
 
         this.start();
     }
@@ -75,6 +74,8 @@ public abstract class Rater extends Thread {
     }
 
     public void run() {
+
+        LOGGER.info("START");
 
         while (!isInterrupted() && !cnt.isOnStopping() && this.run) {
 
