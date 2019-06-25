@@ -118,10 +118,14 @@ public class RandomHit extends Trader {
             return false;
         }
 
-        this.sleepTimestep = (sleepOrig >> 1) + random.nextInt((int)sleepOrig);
+        boolean result = updateCap();
+        if (result) {
+            this.sleepTimestep = (sleepOrig >> 1) + random.nextInt((int)sleepOrig);
+        } else {
+            this.sleepTimestep = 30000 + (sleepOrig >> 4);
+        }
 
-        return updateCap();
-
+        return result;
     }
 
 }
