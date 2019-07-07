@@ -574,7 +574,7 @@ public abstract class Trader extends Thread {
                 needCancelOrders.add(orderID);
             }
 
-            schemeOrdersRemove(amountKey);
+            //schemeOrdersRemove(amountKey);
 
             try {
                 Thread.sleep(100);
@@ -584,6 +584,8 @@ public abstract class Trader extends Thread {
             }
 
         }
+
+        schemeOrders.clear();
 
         // CLEAR cancels
         unconfirmedsCancel.clear();
