@@ -63,6 +63,9 @@ public abstract class Trader extends Thread {
     // AMOUNT -> Tree Map of (ORDER.Tuple3 + his STATUS)
     protected HashMap<BigDecimal, HashSet<String>> schemeOrders = new HashMap();
 
+    // orderID - need to delete Orders
+    protected HashSet<String> needCancelOrders = new HashSet();
+
     // AMOUNT -> Tree Set of SIGNATURE
     protected HashMap<BigDecimal, HashSet<String>> unconfirmedsCancel = new HashMap();
 
@@ -188,14 +191,16 @@ public abstract class Trader extends Thread {
         schemeOrders.put(amount, set);
     }
 
-    protected synchronized boolean schemeOrdersRemove(BigDecimal amount, String orderID) {
-        HashSet<String> set = schemeOrders.get(amount);
+    protected synchronized boolean schemeOrdersRemove(HashSet<String> ordersSet, BigDecimal amount, String orderID) {
 
-        if (set == null || set.isEmpty())
+        if (ordersSet == null)
+            ordersSet = schemeOrders.get(amount);
+
+        if (ordersSet == null || ordersSet.isEmpty())
             return false;
 
-        boolean removed = set.remove(orderID);
-        schemeOrders.put(amount, set);
+        boolean removed = ordersSet.remove(orderID);
+        schemeOrders.put(amount, ordersSet);
         return removed;
     }
 
@@ -447,8 +452,12 @@ public abstract class Trader extends Thread {
                             continue;
 
                         // CANCEL ORDER
-                        if (cancelOrder(orderSignature) && !updated)
+                        if (cancelOrder(orderSignature)) {
                             updated = true;
+                        } else {
+                            // some error - may be not left COMPU
+                            needCancelOrders.add(orderSignature);
+                        }
 
                         try {
                             Thread.sleep(100);
@@ -480,10 +489,9 @@ public abstract class Trader extends Thread {
                 // CANCEL ORDER
                 if (cancelOrder(orderSignature)) {
                     updated = true;
-
-                    if (this.scheme.containsKey(orderSignature)) {
-                        schemeOrdersRemove(new BigDecimal(order.get("amountHave").toString()), orderSignature);
-                    }
+                } else {
+                    // some error - may be not left COMPU
+                    needCancelOrders.add(orderSignature);
                 }
             }
         }
@@ -504,11 +512,9 @@ public abstract class Trader extends Thread {
                 // CANCEL ORDER
                 if (cancelOrder(orderSignature)) {
                     updated = true;
-
-                    if (this.scheme.containsKey(orderSignature)) {
-                        schemeOrdersRemove(new BigDecimal(order.get("amountWant").toString()).negate(), orderSignature);
-                    }
-
+                } else {
+                    // some error - may be not left COMPU
+                    needCancelOrders.add(orderSignature);
                 }
 
                 try {
@@ -531,13 +537,23 @@ public abstract class Trader extends Thread {
 
     }
 
+    public void tryNeedCancelOrders() {
+        if (!needCancelOrders.isEmpty()) {
+            // CANCEL all what need
+            for (String orderSignature: new ArrayList<>(needCancelOrders)) {
+                if (cancelOrder(orderSignature)) {
+                    needCancelOrders.remove(orderSignature);
+                }
+            }
+        }
+    }
     // REMOVE ALL ORDERS
     protected boolean cleanSchemeOrders() {
 
-        boolean cleaned = false;
+        boolean updated = false;
 
         if (this.schemeOrders == null || this.schemeOrders.isEmpty())
-            return cleaned;
+            return updated;
 
         // CANCEL ALL MY ORDERS in UNCONFIRMED
 
@@ -551,7 +567,8 @@ public abstract class Trader extends Thread {
             if (schemeItems == null || schemeItems.isEmpty())
                 continue;
 
-            for (String orderID: schemeItems) {
+            // make copy of LIST - for concerent DELETE
+            for (String orderID: new ArrayList<>(schemeItems)) {
 
                 // IF that TRANSACTION exist in CHAIN or queue
                 result = cnt.apiClient.executeCommand("GET transactions/signature/" + orderID);
@@ -566,14 +583,15 @@ public abstract class Trader extends Thread {
                 if (transaction == null || !transaction.containsKey("signature"))
                     continue;
 
-                if (cancelOrder(orderID)) {
-                    cleaned = true;
-
-                    if (this.scheme.containsKey(orderID)) {
-                        schemeOrdersRemove(new BigDecimal(transaction.get("amountHave").toString()), orderID);
-                    }
-
+                boolean canceled = cancelOrder(orderID);
+                if (canceled) {
+                    updated = true;
+                } else {
+                    // some error - may be not left COMPU
+                    needCancelOrders.add(orderID);
                 }
+
+                schemeOrdersRemove(schemeItems, amountKey, orderID);
 
                 try {
                     Thread.sleep(100);
@@ -583,14 +601,11 @@ public abstract class Trader extends Thread {
                 }
             }
 
-            // CLEAR map
-            ////schemeItems.clear(); нельзя все разом удалять - может какой ордер не удалился - его потом удалим
-            ////this.schemeOrders.put(amountKey, schemeItems);
         }
 
         // CLEAR cancels
         unconfirmedsCancel.clear();
-        return cleaned;
+        return updated;
     }
 
     public boolean updateCap() {
@@ -605,7 +620,10 @@ public abstract class Trader extends Thread {
             if (schemeItems == null || schemeItems.isEmpty())
                 continue;
 
+            boolean created = false;
+
             // make copy of LIST - for concerent DELETE
+            // для всех ордеров которые были созданы на эту позицию
             for (String orderID: new ArrayList<>(schemeItems)) {
                 result = cnt.apiClient.executeCommand("GET trade/get/" + orderID);
                 //logger.info("GET: " + Base58.encode(orderID) + "\n" + result);
@@ -620,29 +638,46 @@ public abstract class Trader extends Thread {
                     //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
                 }
 
-                if (jsonObject != null && (jsonObject.containsKey("completed") || jsonObject.containsKey("canceled"))) {
+                if (jsonObject == null)
+                    continue;
+
+                if (created) {
+                    // сюда пришло значит более одного ордеров получилось на одну позицию
+                    // надо остальные отменить
+
+                    if (!cancelOrder(orderID)) {
+                        // some error - may be not left COMPU
+                        needCancelOrders.add(orderID);
+                    }
+
+                } else {
 
                     // remake Order if it COMPLETED
-                    boolean created = false;
+                    if (jsonObject.containsKey("completed") || jsonObject.containsKey("canceled")) {
 
-                    if (schemeAmount.signum() > 0) {
-                        created = createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
-                                wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
+                        if (schemeAmount.signum() > 0) {
+                            created = createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                                    wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
+                        } else {
+                            // в другую сторону
+                            created = createOrder(schemeAmount, wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                                    haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
+                        }
+
+
                     } else {
-                        // в другую сторону
-                        created = createOrder(schemeAmount, wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
-                                haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
+                        // значит уже оди активный ордер есть - остальные удалим
+                        created = true;
                     }
 
-                    if (created) {
-                        // если был создан новый ордер то сслыку на старый нужно удалить - чтобы еще раз не создавать потом
-                        schemeOrdersRemove(schemeAmount, orderID);
-                    }
-
-                    updated = true;
                 }
+
+                // запомним что обработали этот ордер из схемы удалим
+                schemeOrdersRemove(schemeItems, schemeAmount, orderID);
+
             }
 
+            updated = created;
         }
 
         return updated;
@@ -710,12 +745,16 @@ public abstract class Trader extends Thread {
                 break;
             }
 
+            tryNeedCancelOrders();
+
         }
 
         // ON EXIT remove all
         if (removaAllOn) {
             cleanSchemeOrders();
         }
+
+        tryNeedCancelOrders();
 
     }
 
