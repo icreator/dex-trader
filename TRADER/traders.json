@@ -5,7 +5,7 @@
       "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
       "startDelay": 2,
       "sleepTime": 300,
-      "cleanAllOnStart": false,
+      "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,
       "sourceExchange": "polonex",
