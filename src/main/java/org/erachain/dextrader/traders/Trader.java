@@ -281,8 +281,11 @@ public abstract class Trader extends Thread {
             LOGGER.error(e.getMessage());
             //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
         }
-        if (!jsonObject.containsKey("id")
-                || !jsonObject.containsKey("active")) {
+
+        if ((!jsonObject.containsKey("id")
+                || !jsonObject.containsKey("active"))
+                && !jsonObject.containsKey("unconfirmed")) {
+            LOGGER.error(result);
             return false;
         }
 
