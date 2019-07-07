@@ -253,6 +253,7 @@ public abstract class Trader extends Thread {
                 return false;
 
             if (jsonObject.containsKey("signature")) {
+                this.schemeOrdersPut(schemeAmount, jsonObject.get("signature").toString());
                 break;
             }
 
@@ -269,7 +270,6 @@ public abstract class Trader extends Thread {
 
         } while (true);
 
-        this.schemeOrdersPut(schemeAmount, jsonObject.get("signature").toString());
         return true;
 
     }
@@ -477,14 +477,14 @@ public abstract class Trader extends Thread {
                 if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderSignature))
                     continue;
 
-                if (this.scheme.containsKey(orderSignature)) {
-                    schemeOrdersRemove(new BigDecimal(order.get("amountHave").toString()), orderSignature);
-                }
-
                 // CANCEL ORDER
-                if (cancelOrder(orderSignature) && !updated)
+                if (cancelOrder(orderSignature)) {
                     updated = true;
 
+                    if (this.scheme.containsKey(orderSignature)) {
+                        schemeOrdersRemove(new BigDecimal(order.get("amountHave").toString()), orderSignature);
+                    }
+                }
             }
         }
 
@@ -495,19 +495,21 @@ public abstract class Trader extends Thread {
 
                 JSONObject order = (JSONObject) item;
                 if (!order.containsKey("signature"))
-                continue;
+                    continue;
 
                 orderSignature = (String) order.get("signature");
                 if (cancelsIsUnconfirmed != null && cancelsIsUnconfirmed.contains(orderSignature))
                     continue;
 
-                if (this.scheme.containsKey(orderSignature)) {
-                    schemeOrdersRemove(new BigDecimal(order.get("amountWant").toString()).negate(), orderSignature);
-                }
-
                 // CANCEL ORDER
-                if(cancelOrder(orderSignature) && !updated)
+                if (cancelOrder(orderSignature)) {
                     updated = true;
+
+                    if (this.scheme.containsKey(orderSignature)) {
+                        schemeOrdersRemove(new BigDecimal(order.get("amountWant").toString()).negate(), orderSignature);
+                    }
+
+                }
 
                 try {
                     Thread.sleep(100);
@@ -564,7 +566,14 @@ public abstract class Trader extends Thread {
                 if (transaction == null || !transaction.containsKey("signature"))
                     continue;
 
-                cleaned = cancelOrder(orderID);
+                if (cancelOrder(orderID)) {
+                    cleaned = true;
+
+                    if (this.scheme.containsKey(orderID)) {
+                        schemeOrdersRemove(new BigDecimal(transaction.get("amountHave").toString()), orderID);
+                    }
+
+                }
 
                 try {
                     Thread.sleep(100);
@@ -575,8 +584,8 @@ public abstract class Trader extends Thread {
             }
 
             // CLEAR map
-            schemeItems.clear();
-            this.schemeOrders.put(amountKey, schemeItems);
+            ////schemeItems.clear(); нельзя все разом удалять - может какой ордер не удалился - его потом удалим
+            ////this.schemeOrders.put(amountKey, schemeItems);
         }
 
         // CLEAR cancels
