@@ -104,7 +104,7 @@ public class RandomHitSelf extends Trader {
         if (orders.isEmpty())
             return false;
 
-        BigDecimal schemeAmount = keys.get(random.nextInt(1));
+        BigDecimal schemeAmount = keys.get(random.nextInt(2));
         JSONArray ordersDo;
         if (schemeAmount.signum() > 0) {
             // продажа - берем встречные ордера
@@ -112,6 +112,7 @@ public class RandomHitSelf extends Trader {
         } else {
             // покупка
             ordersDo = (JSONArray) orders.get("have");
+            return false;
         }
 
         if (ordersDo.isEmpty())
