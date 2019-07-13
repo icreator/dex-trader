@@ -337,6 +337,28 @@ public abstract class Trader extends Thread {
 
     }
 
+
+    protected JSONObject getCapOrders(long haveKey, long wantKey, int limit) {
+
+        JSONObject result = new JSONObject();
+
+        String sendRequest;
+
+        JSONParser jsonParser = new JSONParser();
+        try {
+            sendRequest = cnt.apiClient.executeCommand("GET trade/orders/"
+                    + haveKey + '/' + wantKey + "?limit=" + limit);
+            //READ JSON
+            result = (JSONObject) jsonParser.parse(sendRequest);
+        } catch (NullPointerException | ClassCastException | ParseException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage());
+        }
+
+        return result;
+
+    }
+
     protected JSONArray getMyOrders(String address, long haveKey, long wantKey) {
 
         JSONArray result = new JSONArray();
@@ -656,13 +678,15 @@ public abstract class Trader extends Thread {
         LOGGER.info("START");
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
-        while(cnt.getStatus() == 0 || Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange) == null) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return;
-            }
+        if (!sourceExchange.isEmpty()) {
+            while (cnt.getStatus() == 0 || Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange) == null) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    return;
+                }
 
+            }
         }
 
         if (cleanAllOnStart && removaAllOn) {

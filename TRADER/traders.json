@@ -1,8 +1,8 @@
 [
   {
     "Guard": {
-      "traderAddress-1": "79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
-      "traderAddress": "78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
+      "traderAddress-1": "-79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
+      "traderAddress": "-78b8fGbEeEhV6pS5BrSHWKHYPbzNgR7uuV",
       "startDelay": 2,
       "sleepTime": 300,
       "cleanAllOnStart": true,
@@ -20,6 +20,19 @@
     }
   },
   {
+    "RandomHitSelf": {
+      "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
+      "startDelay": 1,
+      "sleepTime": 10,
+      "cleanAllOnStart": false,
+      "haveAssetKey": 1,
+      "wantAssetKey": 2,
+      "sourceExchange": "",
+      "scheme": {
+        "3": "5.0",
+        "-3": "5.0"
+      }
+    },
     "RandomHit": {
       "traderAddress": "-74YmjcgZUiHv7HCr5giq3r8d2M1ABBM27G",
       "startDelay": 1,
