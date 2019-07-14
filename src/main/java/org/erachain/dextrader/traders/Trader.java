@@ -13,10 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeMap;
+import java.util.*;
 
 
 public abstract class Trader extends Thread {
@@ -61,6 +58,7 @@ public abstract class Trader extends Thread {
     // AMOUNT + SPREAD
     // Tree need for sorted KEYS
     protected TreeMap<BigDecimal, BigDecimal> scheme;
+    protected List<BigDecimal> keys = new ArrayList<BigDecimal>();
 
     // AMOUNT -> Tree Map of (ORDER.Tuple3 + his STATUS)
     protected HashMap<BigDecimal, String> schemeOrders = new HashMap();
@@ -87,6 +85,7 @@ public abstract class Trader extends Thread {
         this.sleepTimestep = sleepSec * 1000;
 
         this.scheme = scheme;
+        this.keys = new ArrayList<BigDecimal>(scheme.keySet());
 
         this.haveAssetKey = haveKey;
         this.wantAssetKey = wantKey;
@@ -137,10 +136,23 @@ public abstract class Trader extends Thread {
 
         if (json.containsKey("scheme")) {
             scheme = new TreeMap<>();
-            JSONObject schemeJSON = (JSONObject) json.get("scheme");
-            for (Object key : schemeJSON.keySet()) {
-                scheme.put(new BigDecimal(key.toString()),
-                        new BigDecimal(schemeJSON.get(key).toString()));
+            try {
+                JSONObject schemeJSON = (JSONObject) json.get("scheme");
+                for (Object key : schemeJSON.keySet()) {
+                    scheme.put(new BigDecimal(key.toString()),
+                            new BigDecimal(schemeJSON.get(key).toString()));
+
+                    keys.add(new BigDecimal(key.toString()));
+                }
+            } catch (Exception e) {
+                JSONArray schemeJSON = (JSONArray) json.get("scheme");
+                for (Object item: schemeJSON) {
+                    JSONArray itemArray = (JSONArray) item;
+                    scheme.put(new BigDecimal(itemArray.get(0).toString()),
+                            new BigDecimal(itemArray.get(1).toString()));
+
+                    keys.add(new BigDecimal(itemArray.get(0).toString()));
+                }
             }
         }
 
