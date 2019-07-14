@@ -6,10 +6,7 @@ import org.json.simple.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * ставим обреда случайно вс такан "ПО РЫНКУ"
@@ -24,7 +21,7 @@ public class RandomHitSelf extends Trader {
     private long sleepOrig;
 
     public RandomHitSelf(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
-                         String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
+                         String sourceExchange, TreeMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
         keys = new ArrayList<BigDecimal>(this.scheme.keySet());
         sleepOrig = this.sleepTimestep;
@@ -104,21 +101,60 @@ public class RandomHitSelf extends Trader {
         if (orders.isEmpty())
             return false;
 
-        BigDecimal schemeAmount = keys.get(random.nextInt(2));
+        int schemeIndex = random.nextInt(keys.size());
+        BigDecimal schemeAmount = keys.get(schemeIndex);
         JSONArray ordersDo;
+        JSONArray ordersDo2;
         if (schemeAmount.signum() > 0) {
             // продажа - берем встречные ордера
             ordersDo = (JSONArray) orders.get("want");
+            ordersDo2 = (JSONArray) orders.get("have");
         } else {
             // покупка
             ordersDo = (JSONArray) orders.get("have");
-            return false;
+            ordersDo2 = (JSONArray) orders.get("want");
         }
 
         if (ordersDo.isEmpty())
             return false;
 
-        return createOrder(schemeAmount, (JSONObject)ordersDo.get(0));
+        JSONObject cupOrder = (JSONObject)ordersDo.get(0);
+        if (schemeIndex > 0 && schemeIndex < keys.size() - 1) {
+            // ставим свой ордер в стакан
+            if (ordersDo2.isEmpty())
+                return false;
+
+            BigDecimal price1;
+            BigDecimal price2;
+            BigDecimal priceAdd;
+            BigDecimal price;
+            if (schemeAmount.signum() > 0) {
+                price1 = new BigDecimal(((JSONObject)ordersDo.get(0)).get("price").toString());
+                price2 = new BigDecimal(((JSONObject)ordersDo2.get(0)).get("price").toString());
+            } else {
+                price2 = new BigDecimal(((JSONObject)ordersDo.get(0)).get("price").toString());
+                price1 = new BigDecimal(((JSONObject)ordersDo2.get(0)).get("price").toString());
+            }
+
+            priceAdd = price2.subtract(price1).multiply(new BigDecimal(schemeIndex))
+                    .divide(new BigDecimal(keys.size() - 1), wantAssetScale, RoundingMode.HALF_DOWN);
+
+            BigDecimal priceDiff = priceAdd.multiply(new BigDecimal("100.0"))
+                    .divide(price1.add(price2), 5, RoundingMode.HALF_DOWN);
+            if (priceDiff.compareTo(scheme.get(schemeAmount)) > 0) {
+
+                // если запас по сдигу есть то делаем новый свой ордер, иначе выкупаем тот что есть в стакане
+                price = price1.add(priceAdd);
+
+                cupOrder.put("price", price.toPlainString());
+                cupOrder.put("amount", schemeAmount.toPlainString());
+                // not need cupOrder.put("total", schemeAmount.multiply(price).toPlainString());
+
+            }
+
+        }
+
+        return createOrder(schemeAmount, cupOrder);
 
     }
 

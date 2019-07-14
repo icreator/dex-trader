@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeMap;
 
 
 public abstract class Trader extends Thread {
@@ -58,7 +59,8 @@ public abstract class Trader extends Thread {
     //protected TreeSet<BigInteger> orders = new TreeSet<>();
 
     // AMOUNT + SPREAD
-    protected HashMap<BigDecimal, BigDecimal> scheme;
+    // Tree need for sorted KEYS
+    protected TreeMap<BigDecimal, BigDecimal> scheme;
 
     // AMOUNT -> Tree Map of (ORDER.Tuple3 + his STATUS)
     protected HashMap<BigDecimal, String> schemeOrders = new HashMap();
@@ -72,7 +74,7 @@ public abstract class Trader extends Thread {
     private boolean run = true;
 
     public Trader(TradersManager tradersManager, String accountStr, int sleepSec,
-                  String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
+                  String sourceExchange, TreeMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
                   boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
 
         this.cnt = Controller.getInstance();
@@ -134,7 +136,7 @@ public abstract class Trader extends Thread {
         this.sleepTimestep = ((int) (long) json.get("sleepTime")) * 1000;
 
         if (json.containsKey("scheme")) {
-            scheme = new HashMap<>();
+            scheme = new TreeMap<>();
             JSONObject schemeJSON = (JSONObject) json.get("scheme");
             for (Object key : schemeJSON.keySet()) {
                 scheme.put(new BigDecimal(key.toString()),
