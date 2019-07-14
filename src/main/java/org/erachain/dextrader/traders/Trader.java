@@ -354,7 +354,7 @@ public abstract class Trader extends Thread {
             result = (JSONObject) jsonParser.parse(sendRequest);
         } catch (NullPointerException | ClassCastException | ParseException e) {
             //JSON EXCEPTION
-            LOGGER.error(e.getMessage());
+            LOGGER.error(e.getMessage(), e);
         }
 
         return result;

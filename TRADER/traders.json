@@ -22,7 +22,7 @@
     "type": "RandomHitSelf",
     "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
     "startDelay": 10,
-    "sleepTime": 200,
+    "sleepTime": 300,
     "cleanAllOnStart": false,
     "haveAssetKey": 1,
     "wantAssetKey": 2,
