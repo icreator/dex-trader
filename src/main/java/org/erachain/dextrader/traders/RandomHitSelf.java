@@ -139,12 +139,15 @@ public class RandomHitSelf extends Trader {
             priceAdd = price2.subtract(price1).multiply(new BigDecimal(schemeIndex))
                     .divide(new BigDecimal(keys.size() - 1), wantAssetScale, RoundingMode.HALF_DOWN);
 
-            BigDecimal priceDiff = priceAdd.multiply(new BigDecimal("100.0"))
-                    .divide(price1.add(price2), 5, RoundingMode.HALF_DOWN);
-            if (priceDiff.compareTo(scheme.get(schemeAmount)) < 0) {
+            // NEW PRICE
+            price = price1.add(priceAdd);
+            BigDecimal priceAvg = price2.add(price1).divide(new BigDecimal("2.0"), price1.scale(), RoundingMode.HALF_DOWN);
+            BigDecimal priceDiff = priceAvg.subtract(price).abs()
+                    .multiply(new BigDecimal("100.0")).divide(priceAvg, 5, RoundingMode.HALF_DOWN);
+
+            if (priceDiff.compareTo(scheme.get(schemeAmount).abs()) > 0) {
 
                 // если запас по сдигу есть то делаем новый свой ордер, иначе выкупаем тот что есть в стакане
-                price = price1.add(priceAdd);
 
                 cupOrder.put("price", price.toPlainString());
                 cupOrder.put("amount", schemeAmount.abs().toPlainString());

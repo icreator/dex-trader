@@ -285,8 +285,9 @@ public abstract class Trader extends Thread {
         }
 
         if ((!jsonObject.containsKey("id")
-                || !jsonObject.containsKey("completed")
-                || !jsonObject.containsKey("active"))
+                //|| !jsonObject.containsKey("completed")
+                //|| !jsonObject.containsKey("active")
+                 )
                 && !jsonObject.containsKey("unconfirmed")) {
             LOGGER.error(result);
             return false;
