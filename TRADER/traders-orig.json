@@ -1,60 +1,70 @@
 [
   {
-    "GuardAbs": {
-      "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
-      "sleepTime": 200,
-      "startDelay": 20,
-      "cleanAllOnStart": true,
-      "haveAssetKey": 1106,
-      "wantAssetKey": 1108,
-      "sourceExchange": "polonex",
-      "limitUP": "0.01",
-      "limitDown": "0.02",
-      "scheme": {
-        "1000": "0.1",
-        "100": "0.03",
-        "10": "0.001",
-        "-10": "0.001",
-        "-100": "0.03",
-        "-1000": "0.1"
-      }
+    "type": "GuardAbs",
+    "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
+    "sleepTime": 200,
+    "startDelay": 20,
+    "cleanAllOnStart": true,
+    "haveAssetKey": 1106,
+    "wantAssetKey": 1108,
+    "sourceExchange": "polonex",
+    "limitUP": "0.01",
+    "limitDown": "0.02",
+    "scheme": {
+      "1000": "0.1",
+      "100": "0.03",
+      "10": "0.001",
+      "-10": "0.001",
+      "-100": "0.03",
+      "-1000": "0.1"
     }
   },
   {
-    "Guard": {
-      "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
-      "startDelay": 50,
-      "sleepTime": 200,
-      "cleanAllOnStart": true,
-      "haveAssetKey": 1107,
-      "wantAssetKey": 1108,
-      "sourceExchange": "livecoin",
-      "limitUP": "0.03",
-      "limitDown": "0.03",
-      "scheme": {
-        "60000": "1",
-        "10000": "0.7",
-        "1000": "0.3",
-        "-1000": "0.3",
-        "-10000": "0.7",
-        "-60000": "1"
-      }
+    "type": "Guard",
+    "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
+    "startDelay": 50,
+    "sleepTime": 200,
+    "cleanAllOnStart": true,
+    "haveAssetKey": 1107,
+    "wantAssetKey": 1108,
+    "sourceExchange": "livecoin",
+    "limitUP": "0.03",
+    "limitDown": "0.03",
+    "scheme": {
+      "60000": "1",
+      "10000": "0.7",
+      "1000": "0.3",
+      "-1000": "0.3",
+      "-10000": "0.7",
+      "-60000": "1"
     }
   },
   {
-    "RandomHit": {
-      "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
-      "startDelay": 10,
-      "sleepTime": 200,
-      "cleanAllOnStart": true,
-      "haveAssetKey": 95,
-      "wantAssetKey": 12,
-      "sourceExchange": "polonex",
-      "scheme": {
-        "70": "-1",
-        "-70": "-1"
-      }
+    "type": "RandomHit",
+    "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
+    "startDelay": 10,
+    "sleepTime": 200,
+    "cleanAllOnStart": true,
+    "haveAssetKey": 95,
+    "wantAssetKey": 12,
+    "sourceExchange": "polonex",
+    "scheme": {
+      "70": "-1",
+      "-70": "-1"
+    }
+  },
+  {
+    "type": "RandomHitSelf",
+    "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
+    "startDelay": 10,
+    "sleepTime": 1000,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 1,
+    "wantAssetKey": 2,
+    "sourceExchange": "",
+    "scheme": {
+      "3": "5.0",
+      "-3": "5.0"
     }
   }
-
 ]

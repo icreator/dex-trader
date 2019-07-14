@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeMap;
 
 
 public abstract class Trader extends Thread {
@@ -58,10 +59,11 @@ public abstract class Trader extends Thread {
     //protected TreeSet<BigInteger> orders = new TreeSet<>();
 
     // AMOUNT + SPREAD
-    protected HashMap<BigDecimal, BigDecimal> scheme;
+    // Tree need for sorted KEYS
+    protected TreeMap<BigDecimal, BigDecimal> scheme;
 
     // AMOUNT -> Tree Map of (ORDER.Tuple3 + his STATUS)
-    protected HashMap<BigDecimal, HashSet<String>> schemeOrders = new HashMap();
+    protected HashMap<BigDecimal, String> schemeOrders = new HashMap();
 
     // orderID - need to delete Orders
     protected HashSet<String> needCancelOrders = new HashSet();
@@ -72,7 +74,7 @@ public abstract class Trader extends Thread {
     private boolean run = true;
 
     public Trader(TradersManager tradersManager, String accountStr, int sleepSec,
-                  String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
+                  String sourceExchange, TreeMap<BigDecimal, BigDecimal> scheme, Long haveKey, Long wantKey,
                   boolean cleanAllOnStart, BigDecimal limitUP, BigDecimal limitDown) {
 
         this.cnt = Controller.getInstance();
@@ -134,7 +136,7 @@ public abstract class Trader extends Thread {
         this.sleepTimestep = ((int) (long) json.get("sleepTime")) * 1000;
 
         if (json.containsKey("scheme")) {
-            scheme = new HashMap<>();
+            scheme = new TreeMap<>();
             JSONObject schemeJSON = (JSONObject) json.get("scheme");
             for (Object key : schemeJSON.keySet()) {
                 scheme.put(new BigDecimal(key.toString()),
@@ -183,25 +185,11 @@ public abstract class Trader extends Thread {
     }
 
     protected synchronized void schemeOrdersPut(BigDecimal amount, String orderID) {
-        HashSet<String> set = schemeOrders.get(amount);
-        if (set == null)
-            set = new HashSet();
-
-        set.add(orderID);
-        schemeOrders.put(amount, set);
+        schemeOrders.put(amount, orderID);
     }
 
-    protected synchronized boolean schemeOrdersRemove(HashSet<String> ordersSet, BigDecimal amount, String orderID) {
-
-        if (ordersSet == null)
-            ordersSet = schemeOrders.get(amount);
-
-        if (ordersSet == null || ordersSet.isEmpty())
-            return false;
-
-        boolean removed = ordersSet.remove(orderID);
-        schemeOrders.put(amount, ordersSet);
-        return removed;
+    protected synchronized boolean schemeOrdersRemove(BigDecimal amount) {
+        return schemeOrders.remove(amount) != null;
     }
 
     /*
@@ -258,7 +246,7 @@ public abstract class Trader extends Thread {
                 return false;
 
             if (jsonObject.containsKey("signature")) {
-                this.schemeOrdersPut(schemeAmount, jsonObject.get("signature").toString());
+                schemeOrdersPut(schemeAmount, jsonObject.get("signature").toString());
                 break;
             }
 
@@ -295,8 +283,11 @@ public abstract class Trader extends Thread {
             LOGGER.error(e.getMessage());
             //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
         }
-        if (!jsonObject.containsKey("id")
-                || !jsonObject.containsKey("active")) {
+
+        if ((!jsonObject.containsKey("id")
+                || !jsonObject.containsKey("active"))
+                && !jsonObject.containsKey("unconfirmed")) {
+            LOGGER.error(result);
             return false;
         }
 
@@ -345,6 +336,28 @@ public abstract class Trader extends Thread {
         } while(true);
 
         return true;
+
+    }
+
+
+    protected JSONObject getCapOrders(long haveKey, long wantKey, int limit) {
+
+        JSONObject result = new JSONObject();
+
+        String sendRequest;
+
+        JSONParser jsonParser = new JSONParser();
+        try {
+            sendRequest = cnt.apiClient.executeCommand("GET trade/orders/"
+                    + haveKey + '/' + wantKey + "?limit=" + limit);
+            //READ JSON
+            result = (JSONObject) jsonParser.parse(sendRequest);
+        } catch (NullPointerException | ClassCastException | ParseException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return result;
 
     }
 
@@ -562,46 +575,44 @@ public abstract class Trader extends Thread {
         JSONObject transaction = null;
         for (BigDecimal amountKey: this.schemeOrders.keySet()) {
 
-            HashSet<String> schemeItems = this.schemeOrders.get(amountKey);
+            String orderID = this.schemeOrders.get(amountKey);
 
-            if (schemeItems == null || schemeItems.isEmpty())
+            if (orderID == null)
                 continue;
 
-            // make copy of LIST - for concerent DELETE
-            for (String orderID: new ArrayList<>(schemeItems)) {
+            // IF that TRANSACTION exist in CHAIN or queue
+            result = cnt.apiClient.executeCommand("GET transactions/signature/" + orderID);
+            try {
+                //READ JSON
+                transaction = (JSONObject) JSONValue.parse(result);
+            } catch (NullPointerException | ClassCastException e) {
+                //JSON EXCEPTION
+                LOGGER.error(e.getMessage());
+            }
 
-                // IF that TRANSACTION exist in CHAIN or queue
-                result = cnt.apiClient.executeCommand("GET transactions/signature/" + orderID);
-                try {
-                    //READ JSON
-                    transaction = (JSONObject) JSONValue.parse(result);
-                } catch (NullPointerException | ClassCastException e) {
-                    //JSON EXCEPTION
-                    LOGGER.error(e.getMessage());
-                }
+            if (transaction == null || !transaction.containsKey("signature"))
+                continue;
 
-                if (transaction == null || !transaction.containsKey("signature"))
-                    continue;
+            boolean canceled = cancelOrder(orderID);
+            if (canceled) {
+                updated = true;
+            } else {
+                // some error - may be not left COMPU
+                needCancelOrders.add(orderID);
+            }
 
-                boolean canceled = cancelOrder(orderID);
-                if (canceled) {
-                    updated = true;
-                } else {
-                    // some error - may be not left COMPU
-                    needCancelOrders.add(orderID);
-                }
+            //schemeOrdersRemove(amountKey);
 
-                schemeOrdersRemove(schemeItems, amountKey, orderID);
-
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    //FAILED TO SLEEP
-                    return false;
-                }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                //FAILED TO SLEEP
+                return false;
             }
 
         }
+
+        schemeOrders.clear();
 
         // CLEAR cancels
         unconfirmedsCancel.clear();
@@ -615,65 +626,41 @@ public abstract class Trader extends Thread {
 
         for (BigDecimal schemeAmount: this.schemeOrders.keySet()) {
 
-            HashSet<String> schemeItems = this.schemeOrders.get(schemeAmount);
+            String orderID = this.schemeOrders.get(schemeAmount);
 
-            if (schemeItems == null || schemeItems.isEmpty())
+            if (orderID == null)
                 continue;
+
+            result = cnt.apiClient.executeCommand("GET trade/get/" + orderID);
+            //logger.info("GET: " + Base58.encode(orderID) + "\n" + result);
+
+            JSONObject jsonObject = null;
+            try {
+                //READ JSON
+                jsonObject = (JSONObject) JSONValue.parse(result);
+            } catch (NullPointerException | ClassCastException e) {
+                //JSON EXCEPTION
+                LOGGER.error(e.getMessage());
+                //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
+            }
+
+            if (jsonObject == null)
+                continue;
+
 
             boolean created = false;
 
-            // make copy of LIST - for concerent DELETE
-            // для всех ордеров которые были созданы на эту позицию
-            for (String orderID: new ArrayList<>(schemeItems)) {
-                result = cnt.apiClient.executeCommand("GET trade/get/" + orderID);
-                //logger.info("GET: " + Base58.encode(orderID) + "\n" + result);
+            // remake Order if it COMPLETED
+            if (jsonObject.containsKey("completed") || jsonObject.containsKey("canceled")) {
 
-                JSONObject jsonObject = null;
-                try {
-                    //READ JSON
-                    jsonObject = (JSONObject) JSONValue.parse(result);
-                } catch (NullPointerException | ClassCastException e) {
-                    //JSON EXCEPTION
-                    LOGGER.error(e.getMessage());
-                    //throw ApiErrorFactory.getInstance().createError(ApiErrorFactory.ERROR_JSON);
-                }
-
-                if (jsonObject == null)
-                    continue;
-
-                if (created) {
-                    // сюда пришло значит более одного ордеров получилось на одну позицию
-                    // надо остальные отменить
-
-                    if (!cancelOrder(orderID)) {
-                        // some error - may be not left COMPU
-                        needCancelOrders.add(orderID);
-                    }
-
+                if (schemeAmount.signum() > 0) {
+                    created = createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                            wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
                 } else {
-
-                    // remake Order if it COMPLETED
-                    if (jsonObject.containsKey("completed") || jsonObject.containsKey("canceled")) {
-
-                        if (schemeAmount.signum() > 0) {
-                            created = createOrder(schemeAmount, haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
-                                    wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
-                        } else {
-                            // в другую сторону
-                            created = createOrder(schemeAmount, wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
-                                    haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
-                        }
-
-
-                    } else {
-                        // значит уже оди активный ордер есть - остальные удалим
-                        created = true;
-                    }
-
+                    // в другую сторону
+                    created = createOrder(schemeAmount, wantAssetKey, wantAssetName, new BigDecimal(jsonObject.get("amountHave").toString()),
+                            haveAssetKey, haveAssetName, new BigDecimal(jsonObject.get("amountWant").toString()));
                 }
-
-                // запомним что обработали этот ордер из схемы удалим
-                schemeOrdersRemove(schemeItems, schemeAmount, orderID);
 
             }
 
@@ -693,13 +680,15 @@ public abstract class Trader extends Thread {
         LOGGER.info("START");
         // WAIT START WALLET
         // IF WALLET NOT ESXST - suspended
-        while(cnt.getStatus() == 0 || Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange) == null) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return;
-            }
+        if (!sourceExchange.isEmpty()) {
+            while (cnt.getStatus() == 0 || Rater.getRate(this.haveAssetKey, this.wantAssetKey, sourceExchange) == null) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    return;
+                }
 
+            }
         }
 
         if (cleanAllOnStart && removaAllOn) {
