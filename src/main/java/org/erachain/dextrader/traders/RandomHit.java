@@ -15,7 +15,6 @@ public class RandomHit extends Trader {
 
     private int steep;
     Random random = new Random();
-    private List<BigDecimal> keys;
     private long sleepOrig;
 
     public RandomHit(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
