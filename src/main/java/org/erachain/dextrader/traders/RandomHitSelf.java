@@ -68,7 +68,7 @@ public class RandomHitSelf extends Trader {
 
             // NEED SCALE for VALIDATE
             if (amountWant.scale() > this.wantAssetScale) {
-                amountWant = amountWant.setScale(wantAssetScale, BigDecimal.ROUND_HALF_UP);
+                amountWant = amountWant.setScale(wantAssetScale, RoundingMode.DOWN);
             }
 
         } else {
@@ -86,7 +86,7 @@ public class RandomHitSelf extends Trader {
 
             // NEED SCALE for VALIDATE
             if (amountHave.scale() > this.wantAssetScale) {
-                amountHave = amountHave.setScale(wantAssetScale, BigDecimal.ROUND_HALF_UP);
+                amountHave = amountHave.setScale(wantAssetScale, RoundingMode.UP);
             }
         }
 
