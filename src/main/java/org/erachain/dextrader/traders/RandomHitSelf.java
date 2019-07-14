@@ -126,7 +126,7 @@ public class RandomHitSelf extends Trader {
 
         steep++;
 
-        if (steep > 5) {
+        if (steep > 10) {
             steep = 0;
             cleanSchemeOrders();
             this.sleepTimestep = sleepOrig >> 2;

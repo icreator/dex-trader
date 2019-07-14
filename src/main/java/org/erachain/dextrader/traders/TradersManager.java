@@ -115,34 +115,31 @@ public class TradersManager {
         }
 
         for (Object obj : Settings.getInstance().tradersJSON) {
-            JSONObject jsonItems = (JSONObject) obj;
 
-            for (Object jsonKey : jsonItems.keySet()) {
-
-                JSONObject item = (JSONObject) jsonItems.get(jsonKey);
-                String traderAddress = item.get("traderAddress").toString();
-                if (!walletAddresses.contains(traderAddress)) {
-                    LOGGER.error("not found traders Account - " + traderAddress);
-                    continue;
-                }
-
-                Trader trader = null;
-
-                if (jsonKey.equals("Guard")) {
-                    trader = new StoneGuard(this, traderAddress, item);
-                } else if (jsonKey.equals("GuardAbs")) {
-                    trader = new StoneGuardAbs(this, traderAddress, item);
-                } else if (jsonKey.equals("RandomHit")) {
-                    trader = new RandomHit(this, traderAddress, item);
-                } else if (jsonKey.equals("RandomHitSelf")) {
-                    trader = new RandomHitSelf(this, traderAddress, item);
-                }
-
-                if (trader != null) {
-                    this.knownTraders.add(trader);
-                }
-
+            JSONObject item = (JSONObject) obj;
+            String traderAddress = item.get("traderAddress").toString();
+            if (!walletAddresses.contains(traderAddress)) {
+                LOGGER.error("not found traders Account - " + traderAddress);
+                continue;
             }
+
+            String type = (String) item.get("type");
+            Trader trader = null;
+
+            if (type.equals("Guard")) {
+                trader = new StoneGuard(this, traderAddress, item);
+            } else if (type.equals("GuardAbs")) {
+                trader = new StoneGuardAbs(this, traderAddress, item);
+            } else if (type.equals("RandomHit")) {
+                trader = new RandomHit(this, traderAddress, item);
+            } else if (type.equals("RandomHitSelf")) {
+                trader = new RandomHitSelf(this, traderAddress, item);
+            }
+
+            if (trader != null) {
+                this.knownTraders.add(trader);
+            }
+
         }
 
         if ( this.knownTraders.isEmpty()) {
