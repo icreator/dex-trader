@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * shift as PERCENTS in scheme
@@ -13,7 +14,7 @@ import java.util.HashMap;
 public class StoneGuard extends Trader {
 
     public StoneGuard(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
-                      String sourceExchange, HashMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
+                      String sourceExchange, TreeMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
 
     }
