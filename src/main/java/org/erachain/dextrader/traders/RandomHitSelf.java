@@ -17,20 +17,17 @@ public class RandomHitSelf extends Trader {
 
     private int steep;
     Random random = new Random();
-    private List<BigDecimal> keys;
     private long sleepOrig;
 
     public RandomHitSelf(TradersManager tradersManager, String accountStr, int sleepSec, long haveKey, long wantKey,
                          String sourceExchange, TreeMap<BigDecimal, BigDecimal> scheme, BigDecimal limitUP, BigDecimal limitDown, boolean cleanAllOnStart) {
         super(tradersManager, accountStr, sleepSec, sourceExchange, scheme, haveKey, wantKey, cleanAllOnStart, limitUP, limitDown);
-        keys = new ArrayList<BigDecimal>(this.scheme.keySet());
         sleepOrig = this.sleepTimestep;
 
     }
 
     public RandomHitSelf(TradersManager tradersManager, String accountStr, JSONObject json) {
         super(tradersManager, accountStr, json);
-        keys = new ArrayList<BigDecimal>(this.scheme.keySet());
         sleepOrig = this.sleepTimestep;
     }
 
@@ -139,15 +136,18 @@ public class RandomHitSelf extends Trader {
             priceAdd = price2.subtract(price1).multiply(new BigDecimal(schemeIndex))
                     .divide(new BigDecimal(keys.size() - 1), wantAssetScale, RoundingMode.HALF_DOWN);
 
-            BigDecimal priceDiff = priceAdd.multiply(new BigDecimal("100.0"))
-                    .divide(price1.add(price2), 5, RoundingMode.HALF_DOWN);
-            if (priceDiff.compareTo(scheme.get(schemeAmount)) > 0) {
+            // NEW PRICE
+            price = price1.add(priceAdd);
+            BigDecimal priceAvg = price2.add(price1).divide(new BigDecimal("2.0"), price1.scale(), RoundingMode.HALF_DOWN);
+            BigDecimal priceDiff = priceAvg.subtract(price).abs()
+                    .multiply(new BigDecimal("100.0")).divide(priceAvg, 5, RoundingMode.HALF_DOWN);
+
+            if (priceDiff.compareTo(scheme.get(schemeAmount).abs()) > 0) {
 
                 // если запас по сдигу есть то делаем новый свой ордер, иначе выкупаем тот что есть в стакане
-                price = price1.add(priceAdd);
 
                 cupOrder.put("price", price.toPlainString());
-                cupOrder.put("amount", schemeAmount.toPlainString());
+                cupOrder.put("amount", schemeAmount.abs().toPlainString());
                 // not need cupOrder.put("total", schemeAmount.multiply(price).toPlainString());
 
             }
