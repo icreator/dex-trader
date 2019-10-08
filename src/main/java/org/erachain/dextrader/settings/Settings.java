@@ -89,6 +89,7 @@ public class Settings {
     private static Settings instance;
     private JSONObject settingsJSON;
     public  JSONArray tradersJSON;
+    public  JSONObject apiKeysJSON;
     private JSONObject peersJSON;
     private String userPath = "";
     private InetAddress localAddress;
@@ -98,7 +99,7 @@ public class Settings {
     private Settings() {
         this.localAddress = this.getCurrentIp();
         settingsJSON = read_setting_JSON();
-
+        readAPIkeysJSON();
 
         File file = new File("");
         //TRY READ PEERS.JSON
@@ -522,7 +523,7 @@ public class Settings {
                 return json;
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
         }
         try {
@@ -600,8 +601,7 @@ public class Settings {
                 file.createNewFile();
                 return null;
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                LOGGER.error(e.getMessage(), e);
             }
         }
 
@@ -619,11 +619,44 @@ public class Settings {
             tradersJSON = (JSONArray) JSONValue.parse(jsonString);
 
         } catch (Exception e) {
-            LOGGER.info("Error while reading/creating settings.json " + file.getAbsolutePath() + " using default!");
+            LOGGER.info("Error while reading/creating traders.json " + file.getAbsolutePath() + " using default!");
             LOGGER.error(e.getMessage(), e);
         }
 
         return tradersJSON;
+
+    }
+
+    ////////////////////////////////
+    public void readAPIkeysJSON() {
+
+        File file = new File(this.userPath + "api-keys.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+
+        try {
+            //OPEN FILE
+            //READ SETTINS JSON FILE
+            List<String> lines = Files.readLines(file, Charsets.UTF_8);
+
+            String jsonString = "";
+            for (String line : lines) {
+                jsonString += line;
+            }
+
+            //CREATE JSON OBJECT
+            apiKeysJSON = (JSONObject) JSONValue.parse(jsonString);
+
+        } catch (Exception e) {
+            LOGGER.info("Error while reading/creating api-keys.json " + file.getAbsolutePath() + " using default!");
+            LOGGER.error(e.getMessage(), e);
+        }
 
     }
 
