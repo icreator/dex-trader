@@ -176,6 +176,10 @@ public class TradersManager {
             return assets.get(key);
         }
 
+        if (cnt == null || cnt.apiClient == null) {
+            return null;
+        }
+
         // IF that TRANSACTION exist in CHAIN or queue
         String result = cnt.apiClient.executeCommand("GET assets/" + key);
         try {
