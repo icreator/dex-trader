@@ -27,6 +27,10 @@ public class TradersManager {
 
     Controller cnt;
 
+    // for tests
+    public TradersManager() {
+    }
+
     public TradersManager(Controller cnt) {
         this.cnt = cnt;
         this.knownRaters = new ArrayList<Rater>();
