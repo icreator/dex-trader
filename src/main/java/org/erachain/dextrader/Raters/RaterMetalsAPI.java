@@ -117,8 +117,6 @@ public class RaterMetalsAPI extends Rater {
                     setRate(95L, 22L, this.courseName, price);
                 }
             }
-
         }
-
     }
 }
