@@ -52,7 +52,17 @@ import java.util.Map;
  * "ZMK":8824.363351437232,"ZMW":12.892145406062498,"ZWL":315.6738961217232},
  * "unit":"per ounce"}
  *
+ * ALL
+ * https://metals-api.com/api/latest?access_key=
  *
+ * USD/Gold:
+ * https://metals-api.com/api/latest?access_key=YOUR_ACCESS_KEY&base=USD&symbols=XAU
+ *
+ * USD/Palladium:
+ * https://metals-api.com/api/latest?access_key=YOUR_ACCESS_KEY&base=USD&symbols=XPD
+ *
+ * USD/Platinum:
+ * https://metals-api.com/api/latest?access_key=YOUR_ACCESS_KEY&base=USD&symbols=XPT
  */
 public class RaterMetalsAPI extends Rater {
 
