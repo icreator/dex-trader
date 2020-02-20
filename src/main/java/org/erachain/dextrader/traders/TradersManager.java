@@ -15,7 +15,7 @@ import java.util.*;
 
 public class TradersManager {
 
-    protected static final String WALLET_PASSWORD = "123456789";
+    protected static final String WALLET_PASSWORD = "SeviSevi05";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TradersManager.class);
 
@@ -191,7 +191,8 @@ public class TradersManager {
 
         } catch (NullPointerException | ClassCastException e) {
             //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
+            ///LOGGER.error(e.getMessage(), e);
+            LOGGER.error("For Asset[" + key + "] :" + result);
             return null;
         }
     }

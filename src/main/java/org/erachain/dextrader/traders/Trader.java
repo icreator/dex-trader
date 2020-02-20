@@ -18,7 +18,8 @@ import java.util.*;
 
 public abstract class Trader extends Thread {
 
-    protected Logger LOGGER;
+    protected Logger LOGGER = LoggerFactory.getLogger(Trader.class.getName());
+
 
     private static final int INVALID_TIMESTAMP = 7;
     private static final int ORDER_DOES_NOT_EXIST = 36;
@@ -111,8 +112,6 @@ public abstract class Trader extends Thread {
 
         this.setName(this.getClass().getSimpleName() + " [" + haveAssetKey + "]" + haveAssetName
                 + "/[" + wantAssetKey + "]" + wantAssetName + "." + sourceExchange + "." + address.substring(0, 5));
-
-        LOGGER = LoggerFactory.getLogger(this.getName());
 
         this.start();
     }
@@ -362,7 +361,7 @@ public abstract class Trader extends Thread {
 
         JSONParser jsonParser = new JSONParser();
         try {
-            sendRequest = cnt.apiClient.executeCommand("GET trade/orders/"
+            sendRequest = cnt.apiClient.executeCommand("GET trade/ordersbook/"
                     + haveKey + '/' + wantKey + "?limit=" + limit);
             //READ JSON
             result = (JSONObject) jsonParser.parse(sendRequest);
