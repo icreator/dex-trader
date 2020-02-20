@@ -1,7 +1,7 @@
 [
   {
     "type": "Guard",
-      "traderAddress": "79R3cSD4QyTMZ8K6S-zYuc4GS8SSQFuoGrn",
+      "traderAddress": "79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
       "startDelay": 10,
       "sleepTime": 1200,
       "cleanAllOnStart": true,
@@ -21,7 +21,7 @@
     "type": "RandomHitSelf",
     "traderAddress": "7MNiu6WwSGF6jJjdnBMfmDfPGKtV82ovf8",
     "startDelay": 10,
-    "sleepTime": 300,
+    "sleepTime": 30,
     "cleanAllOnStart": false,
     "haveAssetKey": 1,
     "wantAssetKey": 2,
@@ -37,7 +37,7 @@
   },
   {
     "type": "RandomHit",
-      "traderAddress": "74YmjcgZUiHv7HCr-5giq3r8d2M1ABBM27G",
+      "traderAddress": "74YmjcgZUiHv7HCr5giq3r8d2M1ABBM27G",
       "startDelay": 44,
       "sleepTime": 12000,
       "cleanAllOnStart": true,

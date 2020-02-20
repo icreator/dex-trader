@@ -15,7 +15,7 @@ import java.util.*;
 
 public class TradersManager {
 
-    protected static final String WALLET_PASSWORD = "SeviSevi05";
+    protected static final String WALLET_PASSWORD = "123456789";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TradersManager.class);
 
