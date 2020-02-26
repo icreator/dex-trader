@@ -19,9 +19,9 @@
   },
   {
     "type": "RandomHitSelf",
-    "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
+    "traderAddress": "7MNiu6WwSGF6jJjdnBMfmDfPGKtV82ovf8",
     "startDelay": 10,
-    "sleepTime": 10000,
+    "sleepTime": 30,
     "cleanAllOnStart": false,
     "haveAssetKey": 1,
     "wantAssetKey": 2,

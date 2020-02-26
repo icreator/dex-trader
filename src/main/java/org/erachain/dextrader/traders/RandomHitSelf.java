@@ -56,11 +56,11 @@ public class RandomHitSelf extends Trader {
             wantKey = this.wantAssetKey;
             wantName = this.wantAssetName;
 
-            amountHave = new BigDecimal(order.get("amount").toString());
+            amountHave = new BigDecimal(order.get("pairAmount").toString());
             if (schemeAmount.compareTo(amountHave) < 0) {
                 amountHave = schemeAmount.stripTrailingZeros();
             }
-            amountWant = amountHave.multiply(new BigDecimal(order.get("price").toString())).stripTrailingZeros();
+            amountWant = amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
 
 
             // NEED SCALE for VALIDATE
@@ -74,12 +74,12 @@ public class RandomHitSelf extends Trader {
             wantKey = this.haveAssetKey;
             wantName = this.haveAssetName;
 
-            amountWant = new BigDecimal(order.get("amount").toString());
+            amountWant = new BigDecimal(order.get("pairAmount").toString());
             if (schemeAmount.negate().compareTo(amountWant) < 0) {
                 amountWant = schemeAmount.negate().stripTrailingZeros();
             }
 
-            amountHave = amountWant.multiply(new BigDecimal(order.get("price").toString())).stripTrailingZeros();
+            amountHave = amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
 
             // NEED SCALE for VALIDATE
             if (amountHave.scale() > this.wantAssetScale) {
@@ -126,11 +126,11 @@ public class RandomHitSelf extends Trader {
             BigDecimal priceAdd;
             BigDecimal price;
             if (schemeAmount.signum() > 0) {
-                price1 = new BigDecimal(((JSONObject)ordersDo.get(0)).get("price").toString());
-                price2 = new BigDecimal(((JSONObject)ordersDo2.get(0)).get("price").toString());
+                price1 = new BigDecimal(((JSONObject)ordersDo.get(0)).get("pairPrice").toString());
+                price2 = new BigDecimal(((JSONObject)ordersDo2.get(0)).get("pairPrice").toString());
             } else {
-                price2 = new BigDecimal(((JSONObject)ordersDo.get(0)).get("price").toString());
-                price1 = new BigDecimal(((JSONObject)ordersDo2.get(0)).get("price").toString());
+                price2 = new BigDecimal(((JSONObject)ordersDo.get(0)).get("pairPrice").toString());
+                price1 = new BigDecimal(((JSONObject)ordersDo2.get(0)).get("pairPrice").toString());
             }
 
             priceAdd = price2.subtract(price1).multiply(new BigDecimal(schemeIndex))
@@ -146,14 +146,13 @@ public class RandomHitSelf extends Trader {
 
                 // если запас по сдигу есть то делаем новый свой ордер, иначе выкупаем тот что есть в стакане
 
-                cupOrder.put("price", price.toPlainString());
-                cupOrder.put("amount", schemeAmount.abs().toPlainString());
+                cupOrder.put("pairPrice", price.toPlainString());
+                cupOrder.put("pairAmount", schemeAmount.abs().toPlainString());
                 // not need cupOrder.put("total", schemeAmount.multiply(price).toPlainString());
 
             }
 
         }
-
         return createOrder(schemeAmount, cupOrder);
 
     }
