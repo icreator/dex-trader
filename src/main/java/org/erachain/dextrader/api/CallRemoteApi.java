@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * Class Call API for test
@@ -42,22 +43,28 @@ public class CallRemoteApi {
      * @param urlNode       set remote url full node
      * @param requestMethod request method (get, post, etc...)
      * @param value         is value for only "post" method
+     * @param headers
      * @return data request answer
      * @throws Exception
      */
-    public String ResponseValueAPI(String urlNode, String requestMethod, String value) throws Exception {
+    public String ResponseValueAPI(String urlNode, String requestMethod, String value,
+                                   Map<String, String> headers) throws Exception {
 
         URL obj = new URL(urlNode);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod(requestMethod.toUpperCase());
 
+        if (headers != null) {
+            for (String key: headers.keySet()) {
+                con.setRequestProperty(key, headers.get(key));
+            }
+        }
+
         switch (requestMethod.toUpperCase()) {
             case "GET":
-                con.setRequestMethod("GET");
                 break;
             case "POST":
-                con.setRequestMethod("POST");
                 con.setDoOutput(true);
                 con.getOutputStream().write(value.getBytes(StandardCharsets.UTF_8));
                 con.getOutputStream().flush();

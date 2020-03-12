@@ -76,6 +76,16 @@ public class TradersManager {
             } catch (Exception e) {
             }
         }
+        if (false) {
+            //START RATERs THREADs
+            RaterCoinMarketCapCom raterMarcetCap = new RaterCoinMarketCapCom(this, 300);
+            this.knownRaters.add(raterMarcetCap);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+        }
+
 
         if (true) {
             RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);

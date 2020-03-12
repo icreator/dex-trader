@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public abstract class Rater extends Thread {
@@ -29,13 +30,15 @@ public abstract class Rater extends Thread {
     // https://wex.nz/api/3/ticker/btc_rur
     protected String courseName; // course name
     protected String apiURL;
+    Map<String, String> headers;
     protected BigDecimal shiftRate = BigDecimal.ONE;
     private boolean run = true;
 
 
-    public Rater(TradersManager tradersManager, String courseName, int sleepSec) {
+    public Rater(TradersManager tradersManager, String courseName, int sleepSec, Map<String, String> headers) {
 
         this.cnt = Controller.getInstance();
+        this.headers = headers;
         this.caller = new CallRemoteApi();
 
         this.tradersManager = tradersManager;
@@ -63,7 +66,7 @@ public abstract class Rater extends Thread {
 
         String callerResult = null;
         try {
-            callerResult = caller.ResponseValueAPI(this.apiURL, "GET", "");
+            callerResult = caller.ResponseValueAPI(this.apiURL, "GET", "", headers);
             this.parse(callerResult);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

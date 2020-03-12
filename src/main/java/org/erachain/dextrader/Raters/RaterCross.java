@@ -1,7 +1,6 @@
 package org.erachain.dextrader.Raters;
 // 30/03 ++
 
-import org.erachain.dextrader.Raters.Rater;
 import org.erachain.dextrader.traders.TradersManager;
 
 import java.math.BigDecimal;
@@ -22,7 +21,7 @@ public class RaterCross extends Rater {
      * @param crossPath
      */
     public RaterCross(TradersManager tradersManager, int sleepSec, String name, String[] crossPath) {
-        super(tradersManager, name, sleepSec);
+        super(tradersManager, name, sleepSec, null);
 
         this.crossPath = crossPath;
         startKey = Long.valueOf(crossPath[0].split("[\\.]")[0]);
