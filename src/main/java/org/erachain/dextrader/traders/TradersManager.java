@@ -15,6 +15,9 @@ import java.util.*;
 
 public class TradersManager {
 
+    // for DEVELOP
+    static final boolean START_ONLY_RATERS = false;
+
     protected static final String WALLET_PASSWORD = "123456789";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TradersManager.class);
@@ -52,8 +55,6 @@ public class TradersManager {
     }
 
     private void start() {
-
-        boolean startOnlyRaters = true;
 
         if (false) {
             //START RATERs THREADs
@@ -130,7 +131,7 @@ public class TradersManager {
         } catch (Exception e) {
         }
 
-        if (startOnlyRaters) {
+        if (START_ONLY_RATERS) {
             return;
         }
 
