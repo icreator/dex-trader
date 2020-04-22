@@ -53,23 +53,7 @@ public class TradersManager {
 
     private void start() {
 
-        String result = cnt.apiClient.executeCommand("GET addresses/" + "?password=" + TradersManager.WALLET_PASSWORD);
-
-        JSONArray walletAddresses;
-        try {
-            //READ JSON
-            walletAddresses = (JSONArray) JSONValue.parse(result);
-            LOGGER.info(walletAddresses.toJSONString());
-
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
-            cnt.stopAll(-11);
-            return;
-        } finally {
-            // CLOSE SECRET WALLET
-            cnt.apiClient.executeCommand("GET wallet/lock");
-        }
+        boolean startOnlyRaters = true;
 
         if (false) {
             //START RATERs THREADs
@@ -146,35 +130,58 @@ public class TradersManager {
         } catch (Exception e) {
         }
 
-        for (Object obj : Settings.getInstance().tradersJSON) {
-
-            JSONObject item = (JSONObject) obj;
-            String traderAddress = item.get("traderAddress").toString();
-            if (!walletAddresses.contains(traderAddress)) {
-                LOGGER.error("not found traders Account - " + traderAddress);
-                continue;
-            }
-
-            String type = (String) item.get("type");
-            Trader trader = null;
-
-            if (type.equals("Guard")) {
-                trader = new StoneGuard(this, traderAddress, item);
-            } else if (type.equals("GuardAbs")) {
-                trader = new StoneGuardAbs(this, traderAddress, item);
-            } else if (type.equals("RandomHit")) {
-                trader = new RandomHit(this, traderAddress, item);
-            } else if (type.equals("RandomHitSelf")) {
-                trader = new RandomHitSelf(this, traderAddress, item);
-            }
-
-            if (trader != null) {
-                this.knownTraders.add(trader);
-            }
-
+        if (startOnlyRaters) {
+            return;
         }
 
-        if ( this.knownTraders.isEmpty()) {
+        String result = cnt.apiClient.executeCommand("GET addresses/" + "?password=" + TradersManager.WALLET_PASSWORD);
+
+        JSONArray walletAddresses = null;
+        try {
+            //READ JSON
+            walletAddresses = (JSONArray) JSONValue.parse(result);
+            LOGGER.info(walletAddresses.toJSONString());
+
+            for (Object obj : Settings.getInstance().tradersJSON) {
+
+                JSONObject item = (JSONObject) obj;
+                String traderAddress = item.get("traderAddress").toString();
+                if (!walletAddresses.contains(traderAddress)) {
+                    LOGGER.error("not found traders Account - " + traderAddress);
+                    continue;
+                }
+
+                String type = (String) item.get("type");
+                Trader trader = null;
+
+                if (type.equals("Guard")) {
+                    trader = new StoneGuard(this, traderAddress, item);
+                } else if (type.equals("GuardAbs")) {
+                    trader = new StoneGuardAbs(this, traderAddress, item);
+                } else if (type.equals("RandomHit")) {
+                    trader = new RandomHit(this, traderAddress, item);
+                } else if (type.equals("RandomHitSelf")) {
+                    trader = new RandomHitSelf(this, traderAddress, item);
+                }
+
+                if (trader != null) {
+                    this.knownTraders.add(trader);
+                }
+
+            }
+
+        } catch (NullPointerException | ClassCastException e) {
+            //JSON EXCEPTION
+            LOGGER.error(e.getMessage(), e);
+            //cnt.stopAll(-11);
+            //return;
+        } finally {
+            // CLOSE SECRET WALLET
+            cnt.apiClient.executeCommand("GET wallet/lock");
+        }
+
+
+        if (false && this.knownTraders.isEmpty()) {
             LOGGER.error("Not found Traders Accounts or Traders in Settings");
             cnt.stopAll(-13);
         }

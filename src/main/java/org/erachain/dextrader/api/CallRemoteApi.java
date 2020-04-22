@@ -50,6 +50,10 @@ public class CallRemoteApi {
         URL obj = new URL(urlNode);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
+        // protect from 403 error
+        con.addRequestProperty("User-Agent",
+                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+
         con.setRequestMethod(requestMethod.toUpperCase());
 
         switch (requestMethod.toUpperCase()) {

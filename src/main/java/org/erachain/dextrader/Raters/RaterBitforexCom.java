@@ -5,6 +5,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 public class RaterBitforexCom extends Rater {
@@ -37,8 +39,9 @@ public class RaterBitforexCom extends Rater {
         // {"data":{"buy":51.70018,"date":1587563047849,"high":54.62,"last":52.08,"low":48.34,"sell":53.2,"vol":113818.2957},"success":true,"time":1587563047849}
         if (json.containsKey("success")
                 && (Boolean) json.get("success")) {
-            buy = new BigDecimal(json.get("buy").toString()).setScale(5, BigDecimal.ROUND_HALF_UP);
-            sell = new BigDecimal(json.get("sell").toString()).setScale(5, BigDecimal.ROUND_HALF_UP);
+            JSONObject data = (JSONObject) json.get("data");
+            buy = new BigDecimal(data.get("buy").toString()).setScale(5, BigDecimal.ROUND_HALF_UP);
+            sell = new BigDecimal(data.get("sell").toString()).setScale(5, BigDecimal.ROUND_HALF_UP);
 
             price = buy.add(sell)
                     // преобразуем в тройскую унцию
