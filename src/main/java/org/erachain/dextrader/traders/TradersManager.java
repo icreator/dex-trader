@@ -82,6 +82,16 @@ public class TradersManager {
         }
 
         if (true) {
+            RaterBitforexCom raterBitforexCom = new RaterBitforexCom(this, 300);
+            this.knownRaters.add(raterBitforexCom);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+            }
+
+        }
+
+        if (true) {
             RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
             this.knownRaters.add(raterLiveCoin);
             try {
