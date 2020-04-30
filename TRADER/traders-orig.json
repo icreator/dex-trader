@@ -1,5 +1,57 @@
 [
   {
+    // Type of strategy - sta as GUARD in persandage
+    "type": "Guard",
+    // trader address
+    "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
+    // delay for start
+    "startDelay": 55,
+    // speep period
+    "sleepTime": 1100,
+    // clear all orders on start
+    "cleanAllOnStart": true,
+    // pair: have asset
+    "haveAssetKey": 92,
+    // pair: want asset
+    "wantAssetKey": 12,
+    // use exchange for rate
+    "sourceExchange": "livecoin",
+    // IF rate DIFFERENCE over UP LIMIT - cancel scheme orders and create anew whith new prices
+    "limitUP": "1.9",
+    // IF rate DIFFERENCE over DOWN LIMIT - cancel scheme orders and create anew whith new prices
+    "limitDown": "1.9",
+    // SCHEME
+    "scheme": {
+      // for HAVE VOLUME set price DIFFERENCE sell
+      "10000": "0.9",
+      "1000": "0.1",
+      "-1000": "0.1",
+      // for HAVE VOLUME set price DIFFERENCE buy
+      "-10000": "0.9"
+    }
+  },
+  {
+    // Random hit all and sekf orders
+    "type": "RandomHitSelf",
+    "traderAddress": "7AQBTR1w4CWhf7QEmTtwy6eFmziyCJr1Un",
+    "startDelay": 10,
+    "sleepTime": 12000,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 92,
+    "wantAssetKey": 12,
+    "sourceExchange": "",
+    "scheme": [
+      // VOLOUNE and MA{ buy difference fron PRICE
+      ["5", "20.0"],
+      ["7", "10.0"],
+      ["10", "5.0"],
+      ["-10", "5.0"],
+      ["-7", "10.0"],
+      // VOLOUNE and MAX sell difference fron PRICE
+      ["-5", "20.0"]
+    ]
+  },
+  {
     "type": "GuardAbs",
     "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
     "sleepTime": 200,
