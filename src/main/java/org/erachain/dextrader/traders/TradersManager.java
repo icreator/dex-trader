@@ -16,7 +16,7 @@ import java.util.*;
 public class TradersManager {
 
     // for DEVELOP
-    static final boolean START_ONLY_RATERS = true;
+    static boolean START_ONLY_RATERS = false;
 
     protected static String WALLET_PASSWORD;
 
@@ -55,6 +55,10 @@ public class TradersManager {
     }
 
     private void start() {
+
+        if (Settings.getInstance().settingsJSON.containsKey("only_raters")) {
+            START_ONLY_RATERS = (Boolean) Settings.getInstance().settingsJSON.get("only_raters");
+        }
 
         if (false) {
             //START RATERs THREADs
@@ -135,7 +139,9 @@ public class TradersManager {
             return;
         }
 
-        TradersManager.WALLET_PASSWORD = Settings.getInstance().apiKeysJSON.get("wallet").toString();
+        if (Settings.getInstance().apiKeysJSON.containsKey("wallet")) {
+            TradersManager.WALLET_PASSWORD = Settings.getInstance().apiKeysJSON.get("wallet").toString();
+        }
 
         String result = cnt.apiClient.executeCommand("GET addresses/" + "?password=" + TradersManager.WALLET_PASSWORD);
 

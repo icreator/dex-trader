@@ -97,8 +97,6 @@ public class RaterMetalsAPI extends Rater {
 
     protected void parse(String result) {
 
-        LOGGER.debug(result);
-
         JSONObject json = null;
         try {
             //READ JSON
