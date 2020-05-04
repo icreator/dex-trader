@@ -16,7 +16,7 @@ import java.util.*;
 public class TradersManager {
 
     // for DEVELOP
-    static final boolean START_ONLY_RATERS = false;
+    static final boolean START_ONLY_RATERS = true;
 
     protected static final String WALLET_PASSWORD = "123456789";
 
@@ -67,7 +67,7 @@ public class TradersManager {
         }
 
         if (true) {
-            RaterBitforexCom raterBitforexCom = new RaterBitforexCom(this, 300);
+            RaterBitforexCom raterBitforexCom = new RaterBitforexCom(this, 600);
             this.knownRaters.add(raterBitforexCom);
             try {
                 Thread.sleep(1000);
