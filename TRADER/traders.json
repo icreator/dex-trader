@@ -33,7 +33,7 @@
   {
 // Random hit all and sekf orders
     "type": "RandomHitSelf",
-    "traderAddress": "7SE93RCQzkSXTvW4jXLbXYsc28xKQCozFP",
+    "traderAddress": "7LWwRzXm389wKNqxS9fsdWdLibCc4aaDQ4",
     "startDelay": 10,
     "sleepTime": 12000,
     "cleanAllOnStart": false,
