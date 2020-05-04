@@ -108,7 +108,7 @@ public class CallRemoteApi {
         in.close();
         String result = response.toString();
 
-        if (true) {
+        if (false) {
             LOGGER.debug(result);
         }
 
