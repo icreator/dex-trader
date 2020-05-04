@@ -18,7 +18,7 @@ public class TradersManager {
     // for DEVELOP
     static final boolean START_ONLY_RATERS = true;
 
-    protected static final String WALLET_PASSWORD = "123456789";
+    protected static String WALLET_PASSWORD;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TradersManager.class);
 
@@ -134,6 +134,8 @@ public class TradersManager {
         if (START_ONLY_RATERS) {
             return;
         }
+
+        TradersManager.WALLET_PASSWORD = Settings.getInstance().apiKeysJSON.get("wallet").toString();
 
         String result = cnt.apiClient.executeCommand("GET addresses/" + "?password=" + TradersManager.WALLET_PASSWORD);
 

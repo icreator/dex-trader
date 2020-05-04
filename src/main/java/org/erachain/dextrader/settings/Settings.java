@@ -97,9 +97,11 @@ public class Settings {
     private String dataPath;
 
     private Settings() {
+
+        readAPIkeysJSON();
+
         this.localAddress = this.getCurrentIp();
         settingsJSON = read_setting_JSON();
-        readAPIkeysJSON();
 
         File file = new File("");
         //TRY READ PEERS.JSON
@@ -634,7 +636,7 @@ public class Settings {
     ////////////////////////////////
     public void readAPIkeysJSON() {
 
-        File file = new File(this.userPath + "api-keys.json");
+        File file = new File(this.userPath + "secret-keys.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -662,7 +664,7 @@ public class Settings {
             apiKeysJSON = (JSONObject) JSONValue.parse(jsonString);
 
         } catch (Exception e) {
-            LOGGER.info("Error while reading/creating api-keys.json " + file.getAbsolutePath() + " using default!");
+            LOGGER.info("Error while reading/creating secret-keys.json " + file.getAbsolutePath() + " using default!");
             LOGGER.error(e.getMessage(), e);
         }
 
