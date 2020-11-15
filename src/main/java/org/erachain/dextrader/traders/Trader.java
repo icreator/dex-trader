@@ -227,7 +227,10 @@ public abstract class Trader extends Thread {
 
         String result;
 
-        LOGGER.info("TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString() + " -> " + amountWant.toPlainString());
+        String log = "TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
+                + " -> " + amountWant.toPlainString()
+                + " from " + this.address;
+        LOGGER.info(log);
 
         JSONObject jsonObject = null;
         // TRY MAKE ORDER in LOOP
@@ -269,7 +272,7 @@ public abstract class Trader extends Thread {
             }
 
             //LOGGER.error("CREATE: " + urlCommand);
-            LOGGER.error("MESS: " + result);
+            LOGGER.error("MESS: " + result + "\n for: " + log);
             return false;
 
         } while (true);
@@ -343,7 +346,7 @@ public abstract class Trader extends Thread {
                 return true;
             }
 
-            LOGGER.info("CANCEL: " + orderSignature + "\n" + result);
+            LOGGER.info("CANCEL: " + orderSignature + "\n" + result + " for " + address);
             return false;
 
         } while(true);
