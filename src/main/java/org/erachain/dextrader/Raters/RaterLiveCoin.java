@@ -1,7 +1,6 @@
 package org.erachain.dextrader.Raters;
 // 30/03 ++
 
-import org.erachain.dextrader.Raters.Rater;
 import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 public class RaterLiveCoin extends Rater {
 
     public RaterLiveCoin(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "livecoin", sleepSec);
+        super(tradersManager, "livecoin", sleepSec, null);
 
         this.apiURL = "https://api.livecoin.net/exchange/ticker?currencyPair=ETH/BTC";
 
