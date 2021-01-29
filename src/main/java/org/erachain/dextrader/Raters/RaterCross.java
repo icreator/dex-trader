@@ -29,6 +29,9 @@ public class RaterCross extends Rater {
 
     }
 
+    public void clearRates() {
+    }
+
     @Override
     protected void parse(String result) {
     }
@@ -42,6 +45,9 @@ public class RaterCross extends Rater {
         } catch (InterruptedException e) {
             return true;
         }
+
+        // очистим сначала - может там ошибка опроса
+        rates.remove(makeKey(startKey, endKey, this.courseName));
 
         BigDecimal rate = BigDecimal.ONE;
         for (String path: crossPath) {

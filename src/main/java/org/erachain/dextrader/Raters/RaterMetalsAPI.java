@@ -95,6 +95,14 @@ public class RaterMetalsAPI extends Rater {
         }
     }
 
+    public void clearRates() {
+        if (cnt.DEVELOP_USE) {
+            rates.remove(makeKey(1105L, 1106L, this.courseName));
+        } else {
+            rates.remove(makeKey(95L, 21L, this.courseName));
+        }
+    }
+
     protected void parse(String result) {
 
         JSONObject json = null;
