@@ -18,6 +18,14 @@ public class RaterLiveCoinRUR extends Rater {
 
     }
 
+    public void clearRates() {
+        if (cnt.DEVELOP_USE) {
+            rates.remove(makeKey(1105L, 1108L, this.courseName));
+        } else {
+            rates.remove(makeKey(12L, 92L, this.courseName));
+        }
+    }
+
     protected void parse(String result) {
         JSONObject json = null;
         try {

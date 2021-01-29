@@ -23,6 +23,15 @@ public class RaterPolonex extends Rater {
 
     }
 
+    public void clearRates() {
+        if (cnt.DEVELOP_USE) {
+            rates.remove(makeKey(1105L, 1106L, this.courseName));
+        } else {
+            rates.remove(makeKey(12L, 95L, this.courseName));
+            rates.remove(makeKey(14L, 12L, this.courseName));
+        }
+    }
+
     protected void parse(String result) {
         JSONObject json = null;
         try {
