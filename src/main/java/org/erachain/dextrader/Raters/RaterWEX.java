@@ -32,6 +32,16 @@ public class RaterWEX extends Rater {
 
     }
 
+    public void clearRates() {
+        if (cnt.DEVELOP_USE) {
+            rates.remove(makeKey(1105L, 1106L, this.courseName));
+        } else {
+            rates.remove(makeKey(12L, 95L, this.courseName));
+            rates.remove(makeKey(12L, 92L, this.courseName));
+            rates.remove(makeKey(92L, 92L, this.courseName));
+        }
+    }
+
     protected void parse(String result) {
         JSONObject json = null;
         try {
@@ -70,7 +80,7 @@ public class RaterWEX extends Rater {
                 if (cnt.DEVELOP_USE) {
                     setRate(1105L, 1108L, this.courseName, price);
                 } else {
-                    setRate(12L, 95L, this.courseName, price);
+                    setRate(12L, 92L, this.courseName, price);
                 }
             }
 

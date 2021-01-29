@@ -18,6 +18,14 @@ public class RaterBitforexCom extends Rater {
 
     }
 
+    public void clearRates() {
+        if (cnt.DEVELOP_USE) {
+            rates.remove(makeKey(1106L, 1105L, this.courseName));
+        } else {
+            rates.remove(makeKey(21L, 95L, this.courseName));
+        }
+    }
+
     protected void parse(String result) {
         JSONObject json = null;
         try {
