@@ -1,18 +1,5 @@
-Перед запуском создайте файл настроек торговцев traders.json
-Пример можно скопировать из traders-orig.json
 
-Создайте secret-keys.json, скопировав из secret-keys-orig.json
-в них ключи доступа:
-"wallet": "123456789", - это пароль от кошелька Erachain
-"metals-api.com": "ldj00---hu7l" - это пароль от внешнего сервиса по ценам
+See README.md and README-start.md
 
-Trades types:
-- Guard - стакан держит позиции по внешнему курсу. Нужно задавать источник курса и список ордеров с отступами по цене от него
-- GuardAbs - тоже но отклонение в абсолютных значениях от курса внешнего
-- RandomHit - случайные покупки без ограничений
-- RandomHitRand - тоже но случайный объем в пределах 0...+50%
-- RandomHitSelf - тоже что RandomHit но если есть выгодный ордер то цену из него берет
-- RandomHitSelfRand - тоже но случайный объем в пределах 0...+50%
-
-более подробно про настройку торговых ботов см. traders.readme.txt
-или https://gitlab.com/erachain/dex-trader
+see traders examples in traders.readme.txt
+or https://gitlab.com/erachain/dex-trader

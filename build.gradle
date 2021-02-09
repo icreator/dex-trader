@@ -102,6 +102,12 @@ dependencies {
 task CopyResourse {
 
     copy {
+        from '.'
+        into 'build/libs/DEXTrader'
+        include 'README*.md'
+    }
+
+    copy {
         from 'TRADER'
         into 'build/libs/DEXTrader'
         include '*orig.json', '*readme.txt', 'run.bat'
