@@ -106,7 +106,7 @@
     }
   },
   {
-    "type": "RandomHitSelf",
+    "type": "RandomHitSelfRand",
     "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
     "startDelay": 10,
     "sleepTime": 1000,

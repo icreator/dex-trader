@@ -13,3 +13,6 @@ Trades types:
 - RandomHitRand - тоже но случайный объем в пределах 0...+50%
 - RandomHitSelf - тоже что RandomHit но если есть выгодный ордер то цену из него берет
 - RandomHitSelfRand - тоже но случайный объем в пределах 0...+50%
+
+более подробно про настройку торговых ботов см. traders.readme.txt
+или https://gitlab.com/erachain/dex-trader
