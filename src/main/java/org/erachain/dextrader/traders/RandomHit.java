@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 /**
- * ставим ордера случайно в стакан "ПО РЫНКУ"
+ * ставим ордера случайно в стакан "ПО РЫНКУ" от внешнего курса
  * и иногда не сыгравшие ордера снимаем
  */
 public class RandomHit extends Trader {

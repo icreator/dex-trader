@@ -1,31 +1,31 @@
 [
   {
-    "type": "RandomHit",
+    "type": "-RandomHit",
     "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
     "startDelay": 1,
     "sleepTime": 10,
     "cleanAllOnStart": false,
-    "haveAssetKey": 2,
-    "wantAssetKey": 1,
+    "haveAssetKey": 1,
+    "wantAssetKey": 2,
     "sourceExchange": "",
     "scheme": [
-      ["500", "4.0"],
-      ["700", "2.0"],
-      ["1000", "1.0"],
-      ["-1000", "1.0"],
-      ["-700", "2.0"],
-      ["-500", "4.0"]
+      ["3", "4.0"],
+      ["10", "2.0"],
+      ["30", "1.0"],
+      ["-30", "1.0"],
+      ["-10", "2.0"],
+      ["-3", "4.0"]
     ]
   },
   {
     // Random hit all and self orders
-    "type": "RandomHitSelf",
+    "type": "RandomHitSelfRand",
     "traderAddress": "7C6cEeHw739uQm8PhdnS9yENdLhT8LUERP",
-    "startDelay": 10,
-    "sleepTime": 30,
+    "startDelay": 1,
+    "sleepTime": 10,
     "cleanAllOnStart": false,
-    "haveAssetKey": 2,
-    "wantAssetKey": 1,
+    "haveAssetKey": 1,
+    "wantAssetKey": 2,
     "sourceExchange": "",
     "scheme": [
       // VOLOUNE and MA{ buy difference fron PRICE
