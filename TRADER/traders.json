@@ -1,6 +1,24 @@
 [
   {
-    // Random hit all and sekf orders
+    "type": "RandomHitRand",
+    "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
+    "startDelay": 1,
+    "sleepTime": 10,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 2,
+    "wantAssetKey": 1,
+    "sourceExchange": "",
+    "scheme": [
+      ["500", "4.0"],
+      ["700", "2.0"],
+      ["1000", "1.0"],
+      ["-1000", "1.0"],
+      ["-700", "2.0"],
+      ["-500", "4.0"]
+    ]
+  },
+  {
+    // Random hit all and self orders
     "type": "RandomHitSelfRand",
     "traderAddress": "7C6cEeHw739uQm8PhdnS9yENdLhT8LUERP",
     "startDelay": 10,
@@ -22,7 +40,7 @@
   },
   {
     // Type of strategy - sta as GUARD in persandage
-    "type": "Guard",
+    "type": "-Guard",
     // trader address
       "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
     // delay for start
@@ -53,7 +71,7 @@
   },
   {
 // Random hit all and sekf orders
-    "type": "RandomHitSelf",
+    "type": "-RandomHitSelf",
     "traderAddress": "7LWwRzXm389wKNqxS9fsdWdLibCc4aaDQ4",
     "startDelay": 10,
     "sleepTime": 12000,
@@ -74,7 +92,7 @@
   },
   {
     // Type of strategy - sta as GUARD in persandage
-    "type": "Guard",
+    "type": "-Guard",
     // trader address
       "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
     // delay for start
@@ -104,7 +122,7 @@
       }
   },
   {
-    "type": "Guard",
+    "type": "-Guard",
       "traderAddress": "79R3cSD4QyTMZ8K6SzYuc4GS8SSQFuoGrn",
       "startDelay": 10,
       "sleepTime": 1200,
@@ -122,7 +140,7 @@
       }
   },
   {
-    "type": "RandomHitSelf",
+    "type": "-RandomHitSelf",
     "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
     "startDelay": 10,
     "sleepTime": 10000,
@@ -140,7 +158,7 @@
     ]
   },
   {
-    "type": "RandomHit",
+    "type": "-RandomHit",
       "traderAddress": "74YmjcgZUiHv7HCr5giq3r8d2M1ABBM27G",
       "startDelay": 44,
       "sleepTime": 12000,

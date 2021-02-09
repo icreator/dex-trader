@@ -90,7 +90,7 @@ public class TradersManager {
 
         }
 
-        if (true) {
+        if (false) {
             RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
             this.knownRaters.add(raterLiveCoin);
             try {
@@ -99,7 +99,7 @@ public class TradersManager {
             }
 
         }
-        if (true) {
+        if (false) {
             RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 300);
             this.knownRaters.add(raterLiveCoinRUR);
             try {
