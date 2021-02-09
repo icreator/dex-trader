@@ -73,7 +73,7 @@
   Это не относится к Торговцам с приставкой Self
 
 Примеры настроек:
-
+```
     {
     "traderAddress": "7NhZBb8Ce1H2S2MkPerrMnKLZNf9ryNYtP",
     "sleepTime": 200,
@@ -92,26 +92,27 @@
       "-100":"0.03",
       "-1000":"0.1"
       }
-
-`  {
-    "type": "RandomHitSelfRand",
-    "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
-    "startDelay": 10,
-    "sleepTime": 550,
-    "cleanAllOnStart": false,
-    "haveAssetKey": 1,
-    "wantAssetKey": 2,
-    "sourceExchange": "",
-    "scheme": [
-      ["5", "20.0"],
-      ["7", "10.0"],
-      ["10", "5.0"],
-      ["-10", "5.0"],
-      ["-7", "10.0"],
-      ["-5", "20.0"]
-    ]
-  },
-`
+    },
+  ...
+    {
+      "type": "RandomHitSelfRand",
+      "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
+      "startDelay": 10,
+      "sleepTime": 550,
+      "cleanAllOnStart": false,
+      "haveAssetKey": 1,
+      "wantAssetKey": 2,
+      "sourceExchange": "",
+      "scheme": [
+        ["5", "20.0"],
+        ["7", "10.0"],
+        ["10", "5.0"],
+        ["-10", "5.0"],
+        ["-7", "10.0"],
+        ["-5", "20.0"]
+      ]
+    },
+```
 
 **traderAddress** - счет с котрого будут создаваться ордера, должен быть в вашем кошельке
 **sleepTime** - время сна - лучше ставить не чаще чем один блок  
