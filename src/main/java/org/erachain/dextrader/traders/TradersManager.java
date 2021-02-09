@@ -179,6 +179,8 @@ public class TradersManager {
                     trader = new StoneGuardAbs(this, traderAddress, item);
                 } else if (type.equals("RandomHit")) {
                     trader = new RandomHit(this, traderAddress, item);
+                } else if (type.equals("RandomHitRand")) {
+                    trader = new RandomHitRand(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelf")) {
                     trader = new RandomHitSelf(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelfRand")) {
