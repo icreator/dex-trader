@@ -187,7 +187,7 @@ public abstract class Trader extends Thread {
         }
 
         this.setName(this.getClass().getSimpleName() + " [" + haveAssetKey + "]" + haveAssetName
-                + "/[" + wantAssetKey + "]" + wantAssetName + "." + sourceExchange + "." + address.substring(0, 5));
+                + "/[" + wantAssetKey + "]" + wantAssetName + "." +  (sourceExchange.isEmpty()? "SELF" : sourceExchange) + "." + address.substring(0, 5));
 
         LOGGER = LoggerFactory.getLogger(this.getName());
 
