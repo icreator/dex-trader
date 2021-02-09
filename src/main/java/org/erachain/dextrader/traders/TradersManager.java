@@ -181,6 +181,8 @@ public class TradersManager {
                     trader = new RandomHit(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelf")) {
                     trader = new RandomHitSelf(this, traderAddress, item);
+                } else if (type.equals("RandomHitSelfRand")) {
+                    trader = new RandomHitSelfRand(this, traderAddress, item);
                 }
 
                 if (trader != null) {
