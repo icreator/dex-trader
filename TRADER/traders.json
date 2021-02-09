@@ -1,5 +1,26 @@
 [
   {
+    // Random hit all and sekf orders
+    "type": "RandomHitSelfRand",
+    "traderAddress": "7C6cEeHw739uQm8PhdnS9yENdLhT8LUERP",
+    "startDelay": 10,
+    "sleepTime": 30,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 2,
+    "wantAssetKey": 1,
+    "sourceExchange": "",
+    "scheme": [
+      // VOLOUNE and MA{ buy difference fron PRICE
+      ["5", "20.0"],
+      ["7", "10.0"],
+      ["10", "5.0"],
+      // VOLOUNE and MAX sell difference fron PRICE
+      ["-10", "5.0"],
+      ["-7", "10.0"],
+      ["-5", "20.0"]
+    ]
+  },
+  {
     // Type of strategy - sta as GUARD in persandage
     "type": "Guard",
     // trader address
@@ -81,27 +102,6 @@
         // for HAVE VOLUME set price DIFFERENCE buy
         "-10000": "0.8"
       }
-  },
-  {
-// Random hit all and sekf orders
-    "type": "RandomHitSelf",
-    "traderAddress": "7AQBTR1w4CWhf7QEmTtwy6eFmziyCJr1Un",
-    "startDelay": 10,
-    "sleepTime": 12000,
-    "cleanAllOnStart": false,
-    "haveAssetKey": 92,
-    "wantAssetKey": 12,
-    "sourceExchange": "",
-    "scheme": [
-   // VOLOUNE and MA{ buy difference fron PRICE
-      ["5", "20.0"],
-      ["7", "10.0"],
-      ["10", "5.0"],
-      // VOLOUNE and MAX sell difference fron PRICE
-      ["-10", "5.0"],
-      ["-7", "10.0"],
-      ["-5", "20.0"]
-    ]
   },
   {
     "type": "Guard",
