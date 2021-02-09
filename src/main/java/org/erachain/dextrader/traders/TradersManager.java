@@ -90,7 +90,7 @@ public class TradersManager {
 
         }
 
-        if (true) {
+        if (false) {
             RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
             this.knownRaters.add(raterLiveCoin);
             try {
@@ -99,7 +99,7 @@ public class TradersManager {
             }
 
         }
-        if (true) {
+        if (false) {
             RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 300);
             this.knownRaters.add(raterLiveCoinRUR);
             try {
@@ -181,6 +181,8 @@ public class TradersManager {
                     trader = new RandomHit(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelf")) {
                     trader = new RandomHitSelf(this, traderAddress, item);
+                } else if (type.equals("RandomHitSelfRand")) {
+                    trader = new RandomHitSelfRand(this, traderAddress, item);
                 }
 
                 if (trader != null) {

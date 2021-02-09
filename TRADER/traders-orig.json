@@ -41,13 +41,13 @@
     "wantAssetKey": 12,
     "sourceExchange": "",
     "scheme": [
-      // VOLOUNE and MA{ buy difference fron PRICE
+      // VOLOUNE and MAX buy difference fron PRICE
       ["5", "20.0"],
       ["7", "10.0"],
       ["10", "5.0"],
+      // VOLOUNE and MAX sell difference fron PRICE
       ["-10", "5.0"],
       ["-7", "10.0"],
-      // VOLOUNE and MAX sell difference fron PRICE
       ["-5", "20.0"]
     ]
   },
@@ -106,7 +106,7 @@
     }
   },
   {
-    "type": "RandomHitSelf",
+    "type": "RandomHitSelfRand",
     "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
     "startDelay": 10,
     "sleepTime": 1000,

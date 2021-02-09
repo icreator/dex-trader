@@ -73,7 +73,7 @@ public class RaterMetalsAPI extends Rater {
     private boolean TEST = false;
 
     public RaterMetalsAPI(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "metals-api", sleepSec);
+        super(tradersManager, "metals-api", sleepSec, null);
 
         try {
             String apiKey = Settings.getInstance().apiKeysJSON.get("metals-api.com").toString();

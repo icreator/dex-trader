@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 /**
- * ставим обреда случайно вс такан "ПО РЫНКУ"
+ * ставим ордера случайно в стакан "ПО РЫНКУ" от внешнего курса
  * и иногда не сыгравшие ордера снимаем
  */
 public class RandomHit extends Trader {
@@ -27,6 +27,10 @@ public class RandomHit extends Trader {
     public RandomHit(TradersManager tradersManager, String accountStr, JSONObject json) {
         super(tradersManager, accountStr, json);
         sleepOrig = this.sleepTimestep;
+    }
+
+    BigDecimal getRandAmount(BigDecimal schemeAmount) {
+        return schemeAmount;
     }
 
     protected boolean createOrder(BigDecimal schemeAmount) {
@@ -48,6 +52,7 @@ public class RandomHit extends Trader {
         BigDecimal amountHave;
         BigDecimal amountWant;
 
+        BigDecimal randomAmount = getRandAmount(schemeAmount);
         if (schemeAmount.signum() > 0) {
             haveKey = this.haveAssetKey;
             haveName = this.haveAssetName;
@@ -57,7 +62,7 @@ public class RandomHit extends Trader {
 
             BigDecimal shift = BigDecimal.ONE.add(shiftPercentage.movePointLeft(2));
 
-            amountHave = schemeAmount.stripTrailingZeros();
+            amountHave = randomAmount.stripTrailingZeros();
             amountWant = amountHave.multiply(this.rate).multiply(shift).stripTrailingZeros();
 
             // NEED SCALE for VALIDATE
@@ -73,7 +78,7 @@ public class RandomHit extends Trader {
 
             BigDecimal shift = BigDecimal.ONE.subtract(shiftPercentage.movePointLeft(2));
 
-            amountWant = schemeAmount.negate().stripTrailingZeros();
+            amountWant = randomAmount.negate().stripTrailingZeros();
             amountHave = amountWant.multiply(this.rate).multiply(shift).stripTrailingZeros();
 
             // NEED SCALE for VALIDATE

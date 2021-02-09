@@ -5,14 +5,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLConnection;
-
 
 public class RaterBitforexCom extends Rater {
 
     public RaterBitforexCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "bitforex", sleepSec);
+        super(tradersManager, "bitforex", sleepSec, null);
 
         this.apiURL = "https://api.bitforex.com/api/v1/market/ticker?symbol=coin-usdt-gold";
 

@@ -26,7 +26,7 @@ import java.util.jar.Manifest;
  */
 public class Controller extends Observable {
 
-    public static final boolean DEVELOP_USE = false;
+    public static final boolean DEVELOP_USE = true;
     public static final String APP_NAME = DEVELOP_USE ? "DEX Trader TESTNET" : "DEX Trader";
 
     public static String version = "0.01.01";
