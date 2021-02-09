@@ -1,6 +1,6 @@
 [
   {
-    "type": "RandomHitRand",
+    "type": "RandomHit",
     "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
     "startDelay": 1,
     "sleepTime": 10,
@@ -19,7 +19,7 @@
   },
   {
     // Random hit all and self orders
-    "type": "RandomHitSelfRand",
+    "type": "RandomHitSelf",
     "traderAddress": "7C6cEeHw739uQm8PhdnS9yENdLhT8LUERP",
     "startDelay": 10,
     "sleepTime": 30,

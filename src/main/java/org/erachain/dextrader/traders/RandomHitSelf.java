@@ -31,6 +31,10 @@ public class RandomHitSelf extends Trader {
         sleepOrig = this.sleepTimestep;
     }
 
+    BigDecimal getRandAmount(BigDecimal schemeAmount) {
+        return schemeAmount;
+    }
+
     protected boolean createOrder(BigDecimal schemeAmount, JSONObject order) {
 
         BigDecimal shiftPercentageOrig = this.scheme.get(schemeAmount);
@@ -50,6 +54,7 @@ public class RandomHitSelf extends Trader {
         BigDecimal amountHave;
         BigDecimal amountWant;
 
+        BigDecimal randomAmount = getRandAmount(schemeAmount);
         if (schemeAmount.signum() > 0) {
             haveKey = this.haveAssetKey;
             haveName = this.haveAssetName;
@@ -57,8 +62,8 @@ public class RandomHitSelf extends Trader {
             wantName = this.wantAssetName;
 
             amountHave = new BigDecimal(order.get("pairAmount").toString());
-            if (schemeAmount.compareTo(amountHave) < 0) {
-                amountHave = schemeAmount.stripTrailingZeros();
+            if (randomAmount.compareTo(amountHave) < 0) {
+                amountHave = randomAmount.stripTrailingZeros();
             }
             amountWant = amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
 
@@ -75,8 +80,8 @@ public class RandomHitSelf extends Trader {
             wantName = this.haveAssetName;
 
             amountWant = new BigDecimal(order.get("pairAmount").toString());
-            if (schemeAmount.negate().compareTo(amountWant) < 0) {
-                amountWant = schemeAmount.negate().stripTrailingZeros();
+            if (randomAmount.negate().compareTo(amountWant) < 0) {
+                amountWant = randomAmount.negate().stripTrailingZeros();
             }
 
             amountHave = amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
