@@ -33,7 +33,7 @@ public class RandomHitSelfRand extends RandomHitSelf {
     @Override
     BigDecimal getRandAmount(BigDecimal schemeAmount) {
         int randInt = random.nextInt(50);
-        return schemeAmount.multiply(new BigDecimal(1.0 + 0.01 * randInt).setScale(5, RoundingMode.UP));
+        return schemeAmount.multiply(new BigDecimal(0.8 + 0.01 * randInt).setScale(5, RoundingMode.UP));
     }
 
 }
