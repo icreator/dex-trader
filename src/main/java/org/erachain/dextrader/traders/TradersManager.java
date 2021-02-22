@@ -61,89 +61,29 @@ public class TradersManager {
         }
 
         if (false) {
-            //START RATERs THREADs
-            RaterWEX raterForex = new RaterWEX(this, 300);
-            this.knownRaters.add(raterForex);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
-        }
-        if (true) {
-            RaterCoinMarketCapCom raterMarcetCap = new RaterCoinMarketCapCom(this, 300);
-            this.knownRaters.add(raterMarcetCap);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
+            this.knownRaters.add(new RaterWEX(this, 300));
+            this.knownRaters.add(new RaterLiveCoin(this, 300));
+            this.knownRaters.add(new RaterLiveCoinRUR(this, 300));
         }
 
+        //this.knownRaters.add(new RaterPolonex(this, 300));
+        //this.knownRaters.add(new RaterBitforexCom(this, 600));
+        //this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
 
-        if (true) {
-            RaterBitforexCom raterBitforexCom = new RaterBitforexCom(this, 600);
-            this.knownRaters.add(raterBitforexCom);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
+        //this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
+        //this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
 
-        }
-
-        if (false) {
-            RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
-            this.knownRaters.add(raterLiveCoin);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
-
-        }
-        if (false) {
-            RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 300);
-            this.knownRaters.add(raterLiveCoinRUR);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
-
-        }
-
-        if (true) {
-            RaterPolonex raterPolonex = new RaterPolonex(this, 300);
-            this.knownRaters.add(raterPolonex);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
-        }
+        this.knownRaters.add(new RaterCoinMarketCapCom(this, 300));
 
         if (true) {
             RaterCross raterCross_ETH_RUB = new RaterCross(this, 300, "ETH_RUB",
                     new String[]{"14.12 polonex", "12.92 livecoin"});
             this.knownRaters.add(raterCross_ETH_RUB);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
         }
 
-        if (true) {
-            //START RATERs THREADs
-            RaterMetalsAPI raterMetalsAPI = new RaterMetalsAPI(this, 60 * 60 * 24);
-            this.knownRaters.add(raterMetalsAPI);
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
-        }
-
-        if (true) {
-            this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
-            this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
+        try {
+            Thread.sleep(500);
+        } catch (Exception e) {
         }
 
 

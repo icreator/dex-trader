@@ -28,6 +28,7 @@ public class Settings {
     private static Settings instance;
     public JSONObject settingsJSON;
     public  JSONArray tradersJSON;
+    public  JSONArray ratersJSON;
     public  JSONObject apiKeysJSON;
 
     private Settings() {
@@ -142,6 +143,44 @@ public class Settings {
         }
 
         return tradersJSON;
+
+    }
+
+    public List<JSONObject> readRatersJSON() {
+
+        File file = new File("raters.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                return null;
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+
+        try {
+            //OPEN FILE
+            //READ SETTINS JSON FILE
+            List<String> lines = Files.readLines(file, Charsets.UTF_8);
+
+            String jsonString = "";
+            for (String line : lines) {
+                if ((line = line.trim()).startsWith("//") || line.isEmpty()) {
+                    // пропускаем //
+                    continue;
+                }
+                jsonString += line;
+            }
+
+            //CREATE JSON OBJECT
+            ratersJSON = (JSONArray) JSONValue.parse(jsonString);
+
+        } catch (Exception e) {
+            LOGGER.info("Error while reading/creating raters.json " + file.getAbsolutePath() + " using default!");
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return ratersJSON;
 
     }
 
