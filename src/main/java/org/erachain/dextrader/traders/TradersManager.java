@@ -60,20 +60,26 @@ public class TradersManager {
             START_ONLY_RATERS = (Boolean) Settings.getInstance().settingsJSON.get("only_raters");
         }
 
-        if (false) {
-            this.knownRaters.add(new RaterWEX(this, 300));
-            this.knownRaters.add(new RaterLiveCoin(this, 300));
-            this.knownRaters.add(new RaterLiveCoinRUR(this, 300));
+        for (Object obj : Settings.getInstance().ratersJSON) {
+            if (obj.equals("wex")) {
+                this.knownRaters.add(new RaterWEX(this, 300));
+            } else if (obj.equals("livecoin")) {
+                this.knownRaters.add(new RaterLiveCoin(this, 300));
+            } else if (obj.equals("livecoinRUR")) {
+                this.knownRaters.add(new RaterLiveCoinRUR(this, 300));
+            } else if (obj.equals("polonex")) {
+                this.knownRaters.add(new RaterPolonex(this, 300));
+            } else if (obj.equals("bitforex")) {
+                this.knownRaters.add(new RaterBitforexCom(this, 600));
+            } else if (obj.equals("metals-api")) {
+                this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
+            } else if (obj.equals("binance")) {
+                this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
+                this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
+            } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
+                this.knownRaters.add(new RaterCoinMarketCapCom(this, 300));
+            }
         }
-
-        //this.knownRaters.add(new RaterPolonex(this, 300));
-        //this.knownRaters.add(new RaterBitforexCom(this, 600));
-        //this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
-
-        //this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
-        //this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
-
-        this.knownRaters.add(new RaterCoinMarketCapCom(this, 300));
 
         if (true) {
             RaterCross raterCross_ETH_RUB = new RaterCross(this, 300, "ETH_RUB",

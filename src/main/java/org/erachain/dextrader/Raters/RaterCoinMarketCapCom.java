@@ -18,7 +18,7 @@ public class RaterCoinMarketCapCom extends Rater {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterCoinMarketCapCom.class);
 
-    static String NAME = "coinmarketcap.com";
+    public static String NAME = "coinmarketcap.com";
 
     public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, NAME, null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
