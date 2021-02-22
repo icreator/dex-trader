@@ -156,7 +156,11 @@ public abstract class Rater extends Thread {
     }
 
     protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
+
         rates.put(makeKey(haveKey, wantKey, courseName), rate);
+        // STORE BACK PRICE
+        BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
+        Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
 
         TradersManager.Pair<String, Integer> pair = tradersManager.getAsset(haveKey);
         if (pair == null) {
@@ -175,9 +179,6 @@ public abstract class Rater extends Thread {
         }
         String wantName = pair.a;
 
-        // STORE BACK PRICE
-        BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
-        Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
         LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " from " + courseName + " = " + rate.toPlainString());
 
     }

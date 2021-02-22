@@ -74,9 +74,13 @@ public class TradersManager {
             } else if (obj.equals("metals-api")) {
                 // for FREE rates - 1 per day!
                 this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
-            } else if (obj.equals("binance")) {
+            } else if (obj.equals(RaterBinanceCom.NAME)) {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
                 this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
+
+                this.knownRaters.add(new RaterCross(this, 300, "USD_RUB",
+                        new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
+
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
                 this.knownRaters.add(new RaterCoinMarketCapCom(this, 1000));
             }
@@ -89,7 +93,7 @@ public class TradersManager {
         }
 
         ////////
-        //if (true) return;
+        if (true) return;
 
         try {
             Thread.sleep(5000);

@@ -12,6 +12,8 @@ import java.math.BigDecimal;
  */
 public class RaterBinanceCom extends RaterOnePair {
 
+    public static String NAME = "binance";
+
     // https://api2.binance.com/api/v3/avgPrice?symbol=ETHUSDT
     public RaterBinanceCom(TradersManager tradersManager, int sleepSec, String pair, long baseKey, long quoteKey) {
         super(tradersManager, "binance",pair, baseKey, quoteKey,
