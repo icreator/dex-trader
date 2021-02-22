@@ -1,6 +1,7 @@
 package org.erachain.dextrader.Raters;
 
 
+import org.erachain.dextrader.settings.Settings;
 import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -11,21 +12,23 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-
+// see https://pro.coinmarketcap.com/account/
 /// result   "last":9577.769,"buy":9577.769,"sell":9509.466
 public class RaterCoinMarketCapCom extends Rater {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterCoinMarketCapCom.class);
 
+    static String NAME = "coinmarketcap.com";
+
     private static Map<String, String> headers;
     {
         headers = new HashMap<>();
         headers.put("Accept","application/json");
-        headers.put("X-CMC_PRO_API_KEY","b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c");
+        headers.put("X-CMC_PRO_API_KEY", Settings.getInstance().apiKeysJSON.get(NAME).toString());
     }
 
     public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "coinMarketCap", null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        super(tradersManager, NAME, null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
                 sleepSec, headers);
 
     }

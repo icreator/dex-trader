@@ -62,9 +62,11 @@ public class CallRemoteApi {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // protect from 403 error
-        con.addRequestProperty("User-Agent",
-                //"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0); ");
-                "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 (.NET CLR 3.5.30729)");
+        if (false) {
+            con.addRequestProperty("User-Agent",
+                    //"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0); ");
+                    "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-GB; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 (.NET CLR 3.5.30729)");
+        }
 
         con.setRequestMethod(requestMethod.toUpperCase());
 
