@@ -78,7 +78,7 @@ public class TradersManager {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
                 this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
 
-                this.knownRaters.add(new RaterCross(this, 20, "USD_RUB",
+                this.knownRaters.add(new RaterCross(this, 300, "USD_RUB",
                         new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
