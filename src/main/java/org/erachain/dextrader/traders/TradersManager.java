@@ -72,6 +72,7 @@ public class TradersManager {
             } else if (obj.equals("bitforex")) {
                 this.knownRaters.add(new RaterBitforexCom(this, 600));
             } else if (obj.equals("metals-api")) {
+                // for FREE rates - 1 per day!
                 this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
             } else if (obj.equals("binance")) {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
