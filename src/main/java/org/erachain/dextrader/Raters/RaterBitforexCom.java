@@ -9,10 +9,7 @@ import java.math.BigDecimal;
 public class RaterBitforexCom extends Rater {
 
     public RaterBitforexCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "bitforex", sleepSec, null);
-
-        this.apiURL = "https://api.bitforex.com/api/v1/market/ticker?symbol=coin-usdt-gold";
-
+        super(tradersManager, "bitforex", "https://api.bitforex.com/api/v1/market/ticker?symbol=coin-usdt-gold", sleepSec, null);
     }
 
     public void clearRates() {

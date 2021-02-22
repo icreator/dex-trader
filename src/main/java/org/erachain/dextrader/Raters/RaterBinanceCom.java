@@ -8,12 +8,18 @@ import org.json.simple.JSONValue;
 import java.math.BigDecimal;
 
 
-public class RaterLiveCoin extends Rater {
+/**
+ * https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
+ */
+public class RaterBinanceCom extends Rater {
 
-    public RaterLiveCoin(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "livecoin", apiURL, sleepSec, null);
+    final String pair;
+    public RaterBinanceCom(TradersManager tradersManager, int sleepSec, String pair) {
+        super(tradersManager, "binance." + pair, sleepSec, null);
 
-        this.apiURL = "https://api.livecoin.net/exchange/ticker?currencyPair=ETH/BTC";
+        // https://api2.binance.com/api/v3/avgPrice?symbol=ETHUSDT
+        this.apiURL = "https://api2.binance.com/api/v3/avgPrice?symbol=BTCUSDT";
+        this.pair = pair;
 
     }
 
@@ -21,7 +27,7 @@ public class RaterLiveCoin extends Rater {
         if (cnt.DEVELOP_USE) {
             rates.remove(makeKey(1106L, 1105L, this.courseName));
         } else {
-            rates.remove(makeKey(14L, 12L, this.courseName));
+            rates.remove(makeKey(12L, 95L, this.courseName));
         }
     }
 
@@ -42,13 +48,12 @@ public class RaterLiveCoin extends Rater {
         JSONObject pair;
         BigDecimal price;
 
-        if (json.containsKey("symbol")
-                && "ETH/BTC".equals((String)json.get("symbol"))) {
-            price = new BigDecimal(json.get("vwap").toString()).setScale(10, BigDecimal.ROUND_HALF_UP);
+        if (json.containsKey("price")) {
+            price = new BigDecimal(json.get("price").toString()).setScale(8, BigDecimal.ROUND_HALF_UP);
             if (cnt.DEVELOP_USE) {
                 setRate(1106L, 1105L, this.courseName, price);
             } else {
-                setRate(14L, 12L, this.courseName, price);
+                setRate(12L, 95L, this.courseName, price);
             }
         }
 

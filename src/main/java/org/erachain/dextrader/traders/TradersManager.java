@@ -65,7 +65,7 @@ public class TradersManager {
             RaterWEX raterForex = new RaterWEX(this, 300);
             this.knownRaters.add(raterForex);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
         }
@@ -74,7 +74,7 @@ public class TradersManager {
             RaterCoinMarketCapCom raterMarcetCap = new RaterCoinMarketCapCom(this, 300);
             this.knownRaters.add(raterMarcetCap);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
         }
@@ -84,7 +84,7 @@ public class TradersManager {
             RaterBitforexCom raterBitforexCom = new RaterBitforexCom(this, 600);
             this.knownRaters.add(raterBitforexCom);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
 
@@ -94,7 +94,7 @@ public class TradersManager {
             RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
             this.knownRaters.add(raterLiveCoin);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
 
@@ -103,7 +103,7 @@ public class TradersManager {
             RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 300);
             this.knownRaters.add(raterLiveCoinRUR);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
 
@@ -113,7 +113,7 @@ public class TradersManager {
             RaterPolonex raterPolonex = new RaterPolonex(this, 300);
             this.knownRaters.add(raterPolonex);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
         }
@@ -123,7 +123,7 @@ public class TradersManager {
                     new String[]{"14.12 polonex", "12.92 livecoin"});
             this.knownRaters.add(raterCross_ETH_RUB);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
         }
@@ -133,10 +133,20 @@ public class TradersManager {
             RaterMetalsAPI raterMetalsAPI = new RaterMetalsAPI(this, 60 * 60 * 24);
             this.knownRaters.add(raterMetalsAPI);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (Exception e) {
             }
         }
+
+        if (true) {
+            RaterBinanceCom rater = new RaterBinanceCom(this, 300);
+            this.knownRaters.add(rater);
+            try {
+                Thread.sleep(500);
+            } catch (Exception e) {
+            }
+        }
+
 
         //if (true) return;
 

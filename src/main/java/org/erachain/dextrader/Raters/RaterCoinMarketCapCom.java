@@ -25,7 +25,7 @@ public class RaterCoinMarketCapCom extends Rater {
     }
 
     public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "coinMarketCap", sleepSec, headers);
+        super(tradersManager, "coinMarketCap", apiURL, sleepSec, headers);
 
         this.apiURL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
 

@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -73,7 +72,7 @@ public class RaterMetalsAPI extends Rater {
     private boolean TEST = false;
 
     public RaterMetalsAPI(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "metals-api", sleepSec, null);
+        super(tradersManager, "metals-api", apiURL, sleepSec, null);
 
         try {
             String apiKey = Settings.getInstance().apiKeysJSON.get("metals-api.com").toString();

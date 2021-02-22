@@ -37,7 +37,7 @@ public abstract class Rater extends Thread {
     private boolean run = true;
 
 
-    public Rater(TradersManager tradersManager, String courseName, int sleepSec, Map<String, String> headers) {
+    public Rater(TradersManager tradersManager, String courseName, String apiURL, int sleepSec, Map<String, String> headers) {
 
         this.cnt = Controller.getInstance();
         this.headers = headers;

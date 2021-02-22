@@ -14,7 +14,7 @@ public class RaterPolonex extends Rater {
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterPolonex.class);
 
     public RaterPolonex(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "polonex", sleepSec, null);
+        super(tradersManager, "polonex", apiURL, sleepSec, null);
 
         // https://poloniex.com/support/api/v1/
         //https://poloniex.com/public?command=returnTicker&
