@@ -86,6 +86,8 @@ public class TradersManager {
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
                 this.knownRaters.add(new RaterCoinMarketCapCom(this, 1000));
+            } else {
+                LOGGER.warn("Not found rater: " + obj);
             }
         }
 
@@ -143,6 +145,8 @@ public class TradersManager {
                     trader = new RandomHitSelf(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelfRand")) {
                     trader = new RandomHitSelfRand(this, traderAddress, item);
+                } else {
+                    LOGGER.warn("Not found trader: " + type);
                 }
 
                 if (trader != null) {
