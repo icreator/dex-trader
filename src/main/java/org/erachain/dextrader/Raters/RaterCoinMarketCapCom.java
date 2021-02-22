@@ -20,16 +20,13 @@ public class RaterCoinMarketCapCom extends Rater {
 
     static String NAME = "coinmarketcap.com";
 
-    private static Map<String, String> headers;
-    {
+    public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
+        super(tradersManager, NAME, null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+                sleepSec);
+
         headers = new HashMap<>();
         headers.put("Accept","application/json");
         headers.put("X-CMC_PRO_API_KEY", Settings.getInstance().apiKeysJSON.get(NAME).toString());
-    }
-
-    public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, NAME, null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
-                sleepSec, headers);
 
     }
 

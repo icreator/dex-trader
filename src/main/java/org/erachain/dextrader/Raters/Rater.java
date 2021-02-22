@@ -34,14 +34,13 @@ public abstract class Rater extends Thread {
     private boolean run = true;
 
 
-    public Rater(TradersManager tradersManager, String name, String courseName, String apiURL, int sleepSec, Map<String, String> headers) {
+    public Rater(TradersManager tradersManager, String name, String courseName, String apiURL, int sleepSec) {
 
         this.setName(this.getClass().getName() + ": " + name);
 
         this.apiURL = apiURL;
 
         this.cnt = Controller.getInstance();
-        this.headers = headers;
         this.caller = new CallRemoteApi();
 
         this.tradersManager = tradersManager;

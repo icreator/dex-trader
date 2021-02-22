@@ -21,7 +21,7 @@ public class RaterCross extends Rater {
      * @param crossPath
      */
     public RaterCross(TradersManager tradersManager, int sleepSec, String name, String[] crossPath) {
-        super(tradersManager, name, name, null, sleepSec, null);
+        super(tradersManager, name, name, null, sleepSec);
 
         this.crossPath = crossPath;
         startKey = Long.valueOf(crossPath[0].split("[\\.]")[0]);

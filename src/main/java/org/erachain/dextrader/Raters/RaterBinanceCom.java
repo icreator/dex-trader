@@ -3,7 +3,6 @@ package org.erachain.dextrader.Raters;
 
 import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import java.math.BigDecimal;
 
@@ -17,7 +16,7 @@ public class RaterBinanceCom extends RaterOnePair {
     public RaterBinanceCom(TradersManager tradersManager, int sleepSec, String pair, long baseKey, long quoteKey) {
         super(tradersManager, "binance",pair, baseKey, quoteKey,
                 "https://api2.binance.com/api/v3/avgPrice?symbol=" + pair,
-                sleepSec, null);
+                sleepSec);
     }
 
     @Override

@@ -9,8 +9,8 @@ public class RaterBitforexCom extends RaterOnePair {
 
     public RaterBitforexCom(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, "bitforex", "coin-usdt-gold", 21L, 95L,
-                "https://api.bitforex.com/api/v1/market/ticker?symbol=", sleepSec,
-                null);
+                "https://api.bitforex.com/api/v1/market/ticker?symbol=", sleepSec
+        );
     }
 
     @Override

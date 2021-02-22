@@ -6,7 +6,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 
 /**
@@ -18,9 +17,8 @@ public abstract class RaterOnePair extends Rater {
     final long baseKey;
     final long quoteKey;
 
-    public RaterOnePair(TradersManager tradersManager, String name, String pair, long baseKey, long quoteKey, String apiURL, int sleepSec,
-                        Map<String, String> headers) {
-        super(tradersManager, name + "." + pair, name, apiURL, sleepSec, headers);
+    public RaterOnePair(TradersManager tradersManager, String name, String pair, long baseKey, long quoteKey, String apiURL, int sleepSec) {
+        super(tradersManager, name + "." + pair, name, apiURL, sleepSec);
 
         this.baseKey = baseKey;
         this.quoteKey = quoteKey;

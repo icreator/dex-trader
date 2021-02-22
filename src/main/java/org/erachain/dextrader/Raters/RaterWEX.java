@@ -17,7 +17,7 @@ public class RaterWEX extends Rater {
 
     public RaterWEX(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, "wex", null, "https://wex.nz/api/3/ticker/btc_rur-btc_usd-usd_rur",
-                sleepSec, null);
+                sleepSec);
 
     }
 

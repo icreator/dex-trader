@@ -12,7 +12,7 @@ public class RaterLiveCoin extends Rater {
 
     public RaterLiveCoin(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, "livecoin", null,  "https://api.livecoin.net/exchange/ticker?currencyPair=ETH/BTC",
-                sleepSec, null);
+                sleepSec);
 
     }
 

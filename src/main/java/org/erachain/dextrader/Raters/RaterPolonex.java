@@ -18,7 +18,7 @@ public class RaterPolonex extends Rater {
     // https://poloniex.com/public?command=returnTicker&pair=BTC_ETH - return ALL
     public RaterPolonex(TradersManager tradersManager, int sleepSec) {
         super(tradersManager,"polonex", null,  "https://poloniex.com/public?command=returnTicker",
-                sleepSec, null);
+                sleepSec);
 
     }
 
