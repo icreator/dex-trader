@@ -13,12 +13,16 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-// see https://pro.coinmarketcap.com/account/
+/**
+ * need API-KEY. Set it in secret-keys.json
+ * see https://pro.coinmarketcap.com/account/
+ */
 public class RaterCoinMarketCapCom extends Rater {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterCoinMarketCapCom.class);
 
     public static String NAME = "coinmarketcap.com";
+    static long ZEN_KEY = 27L;
 
     public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, NAME, null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
@@ -30,22 +34,11 @@ public class RaterCoinMarketCapCom extends Rater {
 
     }
 
-
-    private BigDecimal calcPrice(BigDecimal rateBuy, BigDecimal rateSell, BigDecimal rateLast) {
-        try {
-            return (rateBuy.add(rateSell).divide(new BigDecimal(2), 10, BigDecimal.ROUND_HALF_UP))
-                .multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
-        } catch (NullPointerException | ClassCastException e) {
-            return null;
-        }
-
-    }
-
     public void clearRates() {
         if (cnt.DEVELOP_USE) {
             rates.remove(makeKey(1106L, 1105L, this.courseName));
         } else {
-            rates.remove(makeKey(12L, 95L, this.courseName));
+            rates.remove(makeKey(ZEN_KEY, 95L, this.courseName));
         }
     }
 
@@ -76,7 +69,7 @@ public class RaterCoinMarketCapCom extends Rater {
                     if (cnt.DEVELOP_USE) {
                         setRate(1105L, 1108L, this.courseName, price);
                     } else {
-                        setRate(12L, 92L, this.courseName, price);
+                        setRate(ZEN_KEY, 95L, this.courseName, price);
                     }
 
                 }
