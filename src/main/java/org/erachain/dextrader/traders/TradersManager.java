@@ -77,7 +77,7 @@ public class TradersManager {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
                 this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
-                this.knownRaters.add(new RaterCoinMarketCapCom(this, 300));
+                this.knownRaters.add(new RaterCoinMarketCapCom(this, 1000));
             }
         }
 
