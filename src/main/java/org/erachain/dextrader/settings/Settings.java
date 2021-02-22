@@ -34,6 +34,8 @@ public class Settings {
     private Settings() {
 
         readAPIkeysJSON();
+        readTradersJSON();
+        readRatersJSON();
 
         settingsJSON = read_setting_JSON();
 

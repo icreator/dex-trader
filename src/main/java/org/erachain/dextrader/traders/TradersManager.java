@@ -160,7 +160,7 @@ public class TradersManager {
         }
 
 
-        if (false && this.knownTraders.isEmpty()) {
+        if (this.knownTraders.isEmpty()) {
             LOGGER.error("Not found Traders Accounts or Traders in Settings");
             cnt.stopAll(-13);
         }

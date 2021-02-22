@@ -157,9 +157,6 @@ public class Controller extends Observable {
 
             this.apiClient = new ApiClient();
 
-            Settings.getInstance().readTradersJSON();
-            Settings.getInstance().readRatersJSON();
-
             this.tradersManager = new TradersManager(this);
 
             // START

@@ -73,10 +73,13 @@ public class RaterMetalsAPI extends Rater {
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterMetalsAPI.class);
 
     private static boolean TEST = false;
+    public static String NAME = "metals-api.com";
 
     public RaterMetalsAPI(TradersManager tradersManager, int sleepSec) {
         super(tradersManager, "metals-api", null,
-                "https://metals-api.com/api/latest?access_key=" + Settings.getInstance().apiKeysJSON.get("metals-api.com"),
+                "https://metals-api.com/api/latest?access_key="
+                        + (Settings.getInstance().apiKeysJSON.get(NAME) == null? "--"
+                            : Settings.getInstance().apiKeysJSON.get(NAME)),
                 sleepSec);
     }
 
