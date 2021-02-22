@@ -77,6 +77,7 @@ public class TradersManager {
             } else if (obj.equals(RaterBinanceCom.NAME)) {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
                 this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
+                this.knownRaters.add(new RaterBinanceCom(this, 350, "PAXGUSDT",21L, 95L));
 
                 this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
                         new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
