@@ -81,6 +81,9 @@ public class TradersManager {
                 this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
                         new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
 
+                this.knownRaters.add(new RaterCross(this, 350, "cross",
+                        new String[]{"92.95 " + RaterBinanceCom.NAME, "95.21 bitforex"}));
+
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
                 this.knownRaters.add(new RaterCoinMarketCapCom(this, 1000));
             }

@@ -33,6 +33,7 @@ public abstract class Rater extends Thread {
     protected BigDecimal shiftRate = BigDecimal.ONE;
     private boolean run = true;
 
+    protected boolean needRun;
 
     public Rater(TradersManager tradersManager, String name, String courseName, String apiURL, int sleepSec) {
 
@@ -134,14 +135,14 @@ public abstract class Rater extends Thread {
             }
 
             try {
-                this.tryGetRate();
+                needRun = !this.tryGetRate();
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
             }
 
             //SLEEP
             try {
-                Thread.sleep(sleepTimeStep);
+                Thread.sleep(needRun? 10000 : sleepTimeStep);
             } catch (InterruptedException e) {
                 //FAILED TO SLEEP
                 break;

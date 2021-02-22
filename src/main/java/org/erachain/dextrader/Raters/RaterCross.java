@@ -45,7 +45,7 @@ public class RaterCross extends Rater {
 
         try {
             // задержка для имитации опроса - ожидаем рейтеры другие пока они пробьются чтобы курс здесь повился
-            Thread.sleep(2500);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             return true;
         }
