@@ -27,9 +27,6 @@ public abstract class Rater extends Thread {
     protected Controller cnt;
     protected CallRemoteApi caller;
 
-    // https://api.livecoin.net/exchange/ticker?currencyPair=EMC/BTC
-    // https://poloniex.com/public?command=returnTradeHistory&currencyPair=BTC_DOGE
-    // https://wex.nz/api/3/ticker/btc_rur
     protected String courseName; // course name
     protected String apiURL;
     Map<String, String> headers;
@@ -37,7 +34,11 @@ public abstract class Rater extends Thread {
     private boolean run = true;
 
 
-    public Rater(TradersManager tradersManager, String courseName, String apiURL, int sleepSec, Map<String, String> headers) {
+    public Rater(TradersManager tradersManager, String name, String courseName, String apiURL, int sleepSec, Map<String, String> headers) {
+
+        this.setName(this.getClass().getName() + ": " + name);
+
+        this.apiURL = apiURL;
 
         this.cnt = Controller.getInstance();
         this.headers = headers;
@@ -45,9 +46,7 @@ public abstract class Rater extends Thread {
 
         this.tradersManager = tradersManager;
         this.sleepTimeStep = sleepSec * 1000;
-        this.courseName = courseName;
-
-        this.setName(this.getClass().getName() + ": " + this.courseName);
+        this.courseName = courseName == null? name : courseName;
 
         LOGGER = LoggerFactory.getLogger(getName());
 

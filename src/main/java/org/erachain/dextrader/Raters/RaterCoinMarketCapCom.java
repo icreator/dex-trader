@@ -25,9 +25,8 @@ public class RaterCoinMarketCapCom extends Rater {
     }
 
     public RaterCoinMarketCapCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "coinMarketCap", apiURL, sleepSec, headers);
-
-        this.apiURL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
+        super(tradersManager, "coinMarketCap", null, "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+                sleepSec, headers);
 
     }
 
@@ -88,7 +87,7 @@ public class RaterCoinMarketCapCom extends Rater {
                 if (cnt.DEVELOP_USE) {
                     setRate(1105L, 1108L, this.courseName, price);
                 } else {
-                    setRate(12L, 95L, this.courseName, price);
+                    setRate(12L, 92L, this.courseName, price);
                 }
             }
 

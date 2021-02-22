@@ -2,61 +2,37 @@ package org.erachain.dextrader.Raters;
 
 import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import java.math.BigDecimal;
 
-public class RaterBitforexCom extends Rater {
+public class RaterBitforexCom extends RaterOnePair {
 
     public RaterBitforexCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "bitforex", "https://api.bitforex.com/api/v1/market/ticker?symbol=coin-usdt-gold", sleepSec, null);
+        super(tradersManager, "bitforex", "coin-usdt-gold", 21L, 95L,
+                "https://api.bitforex.com/api/v1/market/ticker?symbol=", sleepSec,
+                null);
     }
 
-    public void clearRates() {
-        if (cnt.DEVELOP_USE) {
-            rates.remove(makeKey(1106L, 1105L, this.courseName));
-        } else {
-            rates.remove(makeKey(21L, 95L, this.courseName));
-        }
-    }
-
-    protected void parse(String result) {
-        JSONObject json = null;
-        try {
-            //READ JSON
-            json = (JSONObject) JSONValue.parse(result);
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
-
-        if (json == null)
-            return;
-
-        BigDecimal buy;
-        BigDecimal sell;
-        BigDecimal price;
-
+    @Override
+    BigDecimal getValue(JSONObject response) {
         // {"data":{"buy":51.70018,"date":1587563047849,"high":54.62,"last":52.08,"low":48.34,"sell":53.2,"vol":113818.2957},"success":true,"time":1587563047849}
-        if (json.containsKey("success")
-                && (Boolean) json.get("success")) {
-            JSONObject data = (JSONObject) json.get("data");
+        if (response.containsKey("success")
+                && (Boolean) response.get("success")) {
+            JSONObject data = (JSONObject) response.get("data");
+
+            BigDecimal buy;
+            BigDecimal sell;
+
             buy = new BigDecimal(data.get("buy").toString()).setScale(5, BigDecimal.ROUND_HALF_UP);
             sell = new BigDecimal(data.get("sell").toString()).setScale(5, BigDecimal.ROUND_HALF_UP);
 
-            price = buy.add(sell)
+            return buy.add(sell)
                     // преобразуем в тройскую унцию
                     .multiply(new BigDecimal("31.104"))
-                    // среднее арефметическое
+                    // среднее арифметическое
                     .multiply(new BigDecimal("0.5"));
-
-            if (cnt.DEVELOP_USE) {
-                setRate(1106L, 1105L, this.courseName, price);
-            } else {
-                setRate(21L, 95L, this.courseName, price);
-            }
         }
 
+        return null;
     }
 }

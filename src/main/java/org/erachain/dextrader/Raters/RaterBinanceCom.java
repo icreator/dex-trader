@@ -11,51 +11,20 @@ import java.math.BigDecimal;
 /**
  * https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
  */
-public class RaterBinanceCom extends Rater {
+public class RaterBinanceCom extends RaterOnePair {
 
-    final String pair;
-    public RaterBinanceCom(TradersManager tradersManager, int sleepSec, String pair) {
-        super(tradersManager, "binance." + pair, sleepSec, null);
-
-        // https://api2.binance.com/api/v3/avgPrice?symbol=ETHUSDT
-        this.apiURL = "https://api2.binance.com/api/v3/avgPrice?symbol=BTCUSDT";
-        this.pair = pair;
-
+    // https://api2.binance.com/api/v3/avgPrice?symbol=ETHUSDT
+    public RaterBinanceCom(TradersManager tradersManager, int sleepSec, String pair, long baseKey, long quoteKey) {
+        super(tradersManager, "binance",pair, baseKey, quoteKey,
+                "https://api2.binance.com/api/v3/avgPrice?symbol=BTCUSDT",
+                sleepSec, null);
     }
 
-    public void clearRates() {
-        if (cnt.DEVELOP_USE) {
-            rates.remove(makeKey(1106L, 1105L, this.courseName));
-        } else {
-            rates.remove(makeKey(12L, 95L, this.courseName));
+    @Override
+    BigDecimal getValue(JSONObject response) {
+        if (response.containsKey("price")) {
+            return new BigDecimal(response.get("price").toString()).setScale(8, BigDecimal.ROUND_HALF_UP);
         }
-    }
-
-    protected void parse(String result) {
-        JSONObject json = null;
-        try {
-            //READ JSON
-            json = (JSONObject) JSONValue.parse(result);
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
-
-        if (json == null)
-            return;
-
-        JSONObject pair;
-        BigDecimal price;
-
-        if (json.containsKey("price")) {
-            price = new BigDecimal(json.get("price").toString()).setScale(8, BigDecimal.ROUND_HALF_UP);
-            if (cnt.DEVELOP_USE) {
-                setRate(1106L, 1105L, this.courseName, price);
-            } else {
-                setRate(12L, 95L, this.courseName, price);
-            }
-        }
-
+        return null;
     }
 }

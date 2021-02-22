@@ -16,9 +16,8 @@ public class RaterWEX extends Rater {
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterWEX.class);
 
     public RaterWEX(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "wex", apiURL, sleepSec, null);
-
-        this.apiURL = "https://wex.nz/api/3/ticker/btc_rur-btc_usd-usd_rur";
+        super(tradersManager, "wex", null, "https://wex.nz/api/3/ticker/btc_rur-btc_usd-usd_rur",
+                sleepSec, null);
 
     }
 

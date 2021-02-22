@@ -13,13 +13,12 @@ public class RaterPolonex extends Rater {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterPolonex.class);
 
+    // https://poloniex.com/support/api/v1/
+    // https://poloniex.com/public?command=returnTicker&
+    // https://poloniex.com/public?command=returnTicker&pair=BTC_ETH - return ALL
     public RaterPolonex(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "polonex", apiURL, sleepSec, null);
-
-        // https://poloniex.com/support/api/v1/
-        //https://poloniex.com/public?command=returnTicker&
-        //https://poloniex.com/public?command=returnTicker&pair=BTC_ETH - return ALL
-        this.apiURL = "https://poloniex.com/public?command=returnTicker";
+        super(tradersManager,"polonex", null,  "https://poloniex.com/public?command=returnTicker",
+                sleepSec, null);
 
     }
 

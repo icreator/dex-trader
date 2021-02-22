@@ -139,8 +139,8 @@ public class TradersManager {
         }
 
         if (true) {
-            RaterBinanceCom rater = new RaterBinanceCom(this, 300);
-            this.knownRaters.add(rater);
+            this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
+            this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
             try {
                 Thread.sleep(500);
             } catch (Exception e) {

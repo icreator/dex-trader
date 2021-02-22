@@ -11,9 +11,8 @@ import java.math.BigDecimal;
 public class RaterLiveCoin extends Rater {
 
     public RaterLiveCoin(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "livecoin", apiURL, sleepSec, null);
-
-        this.apiURL = "https://api.livecoin.net/exchange/ticker?currencyPair=ETH/BTC";
+        super(tradersManager, "livecoin", null,  "https://api.livecoin.net/exchange/ticker?currencyPair=ETH/BTC",
+                sleepSec, null);
 
     }
 
