@@ -69,8 +69,7 @@ public class TradersManager {
             } catch (Exception e) {
             }
         }
-        if (false) {
-            //START RATERs THREADs
+        if (true) {
             RaterCoinMarketCapCom raterMarcetCap = new RaterCoinMarketCapCom(this, 300);
             this.knownRaters.add(raterMarcetCap);
             try {
