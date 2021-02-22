@@ -94,7 +94,7 @@ public class TradersManager {
         }
 
 
-        //if (true) return;
+        if (true) return;
 
         try {
             Thread.sleep(5000);

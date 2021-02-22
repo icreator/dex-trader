@@ -15,7 +15,7 @@ public class RaterBinanceCom extends RaterOnePair {
     // https://api2.binance.com/api/v3/avgPrice?symbol=ETHUSDT
     public RaterBinanceCom(TradersManager tradersManager, int sleepSec, String pair, long baseKey, long quoteKey) {
         super(tradersManager, "binance",pair, baseKey, quoteKey,
-                "https://api2.binance.com/api/v3/avgPrice?symbol=" + pair,
+                "https://api2.binance.com/api/v3/avgPrice?symbol=",
                 sleepSec);
     }
 

@@ -18,7 +18,7 @@ public abstract class RaterOnePair extends Rater {
     final long quoteKey;
 
     public RaterOnePair(TradersManager tradersManager, String name, String pair, long baseKey, long quoteKey, String apiURL, int sleepSec) {
-        super(tradersManager, name + "." + pair, name, apiURL, sleepSec);
+        super(tradersManager, name + "." + pair, name, apiURL + pair, sleepSec);
 
         this.baseKey = baseKey;
         this.quoteKey = quoteKey;
