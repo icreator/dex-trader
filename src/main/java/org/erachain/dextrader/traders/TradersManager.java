@@ -88,12 +88,7 @@ public class TradersManager {
             this.knownRaters.add(raterCross_ETH_RUB);
         }
 
-        try {
-            Thread.sleep(500);
-        } catch (Exception e) {
-        }
-
-
+        ////////
         //if (true) return;
 
         try {
