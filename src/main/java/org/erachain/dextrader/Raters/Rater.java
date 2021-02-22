@@ -160,20 +160,27 @@ public abstract class Rater extends Thread {
         rates.put(makeKey(haveKey, wantKey, courseName), rate);
 
         TradersManager.Pair<String, Integer> pair = tradersManager.getAsset(haveKey);
-        if (pair == null)
+        if (pair == null) {
+            LOGGER.info("set RATE " + "[" + haveKey + "] / " + "[" + wantKey + "] from " + courseName + " = " + rate.toPlainString());
+            LOGGER.warn("asset [" + haveKey + "] not found...");
             return;
+        }
+
         String haveName = pair.a;
 
         pair = tradersManager.getAsset(wantKey);
-        if (pair == null)
+        if (pair == null) {
+            LOGGER.info("set RATE " + "[" + haveKey + "] / " + "[" + wantKey + "] from " + courseName + " = " + rate.toPlainString());
+            LOGGER.warn("asset [" + wantKey + "] not found...");
             return;
+        }
         String wantName = pair.a;
 
         // STORE BACK PRICE
         BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
         Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
+        LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " from " + courseName + " = " + rate.toPlainString());
 
-        LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " on " + courseName + " = " + rate.toPlainString());
     }
 
     public void close() {
