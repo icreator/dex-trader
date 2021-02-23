@@ -15,7 +15,7 @@
     // pair: want asset 
       "wantAssetKey": 21,
     // use exchange for rate
-      "sourceExchange": "bitforex",
+      "sourceExchange": "binance",
     // IF rate DIFFERENCE over UP LIMIT - cancel scheme orders and create anew whith new prices
       "limitUP": "2.5",
     // IF rate DIFFERENCE over DOWN LIMIT - cancel scheme orders and create anew whith new prices
@@ -39,7 +39,7 @@
     "cleanAllOnStart": false,
     "haveAssetKey": 95,
     "wantAssetKey": 21,
-    "sourceExchange": "bitforex",
+    "sourceExchange": "binance",
       "scheme": {
         "50": "-2.0",
         "-50": "-2.0"
@@ -99,7 +99,7 @@
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,
-      "sourceExchange": "polonex",
+      "sourceExchange": "binance",
       "limitUP": "1.9",
       "limitDown": "1.9",
       "scheme": {
@@ -117,7 +117,7 @@
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
       "wantAssetKey": 12,
-      "sourceExchange": "polonex",
+      "sourceExchange": "binance",
       "scheme": {
         "50": "-2.0",
         "-50": "-2.0"
@@ -148,11 +148,43 @@
       "sleepTime": 5600,
       "cleanAllOnStart": true,
       "haveAssetKey": 95,
-      "wantAssetKey": 22,
+      "wantAssetKey": 92,
       "sourceExchange": "binance",
       "scheme": {
         "50": "-2.0",
         "-50": "-2.0"
+      }
+  },
+  {
+    "type": "Guard",
+      "traderAddress": "7AQBTR1w4CWhf7QEmTtwy6eFmziyCJr1Un",
+      "startDelay": 100,
+      "sleepTime": 1850,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 92,
+      "wantAssetKey": 21,
+      "sourceExchange": "binance",
+      "limitUP": "1.9",
+      "limitDown": "1.9",
+      "scheme": {
+        "10000": "0.9",
+        "1000": "0.1",
+        "-1000": "0.1",
+        "-10000": "0.9"
+      }
+  },
+  {
+    "type": "RandomHitRand",
+      "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
+      "startDelay": 250,
+      "sleepTime": 5600,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 92,
+      "wantAssetKey": 21,
+      "sourceExchange": "binance",
+      "scheme": {
+        "500": "-2.0",
+        "-500": "-2.0"
       }
   },
   {
