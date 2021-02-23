@@ -82,32 +82,23 @@ public class TradersManager {
                 this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
                         new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
 
-                this.knownRaters.add(new RaterCross(this, 350, "cross",
-                        new String[]{"92.95 " + RaterBinanceCom.NAME, "95.21 bitforex"}));
+                this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
+                        new String[]{"92.95 " + RaterBinanceCom.NAME, "95.21 " + RaterBinanceCom.NAME}));
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
-                this.knownRaters.add(new RaterCoinMarketCapCom(this, 1000));
+                this.knownRaters.add(new RaterCoinMarketCapCom(this, 330));
             } else {
                 LOGGER.warn("Not found rater: " + obj);
             }
         }
 
-        if (true) {
-            RaterCross raterCross_ETH_RUB = new RaterCross(this, 300, "ETH_RUB",
-                    new String[]{"14.12 polonex", "12.92 livecoin"});
-            this.knownRaters.add(raterCross_ETH_RUB);
+        if (START_ONLY_RATERS) {
+            return;
         }
-
-        ////////
-        //if (true) return;
 
         try {
             Thread.sleep(5000);
         } catch (Exception e) {
-        }
-
-        if (START_ONLY_RATERS) {
-            return;
         }
 
         if (Settings.getInstance().apiKeysJSON.containsKey("wallet")) {

@@ -1,1 +1,5 @@
-{"rpcport":"9048"}
+{
+  "rpcport":"9048",
+  // run only raters
+  "only_raters": true
+}
