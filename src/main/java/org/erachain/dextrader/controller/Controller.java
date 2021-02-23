@@ -125,35 +125,31 @@ public class Controller extends Observable {
     }
 
     public void startApplication(String args[]) {
-        boolean cli = false;
 
         // get GRADLE bild time
         getManifestInfo();
+
+        if (Settings.getInstance().settingsJSON.containsKey("only_raters")) {
+            TradersManager.START_ONLY_RATERS = (Boolean) Settings.getInstance().settingsJSON.get("only_raters");
+        }
+
+        LOGGER.info("Starting %app%".replace("%app%", Controller.APP_NAME));
+        LOGGER.info(version + " build " + buildTime);
 
         if (buildTimestamp == 0)
             // get local file time
             getBuildTimestamp();
 
-        String pass = null;
-
         for (String arg : args) {
-            if (arg.equals("-cli")) {
-                cli = true;
-                continue;
-            }
-
-
-            if (arg.equals("-nogui")) {
-                useGui = false;
+            if (arg.equals("-only_raters")) {
+                TradersManager.START_ONLY_RATERS = true;
+                LOGGER.info("START_ONLY_RATERS");
                 continue;
             }
 
         }
 
         try {
-
-            LOGGER.info("Starting %app%".replace("%app%", Controller.APP_NAME));
-            LOGGER.info(version + " build " + buildTime);
 
             this.apiClient = new ApiClient();
 

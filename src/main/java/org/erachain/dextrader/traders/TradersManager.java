@@ -16,7 +16,7 @@ import java.util.*;
 public class TradersManager {
 
     // for DEVELOP
-    static boolean START_ONLY_RATERS = false;
+    public static boolean START_ONLY_RATERS = false;
 
     protected static String WALLET_PASSWORD;
 
@@ -55,10 +55,6 @@ public class TradersManager {
     }
 
     private void start() {
-
-        if (Settings.getInstance().settingsJSON.containsKey("only_raters")) {
-            START_ONLY_RATERS = (Boolean) Settings.getInstance().settingsJSON.get("only_raters");
-        }
 
         for (Object obj : Settings.getInstance().ratersJSON) {
             if (obj.equals("wex")) {
