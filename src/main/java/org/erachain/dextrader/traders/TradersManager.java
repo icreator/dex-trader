@@ -91,7 +91,7 @@ public class TradersManager {
                         new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
-                this.knownRaters.add(new RaterCoinMarketCapCom(this, 330));
+                this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
 
             } else {
                 LOGGER.warn("Not found rater: " + obj);
