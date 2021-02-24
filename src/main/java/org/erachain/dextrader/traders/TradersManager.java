@@ -59,17 +59,23 @@ public class TradersManager {
         for (Object obj : Settings.getInstance().ratersJSON) {
             if (obj.equals("wex")) {
                 this.knownRaters.add(new RaterWEX(this, 300));
+
             } else if (obj.equals("livecoin")) {
                 this.knownRaters.add(new RaterLiveCoin(this, 300));
+
             } else if (obj.equals("livecoinRUR")) {
                 this.knownRaters.add(new RaterLiveCoinRUR(this, 300));
+
             } else if (obj.equals("polonex")) {
                 this.knownRaters.add(new RaterPolonex(this, 300));
+
             } else if (obj.equals("bitforex")) {
                 this.knownRaters.add(new RaterBitforexCom(this, 600));
+
             } else if (obj.equals("metals-api")) {
                 // for FREE rates - 1 per day!
                 this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
+
             } else if (obj.equals(RaterBinanceCom.NAME)) {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
                 this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
@@ -86,6 +92,7 @@ public class TradersManager {
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
                 this.knownRaters.add(new RaterCoinMarketCapCom(this, 330));
+
             } else {
                 LOGGER.warn("Not found rater: " + obj);
             }
