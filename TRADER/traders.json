@@ -188,6 +188,38 @@
       }
   },
   {
+    "type": "Guard",
+      "traderAddress": "7AQBTR1w4CWhf7QEmTtwy6eFmziyCJr1Un",
+      "startDelay": 150,
+      "sleepTime": 2850,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 21,
+      "wantAssetKey": 12,
+      "sourceExchange": "binance",
+      "limitUP": "1.9",
+      "limitDown": "1.9",
+      "scheme": {
+        "0.1": "0.9",
+        "0.01": "0.1",
+        "-0.01": "0.1",
+        "-0.1": "0.9"
+      }
+  },
+  {
+    "type": "RandomHitRand",
+      "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
+      "startDelay": 350,
+      "sleepTime": 18000,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 21,
+      "wantAssetKey": 12,
+      "sourceExchange": "binance",
+      "scheme": {
+        "0.0005": "-2.0",
+        "-0.0005": "-2.0"
+      }
+  },
+  {
     "type": "RandomHitSelfRand",
     "traderAddress": "77FrM7Y9CC17Lwo6Ku4U4pzXr8V9xtMGtn",
     "startDelay": 10,
