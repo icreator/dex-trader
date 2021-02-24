@@ -79,7 +79,10 @@ public class TradersManager {
                         new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
 
                 this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
-                        new String[]{"92.95 " + RaterBinanceCom.NAME, "95.21 " + RaterBinanceCom.NAME}));
+                        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.92 " + RaterBinanceCom.NAME}));
+
+                this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
+                        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
                 this.knownRaters.add(new RaterCoinMarketCapCom(this, 330));
