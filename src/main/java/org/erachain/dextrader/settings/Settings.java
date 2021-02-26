@@ -33,11 +33,11 @@ public class Settings {
 
     private Settings() {
 
+        settingsJSON = read_setting_JSON();
+
         readAPIkeysJSON();
         readTradersJSON();
         readRatersJSON();
-
-        settingsJSON = read_setting_JSON();
 
     }
 
@@ -112,7 +112,7 @@ public class Settings {
     ////////////////////////////////
     public List<JSONObject> readTradersJSON() {
 
-        File file = new File("traders.json");
+       File file = new File(getRpcPort() == 9068? "traders-demo.json" : "traders.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -150,7 +150,7 @@ public class Settings {
 
     public List<JSONObject> readRatersJSON() {
 
-        File file = new File("raters.json");
+        File file = new File(getRpcPort() == 9068? "raters-demo.json" : "raters.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();

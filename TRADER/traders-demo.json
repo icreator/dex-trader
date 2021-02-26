@@ -1,0 +1,240 @@
+[
+  {
+    // Type of strategy - sta as GUARD in persandage
+    "type": "-Guard",
+    // trader address
+      "traderAddress": "--",
+    // delay for start
+      "startDelay": 55,
+    // speep period
+      "sleepTime": 3000,
+    // clear all orders on start
+      "cleanAllOnStart": true,
+    // pair: have asset 
+      "haveAssetKey": 95,
+    // pair: want asset 
+      "wantAssetKey": 21,
+    // use exchange for rate
+      "sourceExchange": "binance",
+    // IF rate DIFFERENCE over UP LIMIT - cancel scheme orders and create anew whith new prices
+      "limitUP": "2.5",
+    // IF rate DIFFERENCE over DOWN LIMIT - cancel scheme orders and create anew whith new prices
+      "limitDown": "2.5",
+    // SCHEME
+      "scheme": {
+        // for HAVE VOLUME set price DIFFERENCE sell
+        "1000": "0.8",
+        "100": "0.2",
+        "-100": "0.2",
+        // for HAVE VOLUME set price DIFFERENCE buy
+        "-1000": "0.8"
+      }
+  },
+  {
+// Random hit 
+    "type": "-RandomHitRand",
+    "traderAddress": "--",
+    "startDelay": 300,
+    "sleepTime": 7100,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 95,
+    "wantAssetKey": 21,
+    "sourceExchange": "binance",
+      "scheme": {
+        "50": "-2.0",
+        "-50": "-2.0"
+      }
+  },
+  {
+    // Type of strategy - sta as GUARD in persandage
+    "type": "-Guard",
+    // trader address
+      "traderAddress": "--",
+    // delay for start
+      "startDelay": 55,
+    // speep period
+      "sleepTime": 700,
+    // clear all orders on start
+      "cleanAllOnStart": true,
+    // pair: have asset 
+      "haveAssetKey": 92,
+    // pair: want asset 
+      "wantAssetKey": 12,
+    // use exchange for rate
+      "sourceExchange": "binance",
+    // IF rate DIFFERENCE over UP LIMIT - cancel scheme orders and create anew whith new prices
+      "limitUP": "2.5",
+    // IF rate DIFFERENCE over DOWN LIMIT - cancel scheme orders and create anew whith new prices
+      "limitDown": "2.5",
+    // SCHEME
+      "scheme": {
+        // for HAVE VOLUME set price DIFFERENCE sell
+        "10000": "0.8",
+        "1000": "0.2",
+        "-1000": "0.2",
+        // for HAVE VOLUME set price DIFFERENCE buy
+        "-10000": "0.8"
+      }
+  },
+  {
+// Random hit all and sekf orders
+    "type": "-RandomHitRand",
+    "traderAddress": "--",
+    "startDelay": 200,
+    "sleepTime": 7000,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 92,
+    "wantAssetKey": 12,
+    "sourceExchange": "binance",
+      "scheme": {
+        "500": "-2.0",
+        "-500": "-2.0"
+      }
+  },
+  {
+    "type": "-Guard",
+      "traderAddress": "--",
+      "startDelay": 10,
+      "sleepTime": 1650,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 95,
+      "wantAssetKey": 12,
+      "sourceExchange": "binance",
+      "limitUP": "1.9",
+      "limitDown": "1.9",
+      "scheme": {
+        "1000": "0.9",
+        "100": "0.1",
+        "-100": "0.1",
+        "-1000": "0.9"
+      }
+  },
+  {
+    "type": "-RandomHitRand",
+      "traderAddress": "--",
+      "startDelay": 200,
+      "sleepTime": 5000,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 95,
+      "wantAssetKey": 12,
+      "sourceExchange": "binance",
+      "scheme": {
+        "50": "-2.0",
+        "-50": "-2.0"
+      }
+  },
+  {
+    "type": "-Guard",
+      "traderAddress": "--",
+      "startDelay": 100,
+      "sleepTime": 1850,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 95,
+      "wantAssetKey": 92,
+      "sourceExchange": "binance",
+      "limitUP": "1.9",
+      "limitDown": "1.9",
+      "scheme": {
+        "1000": "0.9",
+        "100": "0.1",
+        "-100": "0.1",
+        "-1000": "0.9"
+      }
+  },
+  {
+    "type": "-RandomHitRand",
+      "traderAddress": "--",
+      "startDelay": 250,
+      "sleepTime": 5600,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 95,
+      "wantAssetKey": 92,
+      "sourceExchange": "binance",
+      "scheme": {
+        "50": "-2.0",
+        "-50": "-2.0"
+      }
+  },
+  {
+    "type": "-Guard",
+      "traderAddress": "--",
+      "startDelay": 100,
+      "sleepTime": 1850,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 92,
+      "wantAssetKey": 21,
+      "sourceExchange": "binance",
+      "limitUP": "1.9",
+      "limitDown": "1.9",
+      "scheme": {
+        "10000": "0.9",
+        "1000": "0.1",
+        "-1000": "0.1",
+        "-10000": "0.9"
+      }
+  },
+  {
+    "type": "-RandomHitRand",
+      "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
+      "startDelay": 250,
+      "sleepTime": 5600,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 92,
+      "wantAssetKey": 21,
+      "sourceExchange": "binance",
+      "scheme": {
+        "500": "-2.0",
+        "-500": "-2.0"
+      }
+  },
+  {
+    "type": "-Guard",
+      "traderAddress": "--",
+      "startDelay": 150,
+      "sleepTime": 2850,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 21,
+      "wantAssetKey": 12,
+      "sourceExchange": "binance",
+      "limitUP": "1.9",
+      "limitDown": "1.9",
+      "scheme": {
+        "0.1": "0.9",
+        "0.01": "0.1",
+        "-0.01": "0.1",
+        "-0.1": "0.9"
+      }
+  },
+  {
+    "type": "-RandomHitRand",
+      "traderAddress": "--",
+      "startDelay": 350,
+      "sleepTime": 18000,
+      "cleanAllOnStart": true,
+      "haveAssetKey": 21,
+      "wantAssetKey": 12,
+      "sourceExchange": "binance",
+      "scheme": {
+        "0.0005": "-2.0",
+        "-0.0005": "-2.0"
+      }
+  },
+  {
+    "type": "RandomHitSelfRand",
+    "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
+    "startDelay": 10,
+    "sleepTime": 1550,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 1,
+    "wantAssetKey": 2,
+    "sourceExchange": "",
+    "scheme": [
+      ["5", "20.0"],
+      ["7", "10.0"],
+      ["10", "5.0"],
+      ["-10", "5.0"],
+      ["-7", "10.0"],
+      ["-5", "20.0"]
+    ]
+  }
+]
