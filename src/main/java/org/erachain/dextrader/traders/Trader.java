@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 
@@ -233,7 +234,9 @@ public abstract class Trader extends Thread {
 
         String log = "TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
                 + " -> " + amountWant.toPlainString()
-                + " from " + this.address;
+                + " x" + amountWant.divide(amountHave, 12, RoundingMode.HALF_DOWN).toPlainString()
+                + " /" + amountHave.divide(amountWant, 12, RoundingMode.HALF_DOWN).toPlainString()
+                + " by " + this.address;
         LOGGER.info(log);
 
         JSONObject jsonObject = null;
