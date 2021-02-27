@@ -27,8 +27,9 @@ public class RandomHitRand extends RandomHit {
 
     @Override
     BigDecimal getRandAmount(BigDecimal schemeAmount) {
-        int randInt = random.nextInt(50);
-        return schemeAmount.multiply(new BigDecimal(0.8 + 0.01 * randInt).setScale(5, RoundingMode.UP));
+        double diff = 1.0 + 0.01 * random.nextInt(50);
+        return schemeAmount.multiply(new BigDecimal(
+                random.nextBoolean()? diff : 1.0 / diff).setScale(5, RoundingMode.UP));
     }
 
 }

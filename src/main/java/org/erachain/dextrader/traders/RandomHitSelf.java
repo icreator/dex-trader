@@ -1,6 +1,5 @@
 package org.erachain.dextrader.traders;
 
-import org.erachain.dextrader.Raters.Rater;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -35,7 +34,7 @@ public class RandomHitSelf extends Trader {
         return schemeAmount;
     }
 
-    BigDecimal getRandAmountSmall(BigDecimal schemeAmount) {
+    BigDecimal getRandAmountForPrice(BigDecimal schemeAmount) {
         return schemeAmount;
     }
 
@@ -67,7 +66,7 @@ public class RandomHitSelf extends Trader {
                 amountHave = randomAmount.stripTrailingZeros();
             }
 
-            amountWant = getRandAmountSmall(amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros());
+            amountWant = getRandAmountForPrice(amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros());
 
             // NEED SCALE for VALIDATE
             if (amountWant.scale() > this.wantAssetScale) {
@@ -94,7 +93,7 @@ public class RandomHitSelf extends Trader {
                 amountWant = randomAmount.negate().stripTrailingZeros();
             }
 
-            amountHave = getRandAmountSmall(amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros());
+            amountHave = getRandAmountForPrice(amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros());
 
             // NEED SCALE for VALIDATE
             if (amountHave.scale() > this.wantAssetScale) {
