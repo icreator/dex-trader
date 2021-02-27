@@ -232,7 +232,7 @@ public abstract class Trader extends Thread {
 
         String result;
 
-        String log = "TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
+        String log = "try " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
                 + " -> " + amountWant.toPlainString()
                 + " x" + amountWant.divide(amountHave, 12, RoundingMode.HALF_DOWN).toPlainString()
                 + " /" + amountHave.divide(amountWant, 12, RoundingMode.HALF_DOWN).toPlainString()
