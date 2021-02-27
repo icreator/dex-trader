@@ -27,27 +27,26 @@ public abstract class Rater extends Thread {
     protected Controller cnt;
     protected CallRemoteApi caller;
 
-    // https://api.livecoin.net/exchange/ticker?currencyPair=EMC/BTC
-    // https://poloniex.com/public?command=returnTradeHistory&currencyPair=BTC_DOGE
-    // https://wex.nz/api/3/ticker/btc_rur
     protected String courseName; // course name
     protected String apiURL;
     Map<String, String> headers;
     protected BigDecimal shiftRate = BigDecimal.ONE;
     private boolean run = true;
 
+    protected boolean needRun;
 
-    public Rater(TradersManager tradersManager, String courseName, int sleepSec, Map<String, String> headers) {
+    public Rater(TradersManager tradersManager, String name, String courseName, String apiURL, int sleepSec) {
+
+        this.setName(this.getClass().getName() + ": " + name);
+
+        this.apiURL = apiURL;
 
         this.cnt = Controller.getInstance();
-        this.headers = headers;
         this.caller = new CallRemoteApi();
 
         this.tradersManager = tradersManager;
         this.sleepTimeStep = sleepSec * 1000;
-        this.courseName = courseName;
-
-        this.setName(this.getClass().getName() + ": " + this.courseName);
+        this.courseName = courseName == null? name : courseName;
 
         LOGGER = LoggerFactory.getLogger(getName());
 
@@ -136,14 +135,14 @@ public abstract class Rater extends Thread {
             }
 
             try {
-                this.tryGetRate();
+                needRun = !this.tryGetRate();
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
             }
 
             //SLEEP
             try {
-                Thread.sleep(sleepTimeStep);
+                Thread.sleep(needRun? 10000 : sleepTimeStep);
             } catch (InterruptedException e) {
                 //FAILED TO SLEEP
                 break;
@@ -158,23 +157,31 @@ public abstract class Rater extends Thread {
     }
 
     protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
+
         rates.put(makeKey(haveKey, wantKey, courseName), rate);
-
-        TradersManager.Pair<String, Integer> pair = tradersManager.getAsset(haveKey);
-        if (pair == null)
-            return;
-        String haveName = pair.a;
-
-        pair = tradersManager.getAsset(wantKey);
-        if (pair == null)
-            return;
-        String wantName = pair.a;
-
         // STORE BACK PRICE
         BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
         Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
 
-        LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " on " + courseName + " = " + rate.toPlainString());
+        TradersManager.Pair<String, Integer> pair = tradersManager.getAsset(haveKey);
+        if (pair == null) {
+            LOGGER.info("set RATE " + "[" + haveKey + "] / " + "[" + wantKey + "] from " + courseName + " = " + rate.toPlainString());
+            LOGGER.warn("asset [" + haveKey + "] not found...");
+            return;
+        }
+
+        String haveName = pair.a;
+
+        pair = tradersManager.getAsset(wantKey);
+        if (pair == null) {
+            LOGGER.info("set RATE " + "[" + haveKey + "] / " + "[" + wantKey + "] from " + courseName + " = " + rate.toPlainString());
+            LOGGER.warn("asset [" + wantKey + "] not found...");
+            return;
+        }
+        String wantName = pair.a;
+
+        LOGGER.info("set RATE " + "[" + haveKey + "]" + haveName + " / " + "[" + wantKey + "]" + wantName + " from " + courseName + " = " + rate.toPlainString());
+
     }
 
     public void close() {

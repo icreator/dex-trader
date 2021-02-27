@@ -1,6 +1,5 @@
 package org.erachain.dextrader.traders;
 
-import org.erachain.dextrader.Raters.Rater;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -35,15 +34,11 @@ public class RandomHitSelf extends Trader {
         return schemeAmount;
     }
 
-    protected boolean createOrder(BigDecimal schemeAmount, JSONObject order) {
+    BigDecimal getRandAmountForPrice(BigDecimal schemeAmount, boolean forSell) {
+        return schemeAmount;
+    }
 
-        BigDecimal shiftPercentageOrig = this.scheme.get(schemeAmount);
-        BigDecimal shiftPercentageHalf = shiftPercentageOrig.setScale(5, RoundingMode.HALF_DOWN)
-                .divide(BigDecimal.valueOf(2), RoundingMode.HALF_DOWN);
-        int randomShift = random.nextInt(1000);
-        BigDecimal ggg = new BigDecimal(randomShift).multiply(new BigDecimal("0.001"));
-        BigDecimal shiftPercentage = shiftPercentageOrig.subtract(shiftPercentageHalf)
-                .add(shiftPercentageOrig.multiply(ggg));
+    protected boolean createOrder(BigDecimal schemeAmount, JSONObject order) {
 
         long haveKey;
         long wantKey;
@@ -61,16 +56,26 @@ public class RandomHitSelf extends Trader {
             wantKey = this.wantAssetKey;
             wantName = this.wantAssetName;
 
-            amountHave = new BigDecimal(order.get("pairAmount").toString());
-            if (randomAmount.compareTo(amountHave) < 0) {
+            if (random.nextBoolean()) {
+                // иногда по объему ордера в стакане сделаем
+                amountHave = new BigDecimal(order.get("pairAmount").toString());
+                if (randomAmount.compareTo(amountHave) < 0) {
+                    amountHave = randomAmount.stripTrailingZeros();
+                }
+            } else {
                 amountHave = randomAmount.stripTrailingZeros();
             }
-            amountWant = amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
 
+            amountWant = getRandAmountForPrice(amountHave.multiply(
+                    new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros(), false);
 
             // NEED SCALE for VALIDATE
             if (amountWant.scale() > this.wantAssetScale) {
                 amountWant = amountWant.setScale(wantAssetScale, RoundingMode.DOWN);
+            }
+            if (amountWant.signum() == 0) {
+                boolean debug = true;
+                return true;
             }
 
         } else {
@@ -79,17 +84,29 @@ public class RandomHitSelf extends Trader {
             wantKey = this.haveAssetKey;
             wantName = this.haveAssetName;
 
-            amountWant = new BigDecimal(order.get("pairAmount").toString());
-            if (randomAmount.negate().compareTo(amountWant) < 0) {
+            if (random.nextBoolean()) {
+                // иногда по объему ордера в стакане сделаем
+                amountWant = new BigDecimal(order.get("pairAmount").toString());
+                if (randomAmount.negate().compareTo(amountWant) < 0) {
+                    amountWant = randomAmount.negate().stripTrailingZeros();
+                }
+            } else {
                 amountWant = randomAmount.negate().stripTrailingZeros();
             }
 
-            amountHave = amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
+            amountHave = getRandAmountForPrice(amountWant.multiply(
+                    new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros(), true);
 
             // NEED SCALE for VALIDATE
             if (amountHave.scale() > this.wantAssetScale) {
                 amountHave = amountHave.setScale(wantAssetScale, RoundingMode.UP);
             }
+
+            if (amountHave.signum() == 0) {
+                boolean debug = true;
+                return true;
+            }
+
         }
 
         return super.createOrder(schemeAmount, haveKey, haveName, amountHave, wantKey, wantName, amountWant);

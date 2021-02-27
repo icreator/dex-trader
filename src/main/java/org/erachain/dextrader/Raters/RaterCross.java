@@ -14,14 +14,14 @@ public class RaterCross extends Rater {
 
     /**
      * Задаем путь кросс-курса
-     * ["12.95 polonex", "95.92 polonex", "92.14 livecoin", ... ]
+     * ["12.95 polonex", "95.92 polonex", "92.14 binance", ... ]
      * @param tradersManager
      * @param sleepSec
      * @param name
      * @param crossPath
      */
     public RaterCross(TradersManager tradersManager, int sleepSec, String name, String[] crossPath) {
-        super(tradersManager, name, sleepSec, null);
+        super(tradersManager, name, name, null, sleepSec);
 
         this.crossPath = crossPath;
         startKey = Long.valueOf(crossPath[0].split("[\\.]")[0]);
@@ -30,6 +30,7 @@ public class RaterCross extends Rater {
     }
 
     public void clearRates() {
+        rates.remove(makeKey(startKey, endKey, this.courseName));
     }
 
     @Override
@@ -39,15 +40,15 @@ public class RaterCross extends Rater {
     @Override
     public boolean tryGetRate() {
 
+        // очистим сначала - может там ошибка опроса
+        clearRates();
+
         try {
-            // задержка для имитации опроса
-            Thread.sleep(1000);
+            // задержка для имитации опроса - ожидаем рейтеры другие пока они пробьются чтобы курс здесь повился
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             return true;
         }
-
-        // очистим сначала - может там ошибка опроса
-        rates.remove(makeKey(startKey, endKey, this.courseName));
 
         BigDecimal rate = BigDecimal.ONE;
         for (String path: crossPath) {

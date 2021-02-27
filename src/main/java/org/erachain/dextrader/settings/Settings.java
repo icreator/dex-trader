@@ -28,13 +28,16 @@ public class Settings {
     private static Settings instance;
     public JSONObject settingsJSON;
     public  JSONArray tradersJSON;
+    public  JSONArray ratersJSON;
     public  JSONObject apiKeysJSON;
 
     private Settings() {
 
-        readAPIkeysJSON();
-
         settingsJSON = read_setting_JSON();
+
+        readAPIkeysJSON();
+        readTradersJSON();
+        readRatersJSON();
 
     }
 
@@ -109,7 +112,7 @@ public class Settings {
     ////////////////////////////////
     public List<JSONObject> readTradersJSON() {
 
-        File file = new File("traders.json");
+        File file = new File(getRpcPort() == 9068? "traders-demo.json" : "traders.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -145,10 +148,48 @@ public class Settings {
 
     }
 
+    public List<JSONObject> readRatersJSON() {
+
+        File file = new File(getRpcPort() == 9068? "raters-demo.json" : "raters.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                return null;
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+
+        try {
+            //OPEN FILE
+            //READ SETTINS JSON FILE
+            List<String> lines = Files.readLines(file, Charsets.UTF_8);
+
+            String jsonString = "";
+            for (String line : lines) {
+                if ((line = line.trim()).startsWith("//") || line.isEmpty()) {
+                    // пропускаем //
+                    continue;
+                }
+                jsonString += line;
+            }
+
+            //CREATE JSON OBJECT
+            ratersJSON = (JSONArray) JSONValue.parse(jsonString);
+
+        } catch (Exception e) {
+            LOGGER.info("Error while reading/creating raters.json " + file.getAbsolutePath() + " using default!");
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return ratersJSON;
+
+    }
+
     ////////////////////////////////
     public void readAPIkeysJSON() {
 
-        File file = new File( "secret-keys.json");
+        File file = new File(getRpcPort() == 9068? "secret-keys-demo.json" : "secret-keys.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();

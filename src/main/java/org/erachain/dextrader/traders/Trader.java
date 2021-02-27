@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 
@@ -111,7 +112,7 @@ public abstract class Trader extends Thread {
 
 
         this.setName(this.getClass().getSimpleName() + " [" + haveAssetKey + "]" + haveAssetName
-                + "/[" + wantAssetKey + "]" + wantAssetName + "." + sourceExchange + "." + address.substring(0, 5));
+                + "/[" + wantAssetKey + "]" + wantAssetName + "." + (sourceExchange.isEmpty()? "SELF" : sourceExchange) + "." + address.substring(0, 5));
 
         this.start();
     }
@@ -187,7 +188,7 @@ public abstract class Trader extends Thread {
         }
 
         this.setName(this.getClass().getSimpleName() + " [" + haveAssetKey + "]" + haveAssetName
-                + "/[" + wantAssetKey + "]" + wantAssetName + "." + sourceExchange + "." + address.substring(0, 5));
+                + "/[" + wantAssetKey + "]" + wantAssetName + "." +  (sourceExchange.isEmpty()? "SELF" : sourceExchange) + "." + address.substring(0, 5));
 
         LOGGER = LoggerFactory.getLogger(this.getName());
 
@@ -225,11 +226,17 @@ public abstract class Trader extends Thread {
                                   Long haveKey, String haveName, BigDecimal amountHave,
                                   Long wantKey, String wantName, BigDecimal amountWant) {
 
+        if (amountHave.signum() == 0 || amountWant.signum() == 0) {
+            boolean debug = true;
+        }
+
         String result;
 
-        String log = "TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
+        String log = "try " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
                 + " -> " + amountWant.toPlainString()
-                + " from " + this.address;
+                + " x" + amountWant.divide(amountHave, 12, RoundingMode.HALF_DOWN).toPlainString()
+                + " /" + amountHave.divide(amountWant, 12, RoundingMode.HALF_DOWN).toPlainString()
+                + " by " + this.address;
         LOGGER.info(log);
 
         JSONObject jsonObject = null;
@@ -635,6 +642,10 @@ public abstract class Trader extends Thread {
         return updated;
     }
 
+    /**
+     *
+     * @return if successful - true
+     */
     public boolean updateCap() {
 
         String result;

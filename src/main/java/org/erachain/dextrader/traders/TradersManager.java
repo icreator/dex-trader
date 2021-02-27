@@ -10,13 +10,14 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 
 public class TradersManager {
 
     // for DEVELOP
-    static boolean START_ONLY_RATERS = false;
+    public static boolean START_ONLY_RATERS = false;
 
     protected static String WALLET_PASSWORD;
 
@@ -56,97 +57,57 @@ public class TradersManager {
 
     private void start() {
 
-        if (Settings.getInstance().settingsJSON.containsKey("only_raters")) {
-            START_ONLY_RATERS = (Boolean) Settings.getInstance().settingsJSON.get("only_raters");
-        }
+        for (Object obj : Settings.getInstance().ratersJSON) {
+            if (obj.equals("wex")) {
+                this.knownRaters.add(new RaterWEX(this, 300));
 
-        if (false) {
-            //START RATERs THREADs
-            RaterWEX raterForex = new RaterWEX(this, 300);
-            this.knownRaters.add(raterForex);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
+            } else if (obj.equals("livecoin")) {
+                this.knownRaters.add(new RaterLiveCoin(this, 300));
+
+            } else if (obj.equals("livecoinRUR")) {
+                this.knownRaters.add(new RaterLiveCoinRUR(this, 300));
+
+            } else if (obj.equals("polonex")) {
+                this.knownRaters.add(new RaterPolonex(this, 300));
+
+            } else if (obj.equals("bitforex")) {
+                this.knownRaters.add(new RaterBitforexCom(this, 600));
+
+            } else if (obj.equals("metals-api")) {
+                // for FREE rates - 1 per day!
+                this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
+
+            } else if (obj.equals(RaterBinanceCom.NAME)) {
+                this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
+                this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
+                this.knownRaters.add(new RaterBinanceCom(this, 350, "PAXGUSDT",21L, 95L));
+
+                this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
+                        new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
+
+                this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
+                        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.92 " + RaterBinanceCom.NAME}));
+
+                this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
+                        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
+
+            } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
+                this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
+            } else if (obj.equals(RaterStatic.NAME)) {
+                this.knownRaters.add(new RaterStatic(this, 10000, 1L, 2L, new BigDecimal("0.001")));
+
+            } else {
+                LOGGER.warn("Not found rater: " + obj);
             }
-        }
-        if (false) {
-            //START RATERs THREADs
-            RaterCoinMarketCapCom raterMarcetCap = new RaterCoinMarketCapCom(this, 300);
-            this.knownRaters.add(raterMarcetCap);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-        }
-
-
-        if (true) {
-            RaterBitforexCom raterBitforexCom = new RaterBitforexCom(this, 600);
-            this.knownRaters.add(raterBitforexCom);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-
-        }
-
-        if (false) {
-            RaterLiveCoin raterLiveCoin = new RaterLiveCoin(this, 300);
-            this.knownRaters.add(raterLiveCoin);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-
-        }
-        if (false) {
-            RaterLiveCoinRUR raterLiveCoinRUR = new RaterLiveCoinRUR(this, 300);
-            this.knownRaters.add(raterLiveCoinRUR);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-
-        }
-
-        if (true) {
-            RaterPolonex raterPolonex = new RaterPolonex(this, 300);
-            this.knownRaters.add(raterPolonex);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-        }
-
-        if (true) {
-            RaterCross raterCross_ETH_RUB = new RaterCross(this, 300, "ETH_RUB",
-                    new String[]{"14.12 polonex", "12.92 livecoin"});
-            this.knownRaters.add(raterCross_ETH_RUB);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-        }
-
-        if (true) {
-            //START RATERs THREADs
-            RaterMetalsAPI raterMetalsAPI = new RaterMetalsAPI(this, 60 * 60 * 24);
-            this.knownRaters.add(raterMetalsAPI);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-            }
-        }
-
-        //if (true) return;
-
-        try {
-            Thread.sleep(5000);
-        } catch (Exception e) {
         }
 
         if (START_ONLY_RATERS) {
             return;
+        }
+
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
         }
 
         if (Settings.getInstance().apiKeysJSON.containsKey("wallet")) {
@@ -179,10 +140,16 @@ public class TradersManager {
                     trader = new StoneGuardAbs(this, traderAddress, item);
                 } else if (type.equals("RandomHit")) {
                     trader = new RandomHit(this, traderAddress, item);
+                } else if (type.equals("RandomHitRand")) {
+                    trader = new RandomHitRand(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelf")) {
                     trader = new RandomHitSelf(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelfRand")) {
                     trader = new RandomHitSelfRand(this, traderAddress, item);
+                } else if (type.equals("RandomHitSelfRandPrice")) {
+                    trader = new RandomHitSelfRandPrice(this, traderAddress, item);
+                } else {
+                    LOGGER.warn("Not found trader: " + type);
                 }
 
                 if (trader != null) {
@@ -202,7 +169,7 @@ public class TradersManager {
         }
 
 
-        if (false && this.knownTraders.isEmpty()) {
+        if (this.knownTraders.isEmpty()) {
             LOGGER.error("Not found Traders Accounts or Traders in Settings");
             cnt.stopAll(-13);
         }

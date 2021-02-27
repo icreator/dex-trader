@@ -33,6 +33,7 @@ public class RandomHit extends Trader {
         return schemeAmount;
     }
 
+
     protected boolean createOrder(BigDecimal schemeAmount) {
 
         BigDecimal shiftPercentageOrig = this.scheme.get(schemeAmount);
