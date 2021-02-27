@@ -146,6 +146,8 @@ public class TradersManager {
                     trader = new RandomHitSelf(this, traderAddress, item);
                 } else if (type.equals("RandomHitSelfRand")) {
                     trader = new RandomHitSelfRand(this, traderAddress, item);
+                } else if (type.equals("RandomHitSelfRandPrice")) {
+                    trader = new RandomHitSelfRandPrice(this, traderAddress, item);
                 } else {
                     LOGGER.warn("Not found trader: " + type);
                 }

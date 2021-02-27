@@ -1,6 +1,5 @@
 package org.erachain.dextrader.traders;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.math.BigDecimal;
@@ -33,17 +32,6 @@ public class RandomHitSelfRand extends RandomHitSelf {
     @Override
     BigDecimal getRandAmount(BigDecimal schemeAmount) {
         double diff = 1.0 + 0.01 * random.nextInt(50);
-        return schemeAmount.multiply(new BigDecimal(
-                random.nextBoolean()? diff : 1.0 / diff).setScale(5, RoundingMode.UP));
-    }
-
-    // слишком часто нельзя так как стакан забьется своими ордерами только
-    @Override
-    BigDecimal getRandAmountForPrice(BigDecimal schemeAmount) {
-        if (random.nextBoolean() && random.nextBoolean())
-            return schemeAmount;
-
-        double diff = 1.0 + 0.001 * random.nextInt(10);
         return schemeAmount.multiply(new BigDecimal(
                 random.nextBoolean()? diff : 1.0 / diff).setScale(5, RoundingMode.UP));
     }

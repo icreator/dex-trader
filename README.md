@@ -43,15 +43,17 @@
 #### Настройка источников для получения курсов
 Файл настройки `raters.json` содержит список курсовиков. Полный список есть в `raters-orig.json` - скопируйте его в `raters.json`. 
 
- Список курсовиков (настройка пар внутри кода):
-  + `bitforex` (RaterBitforexCom) - GOLD / USD
-  + `coinMarketCap` (RaterCoinMarketCapCom) - в разработке
-  + `crocc-curse` (RaterCross) - задаем пару пар
-  + `livecoin` (RaterLiveCoin) - за один запрос только одну пару
-  + `livecoinRUR` (RaterLiveCoinRUR) - за один запрос только одну пару
-  + `metals-api` (RaterMetalsAPI) - GOLD / USD и другие - по металлам
-  + `polonex` (RaterPolonex) - за один запрос выбирает все пары - BTC / USD
-  + `wex` (RaterWEX) - бывший BTC-e, сейчас не работает - BTC / RUR 
+Список курсовиков (настройка пар внутри кода):  
++ `static` (RaterStatic) - for static prices
++ `binance` (binance) - BTC / USD etc.  
++ `bitforex` (RaterBitforexCom) - GOLD / USD
++ `coinMarketCap` (RaterCoinMarketCapCom) - в разработке
++ `crocc-curse` (RaterCross) - задаем пару пар
++ `livecoin` (RaterLiveCoin) - за один запрос только одну пару
++ `livecoinRUR` (RaterLiveCoinRUR) - за один запрос только одну пару
++ `metals-api` (RaterMetalsAPI) - GOLD / USD и другие - по металлам
++ `polonex` (RaterPolonex) - за один запрос выбирает все пары - BTC / USD
++ `wex` (RaterWEX) - бывший BTC-e, сейчас не работает - BTC / RUR 
 
  > Каждый курсовик использует АПИ соответствующей биржи. Так как данные бесплатные,
   не рекомендую чаще чем раз в 5-10 минут получать курсы 
@@ -67,6 +69,7 @@
 + RandomHitRand - тоже, но еще случайный объем в пределах 0...+50%.  
 + RandomHitSelf - случайные покупки по заявкам из стакана или между ними. Задавать внешний источник для курса не требуется.    
 + RandomHitSelfRand - тоже, но еще случайный объем в пределах 0...+50%.  
++ RandomHitSelfRandPrice - тоже, но еще случайно цена в пределах 1% по рынку меняется
 
 Для торговцев RandomHit и подобных схема задается массивом массивов - чтобы сохранить порядок следования ключей
 

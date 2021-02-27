@@ -223,7 +223,7 @@
     "type": "Guard",
     "traderAddress": "7C6cEeHw739uQm8PhdnS9yENdLhT8LUERP",
     "startDelay": 5,
-    "sleepTime": 70,
+    "sleepTime": 120,
     "cleanAllOnStart": true,
     "haveAssetKey": 1,
     "wantAssetKey": 2,
@@ -240,19 +240,35 @@
   {
     "type": "RandomHitSelfRand",
     "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
-    "startDelay": 10,
-    "sleepTime": 33,
+    "startDelay": 20,
+    "sleepTime": 60,
     "cleanAllOnStart": false,
     "haveAssetKey": 1,
     "wantAssetKey": 2,
     "sourceExchange": "",
     "scheme": [
-      ["5", "20.0"],
-      ["7", "10.0"],
-      ["10", "5.0"],
-      ["-10", "5.0"],
-      ["-7", "10.0"],
-      ["-5", "20.0"]
+      ["15", "20.0"],
+      ["27", "10.0"],
+      ["50", "5.0"],
+      ["-50", "5.0"],
+      ["-27", "10.0"],
+      ["-15", "20.0"]
+    ]
+  },
+  {
+    "type": "RandomHitSelfRandPrice",
+    "traderAddress": "76WbFC9729nchmdw52nXpH6W3TTMnr7YVP",
+    "startDelay": 50,
+    "sleepTime": 35,
+    "cleanAllOnStart": false,
+    "haveAssetKey": 1,
+    "wantAssetKey": 2,
+    "sourceExchange": "",
+    "scheme": [
+      ["5", "3.0"],
+      ["10", "1.0"],
+      ["-10", "1.0"],
+      ["-5", "3.0"],
     ]
   }
 ]
