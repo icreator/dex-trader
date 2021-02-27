@@ -174,7 +174,7 @@ public class Controller extends Observable {
             LOGGER.error("STARTUP ERROR" + ": " + e.getMessage());
 
             //FORCE SHUTDOWN
-            System.exit(0);
+            System.exit(11);
         }
 
         // CLOSE ON UNEXPECTED SHUTDOWN

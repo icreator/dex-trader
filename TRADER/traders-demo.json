@@ -175,7 +175,7 @@
   },
   {
     "type": "-RandomHitRand",
-      "traderAddress": "79kpeS3Hni1wfJUNz1LcBh8kBqSbhLjJQg",
+      "traderAddress": "-- ",
       "startDelay": 250,
       "sleepTime": 5600,
       "cleanAllOnStart": true,

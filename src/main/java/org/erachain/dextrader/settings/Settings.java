@@ -112,7 +112,7 @@ public class Settings {
     ////////////////////////////////
     public List<JSONObject> readTradersJSON() {
 
-       File file = new File(getRpcPort() == 9068? "traders-demo.json" : "traders.json");
+        File file = new File(getRpcPort() == 9068? "traders-demo.json" : "traders.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -189,7 +189,7 @@ public class Settings {
     ////////////////////////////////
     public void readAPIkeysJSON() {
 
-        File file = new File( "secret-keys.json");
+        File file = new File(getRpcPort() == 9068? "secret-keys-demo.json" : "secret-keys.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();
