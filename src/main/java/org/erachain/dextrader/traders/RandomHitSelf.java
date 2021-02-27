@@ -35,10 +35,11 @@ public class RandomHitSelf extends Trader {
         return schemeAmount;
     }
 
-    protected boolean createOrder(BigDecimal schemeAmount, JSONObject order) {
+    BigDecimal getRandAmountSmall(BigDecimal schemeAmount) {
+        return schemeAmount;
+    }
 
-        int randomShift = random.nextInt(1000);
-        BigDecimal ggg = new BigDecimal(randomShift).multiply(new BigDecimal("0.001"));
+    protected boolean createOrder(BigDecimal schemeAmount, JSONObject order) {
 
         long haveKey;
         long wantKey;
@@ -66,7 +67,7 @@ public class RandomHitSelf extends Trader {
                 amountHave = randomAmount.stripTrailingZeros();
             }
 
-            amountWant = amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
+            amountWant = getRandAmountSmall(amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros());
 
             // NEED SCALE for VALIDATE
             if (amountWant.scale() > this.wantAssetScale) {
@@ -93,7 +94,7 @@ public class RandomHitSelf extends Trader {
                 amountWant = randomAmount.negate().stripTrailingZeros();
             }
 
-            amountHave = amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
+            amountHave = getRandAmountSmall(amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros());
 
             // NEED SCALE for VALIDATE
             if (amountHave.scale() > this.wantAssetScale) {
