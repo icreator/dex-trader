@@ -225,6 +225,10 @@ public abstract class Trader extends Thread {
                                   Long haveKey, String haveName, BigDecimal amountHave,
                                   Long wantKey, String wantName, BigDecimal amountWant) {
 
+        if (amountHave.signum() == 0 || amountWant.signum() == 0) {
+            boolean debug = true;
+        }
+
         String result;
 
         String log = "TRY CREATE " + haveName + "/" + wantName + " : " + amountHave.toPlainString()
@@ -635,6 +639,10 @@ public abstract class Trader extends Thread {
         return updated;
     }
 
+    /**
+     *
+     * @return if successful - true
+     */
     public boolean updateCap() {
 
         String result;

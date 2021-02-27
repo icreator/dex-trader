@@ -37,13 +37,8 @@ public class RandomHitSelf extends Trader {
 
     protected boolean createOrder(BigDecimal schemeAmount, JSONObject order) {
 
-        BigDecimal shiftPercentageOrig = this.scheme.get(schemeAmount);
-        BigDecimal shiftPercentageHalf = shiftPercentageOrig.setScale(5, RoundingMode.HALF_DOWN)
-                .divide(BigDecimal.valueOf(2), RoundingMode.HALF_DOWN);
         int randomShift = random.nextInt(1000);
         BigDecimal ggg = new BigDecimal(randomShift).multiply(new BigDecimal("0.001"));
-        BigDecimal shiftPercentage = shiftPercentageOrig.subtract(shiftPercentageHalf)
-                .add(shiftPercentageOrig.multiply(ggg));
 
         long haveKey;
         long wantKey;
@@ -67,10 +62,13 @@ public class RandomHitSelf extends Trader {
             }
             amountWant = amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
 
-
             // NEED SCALE for VALIDATE
             if (amountWant.scale() > this.wantAssetScale) {
                 amountWant = amountWant.setScale(wantAssetScale, RoundingMode.DOWN);
+            }
+            if (amountWant.signum() == 0) {
+                boolean debug = true;
+                return true;
             }
 
         } else {
@@ -82,6 +80,10 @@ public class RandomHitSelf extends Trader {
             amountWant = new BigDecimal(order.get("pairAmount").toString());
             if (randomAmount.negate().compareTo(amountWant) < 0) {
                 amountWant = randomAmount.negate().stripTrailingZeros();
+            }
+            if (amountWant.signum() == 0) {
+                boolean debug = true;
+                return true;
             }
 
             amountHave = amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
