@@ -56,10 +56,16 @@ public class RandomHitSelf extends Trader {
             wantKey = this.wantAssetKey;
             wantName = this.wantAssetName;
 
-            amountHave = new BigDecimal(order.get("pairAmount").toString());
-            if (randomAmount.compareTo(amountHave) < 0) {
+            if (random.nextBoolean()) {
+                // иногда по объему ордера в стакане сделаем
+                amountHave = new BigDecimal(order.get("pairAmount").toString());
+                if (randomAmount.compareTo(amountHave) < 0) {
+                    amountHave = randomAmount.stripTrailingZeros();
+                }
+            } else {
                 amountHave = randomAmount.stripTrailingZeros();
             }
+
             amountWant = amountHave.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
 
             // NEED SCALE for VALIDATE
@@ -77,13 +83,14 @@ public class RandomHitSelf extends Trader {
             wantKey = this.haveAssetKey;
             wantName = this.haveAssetName;
 
-            amountWant = new BigDecimal(order.get("pairAmount").toString());
-            if (randomAmount.negate().compareTo(amountWant) < 0) {
+            if (random.nextBoolean()) {
+                // иногда по объему ордера в стакане сделаем
+                amountWant = new BigDecimal(order.get("pairAmount").toString());
+                if (randomAmount.negate().compareTo(amountWant) < 0) {
+                    amountWant = randomAmount.negate().stripTrailingZeros();
+                }
+            } else {
                 amountWant = randomAmount.negate().stripTrailingZeros();
-            }
-            if (amountWant.signum() == 0) {
-                boolean debug = true;
-                return true;
             }
 
             amountHave = amountWant.multiply(new BigDecimal(order.get("pairPrice").toString())).stripTrailingZeros();
@@ -92,6 +99,12 @@ public class RandomHitSelf extends Trader {
             if (amountHave.scale() > this.wantAssetScale) {
                 amountHave = amountHave.setScale(wantAssetScale, RoundingMode.UP);
             }
+
+            if (amountHave.signum() == 0) {
+                boolean debug = true;
+                return true;
+            }
+
         }
 
         return super.createOrder(schemeAmount, haveKey, haveName, amountHave, wantKey, wantName, amountWant);
