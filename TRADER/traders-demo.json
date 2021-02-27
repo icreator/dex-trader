@@ -220,6 +220,24 @@
       }
   },
   {
+    "type": "Guard",
+    "traderAddress": "7C6cEeHw739uQm8PhdnS9yENdLhT8LUERP",
+    "startDelay": 5,
+    "sleepTime": 70,
+    "cleanAllOnStart": true,
+    "haveAssetKey": 1,
+    "wantAssetKey": 2,
+    "sourceExchange": "static",
+    "limitUP": "1.9",
+    "limitDown": "1.9",
+    "scheme": {
+      "1000": "1.9",
+      "100": "0.5",
+      "-100": "0.5",
+      "-1000": "1.9"
+    }
+  },
+  {
     "type": "RandomHitSelfRand",
     "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
     "startDelay": 10,

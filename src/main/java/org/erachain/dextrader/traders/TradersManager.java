@@ -10,6 +10,7 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -92,6 +93,8 @@ public class TradersManager {
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
                 this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
+            } else if (obj.equals(RaterStatic.NAME)) {
+                this.knownRaters.add(new RaterStatic(this, 10000, 1L, 2L, new BigDecimal("0.001")));
 
             } else {
                 LOGGER.warn("Not found rater: " + obj);
