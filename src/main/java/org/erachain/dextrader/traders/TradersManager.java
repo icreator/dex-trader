@@ -79,7 +79,8 @@ public class TradersManager {
 
             } else if (obj.equals(RaterBinanceCom.NAME)) {
                 this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 1840L));
-                this.knownRaters.add(new RaterBinanceCom(this, 300, "DOGEBTC",18L, 12L));
+                this.knownRaters.add(new RaterBinanceCom(this, 300, "DOGEUSDT",18L, 1840L));
+                //this.knownRaters.add(new RaterBinanceCom(this, 300, "DOGEBTC",18L, 12L));
                 //this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
                 //this.knownRaters.add(new RaterBinanceCom(this, 350, "PAXGUSDT",21L, 95L));
 
