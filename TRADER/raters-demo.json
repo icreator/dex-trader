@@ -1,6 +1,6 @@
 [
   "static",
   "-bitforex",
-  "-binance",
+  "binance",
   "-coinmarketcap.com"
 ]
