@@ -78,21 +78,21 @@ public class TradersManager {
                 this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
 
             } else if (obj.equals(RaterBinanceCom.NAME)) {
-                this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 95L));
-                this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
-                this.knownRaters.add(new RaterBinanceCom(this, 350, "PAXGUSDT",21L, 95L));
+                this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 1840L));
+                //this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
+                //this.knownRaters.add(new RaterBinanceCom(this, 350, "PAXGUSDT",21L, 95L));
 
-                this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
-                        new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
+                //this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
+                //        new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
 
-                this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
-                        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.92 " + RaterBinanceCom.NAME}));
+                //this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
+                //        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.92 " + RaterBinanceCom.NAME}));
 
-                this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
-                        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
+                //this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
+                //        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
 
             } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
-                this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
+                //this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
             } else if (obj.equals(RaterStatic.NAME)) {
                 this.knownRaters.add(new RaterStatic(this, 10000, 1L, 2L, new BigDecimal("0.001")));
 
