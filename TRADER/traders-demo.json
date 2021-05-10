@@ -239,7 +239,7 @@
   },
   {
     "type": "RandomHitSelfRand",
-    "traderAddress": "7CzxxwH7u9aQtx5iNHskLQjyJvybyKg8rF",
+    "traderAddress": "7CzxxwH7u9-aQtx5iNHskLQjyJvybyKg8rF",
     "startDelay": 20,
     "sleepTime": 60,
     "cleanAllOnStart": false,
