@@ -53,8 +53,7 @@ public abstract class RaterManyPairs extends Rater {
         for (Object pairName: pairs.keySet()) {
             JSONArray pair = (JSONArray) pairs.get(pairName);
             BigDecimal price = getValue(json, (String) pairName, (Long)pair.get(0), (Long)pair.get(1));
-            if (price != null)
-                setRate((Long)pair.get(0), (Long)pair.get(1), this.courseName, price);
+            setRate((Long)pair.get(0), (Long)pair.get(1), this.courseName, price);
         }
     }
 

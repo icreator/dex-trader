@@ -158,6 +158,11 @@ public abstract class Rater extends Thread {
 
     protected synchronized void setRate(Long haveKey, Long wantKey, String courseName, BigDecimal rate) {
 
+        if (rate == null) {
+            LOGGER.warn("set RATE " + "[" + haveKey + "] / " + "[" + wantKey + "] from " + courseName + " = NULL");
+            return;
+        }
+
         rates.put(makeKey(haveKey, wantKey, courseName), rate);
         // STORE BACK PRICE
         if (rate.signum() == 0) {

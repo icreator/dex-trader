@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class RaterPolonex extends RaterManyPairs {
@@ -27,7 +28,10 @@ public class RaterPolonex extends RaterManyPairs {
     BigDecimal getValue(JSONObject response, String pairName, Long baseKey, Long quoteKey) {
         if (response.containsKey(pairName)) {
             JSONObject pair = (JSONObject) response.get(pairName);
-            return new BigDecimal(pair.get("last").toString());
+            try {
+                return BigDecimal.ONE.divide(new BigDecimal(pair.get("last").toString()), 12, RoundingMode.HALF_DOWN);
+            } catch (Exception e) {
+            }
         }
         return null;
     }
