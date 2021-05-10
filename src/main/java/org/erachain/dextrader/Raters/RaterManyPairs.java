@@ -7,7 +7,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 
 /**
@@ -20,7 +19,7 @@ public abstract class RaterManyPairs extends Rater {
      */
     final JSONObject pairs;
 
-    public RaterManyPairs(TradersManager tradersManager, String name, String apiURL, JSONObject pairs, int sleepSec) {
+    public RaterManyPairs(TradersManager tradersManager, String name, String apiURL, int sleepSec, JSONObject pairs) {
         super(tradersManager, name, name, apiURL, sleepSec);
 
         this.pairs = pairs;

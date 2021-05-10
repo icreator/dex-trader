@@ -3,13 +3,11 @@ package org.erachain.dextrader.Raters;
 
 import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 
 public class RaterPolonex extends RaterManyPairs {
 
@@ -21,7 +19,7 @@ public class RaterPolonex extends RaterManyPairs {
     public RaterPolonex(TradersManager tradersManager, JSONObject pairs, int sleepSec) {
         super(tradersManager,"polonex",
                 "https://poloniex.com/public?command=returnTicker",
-                pairs, sleepSec);
+                sleepSec, pairs);
     }
 
     @Override
