@@ -97,7 +97,9 @@ public class TradersManager {
                 //        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
 
             } else if (raterName.equals(RaterCoinMarketCapCom.NAME)) {
-                //this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
+                JSONObject pairs = (JSONObject) Settings.getInstance().ratersJSON.get(raterName);
+                int sleep = (int) (long) (Long) pairs.remove("sleep");
+                this.knownRaters.add(new RaterCoinMarketCapCom(this, sleep, pairs));
             } else if (raterName.equals(RaterStatic.NAME)) {
                 this.knownRaters.add(new RaterStatic(this, 10000, 1L, 2L, new BigDecimal("0.001")));
 

@@ -36,11 +36,12 @@ public class RaterCoinMarketCapCom extends RaterManyPairs {
         JSONObject item;
         if (response.containsKey("data")) {
             JSONArray array = (JSONArray) response.get("data");
+            String[] pairTickets = pairName.split("_");
             for (Object obj: array) {
                 item = (JSONObject) obj;
-                if (item.get("name").toString().equals("Horizen")) {
+                if (item.get("name").toString().equals(pairTickets[0])) {
                     // HORIZEN
-                    return new BigDecimal((double)((JSONObject)((JSONObject)item.get("quote")).get("USD")).get("price"))
+                    return new BigDecimal((double)((JSONObject)((JSONObject)item.get("quote")).get(pairTickets[1])).get("price"))
                             .setScale(16, BigDecimal.ROUND_HALF_UP);
                 }
             }
