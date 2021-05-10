@@ -1,6 +1,17 @@
-[
-  "static",
-  "-bitforex",
-  "binance",
-  "-coinmarketcap.com"
-]
+{
+  // paitName: [asset1 Key, Asset2 Key, Speep Time]
+  "bitforex":true,
+  "polonex": {
+    "sleep": 300,
+    "USDT_BTC": [1840, 12],
+    "BTC_ETH": [12, 16]
+  },
+  "binance": {
+    "BTCUSDT": [12, 1840, 300],
+    "DOGEUSDT": [18, 1840, 300],
+    "DOGEBTC": [18, 12, 500],
+    "BTCRUB": [12, 1643, 500],
+    "PAXGUSDT": [3003, 1840, 500]
+  },
+  "coinmarketcap.com": true
+}

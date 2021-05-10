@@ -1,5 +1,9 @@
-[
-  "bitforex",
-  "binance",
-  "coinmarketcap.com"
-]
+{
+  "bitforex":true,
+  "binance": {
+    "BTCUSDT": [12, 1840],
+    "DOGEUSDT": [18, 1840],
+    "DOGEBTC": [18, 12]
+  },
+  "coinmarketcap.com": true
+}

@@ -57,32 +57,35 @@ public class TradersManager {
 
     private void start() {
 
-        for (Object obj : Settings.getInstance().ratersJSON) {
-            if (obj.equals("wex")) {
+        for (Object raterName : Settings.getInstance().ratersJSON.keySet()) {
+            if (raterName.equals("wex")) {
                 this.knownRaters.add(new RaterWEX(this, 300));
 
-            } else if (obj.equals("livecoin")) {
+            } else if (raterName.equals("livecoin")) {
                 this.knownRaters.add(new RaterLiveCoin(this, 300));
 
-            } else if (obj.equals("livecoinRUR")) {
+            } else if (raterName.equals("livecoinRUR")) {
                 this.knownRaters.add(new RaterLiveCoinRUR(this, 300));
 
-            } else if (obj.equals("polonex")) {
-                this.knownRaters.add(new RaterPolonex(this, 300));
+            } else if (raterName.equals("polonex")) {
+                JSONObject pairs = (JSONObject) Settings.getInstance().ratersJSON.get(raterName);
+                int sleep = (int) (long) (Long) pairs.remove("sleep");
+                this.knownRaters.add(new RaterPolonex(this, pairs, sleep));
 
-            } else if (obj.equals("bitforex")) {
+            } else if (raterName.equals("bitforex")) {
                 this.knownRaters.add(new RaterBitforexCom(this, 600));
 
-            } else if (obj.equals("metals-api")) {
+            } else if (raterName.equals("metals-api")) {
                 // for FREE rates - 1 per day!
                 this.knownRaters.add(new RaterMetalsAPI(this, 60 * 60 * 24));
 
-            } else if (obj.equals(RaterBinanceCom.NAME)) {
-                this.knownRaters.add(new RaterBinanceCom(this, 300, "BTCUSDT",12L, 1840L));
-                this.knownRaters.add(new RaterBinanceCom(this, 300, "DOGEUSDT",18L, 1840L));
-                //this.knownRaters.add(new RaterBinanceCom(this, 300, "DOGEBTC",18L, 12L));
-                //this.knownRaters.add(new RaterBinanceCom(this, 350, "BTCRUB",12L, 92L));
-                //this.knownRaters.add(new RaterBinanceCom(this, 350, "PAXGUSDT",21L, 95L));
+            } else if (raterName.equals(RaterBinanceCom.NAME)) {
+                JSONObject pairs = (JSONObject) Settings.getInstance().ratersJSON.get(raterName);
+                for (Object pairName: pairs.keySet()) {
+                    JSONArray assetsKeys = (JSONArray) pairs.get(pairName);
+                    this.knownRaters.add(new RaterBinanceCom(this, (int)(long)(Long) assetsKeys.get(2),
+                            (String) pairName, (Long) assetsKeys.get(0), (Long) assetsKeys.get(1)));
+                }
 
                 //this.knownRaters.add(new RaterCross(this, 300, RaterBinanceCom.NAME,
                 //        new String[]{"95.12 " + RaterBinanceCom.NAME, "12.92 " + RaterBinanceCom.NAME}));
@@ -93,13 +96,13 @@ public class TradersManager {
                 //this.knownRaters.add(new RaterCross(this, 350, RaterBinanceCom.NAME,
                 //        new String[]{"21.95 " + RaterBinanceCom.NAME, "95.12 " + RaterBinanceCom.NAME}));
 
-            } else if (obj.equals(RaterCoinMarketCapCom.NAME)) {
+            } else if (raterName.equals(RaterCoinMarketCapCom.NAME)) {
                 //this.knownRaters.add(new RaterCoinMarketCapCom(this, 500));
-            } else if (obj.equals(RaterStatic.NAME)) {
+            } else if (raterName.equals(RaterStatic.NAME)) {
                 this.knownRaters.add(new RaterStatic(this, 10000, 1L, 2L, new BigDecimal("0.001")));
 
             } else {
-                LOGGER.warn("Not found rater: " + obj);
+                LOGGER.warn("Not found rater: " + raterName);
             }
         }
 

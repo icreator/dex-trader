@@ -8,27 +8,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-public class RaterPolonex extends Rater {
+public class RaterPolonex extends RaterManyPairs {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterPolonex.class);
 
     // https://poloniex.com/support/api/v1/
     // https://poloniex.com/public?command=returnTicker&
     // https://poloniex.com/public?command=returnTicker&pair=BTC_ETH - return ALL
-    public RaterPolonex(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager,"polonex", null,  "https://poloniex.com/public?command=returnTicker",
-                sleepSec);
-
+    public RaterPolonex(TradersManager tradersManager, List<Object[]> pairs, int sleepSec) {
+        super(tradersManager,"polonex",
+                "https://poloniex.com/public?command=returnTicker",
+                pairs, sleepSec);
     }
 
-    public void clearRates() {
-        if (cnt.DEVELOP_USE) {
-            rates.remove(makeKey(1105L, 1106L, this.courseName));
-        } else {
-            rates.remove(makeKey(12L, 95L, this.courseName));
-            rates.remove(makeKey(14L, 12L, this.courseName));
+    @Override
+    BigDecimal getValue(JSONObject response, String pairName, Long baseKey, Long quoteKey) {
+        if (response.containsKey(pairName)) {
+            JSONObject pair = (JSONObject) response.get(pairName);
+            return new BigDecimal(pair.get("last").toString());
         }
+        return null;
     }
 
     protected void parse(String result) {
@@ -45,8 +46,6 @@ public class RaterPolonex extends Rater {
         if (json == null)
             return;
 
-        JSONObject pair;
-        BigDecimal price;
 
         if (json.containsKey("USDT_BTC")) {
             pair = (JSONObject) json.get("USDT_BTC");
