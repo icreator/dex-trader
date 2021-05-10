@@ -3,74 +3,35 @@ package org.erachain.dextrader.Raters;
 
 import org.erachain.dextrader.traders.TradersManager;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-public class RaterPolonex extends Rater {
+public class RaterPolonex extends RaterManyPairs {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaterPolonex.class);
 
     // https://poloniex.com/support/api/v1/
     // https://poloniex.com/public?command=returnTicker&
     // https://poloniex.com/public?command=returnTicker&pair=BTC_ETH - return ALL
-    public RaterPolonex(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager,"polonex", null,  "https://poloniex.com/public?command=returnTicker",
-                sleepSec);
-
+    public RaterPolonex(TradersManager tradersManager, JSONObject pairs, int sleepSec) {
+        super(tradersManager,"polonex",
+                "https://poloniex.com/public?command=returnTicker",
+                sleepSec, pairs);
     }
 
-    public void clearRates() {
-        if (cnt.DEVELOP_USE) {
-            rates.remove(makeKey(1105L, 1106L, this.courseName));
-        } else {
-            rates.remove(makeKey(12L, 95L, this.courseName));
-            rates.remove(makeKey(14L, 12L, this.courseName));
-        }
-    }
-
-    protected void parse(String result) {
-        JSONObject json = null;
-        try {
-            //READ JSON
-            json = (JSONObject) JSONValue.parse(result);
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
-
-        if (json == null)
-            return;
-
-        JSONObject pair;
-        BigDecimal price;
-
-        if (json.containsKey("USDT_BTC")) {
-            pair = (JSONObject) json.get("USDT_BTC");
-            price = new BigDecimal(pair.get("last").toString());
-            /// BACK price
-            //price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
-            if (cnt.DEVELOP_USE) {
-                setRate(1105L, 1107L, this.courseName, price);
-            } else {
-                setRate(12L, 95L, this.courseName, price);
+    @Override
+    BigDecimal getValue(JSONObject response, String pairName, Long baseKey, Long quoteKey) {
+        if (response.containsKey(pairName)) {
+            JSONObject pair = (JSONObject) response.get(pairName);
+            try {
+                return BigDecimal.ONE.divide(new BigDecimal(pair.get("last").toString()), 12, RoundingMode.HALF_DOWN);
+            } catch (Exception e) {
             }
         }
-
-        if (json.containsKey("BTC_ETH")) {
-            pair = (JSONObject) json.get("BTC_ETH");
-            price = new BigDecimal(pair.get("last").toString());
-            /// BACK price
-            //price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
-            if (cnt.DEVELOP_USE) {
-                setRate(1106L, 1105L, this.courseName, price);
-            } else {
-                setRate(14L, 12L, this.courseName, price);
-            }
-        }
-
+        return null;
     }
+
 }

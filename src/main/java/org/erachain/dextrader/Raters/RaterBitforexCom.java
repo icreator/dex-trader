@@ -8,8 +8,7 @@ import java.math.BigDecimal;
 public class RaterBitforexCom extends RaterOnePair {
 
     public RaterBitforexCom(TradersManager tradersManager, int sleepSec) {
-        super(tradersManager, "bitforex", "coin-usdt-gold", 21L, 95L,
-                "https://api.bitforex.com/api/v1/market/ticker?symbol=", sleepSec
+        super(tradersManager, "bitforex", "https://api.bitforex.com/api/v1/market/ticker?symbol=", sleepSec, "coin-usdt-gold", 21L, 95L
         );
     }
 
