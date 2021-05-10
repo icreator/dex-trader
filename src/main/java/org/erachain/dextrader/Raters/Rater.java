@@ -160,6 +160,11 @@ public abstract class Rater extends Thread {
 
         rates.put(makeKey(haveKey, wantKey, courseName), rate);
         // STORE BACK PRICE
+        if (rate.signum() == 0) {
+            LOGGER.info("set RATE " + "[" + haveKey + "] / " + "[" + wantKey + "] from " + courseName + " = " + rate.toPlainString());
+            LOGGER.warn("rate is ZERO!");
+            return;
+        }
         BigDecimal backRate = BigDecimal.ONE.divide(rate,12, BigDecimal.ROUND_HALF_UP);
         Rater.rates.put(makeKey(wantKey, haveKey, courseName), backRate);
 

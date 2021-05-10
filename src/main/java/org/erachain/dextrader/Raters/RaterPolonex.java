@@ -17,7 +17,7 @@ public class RaterPolonex extends RaterManyPairs {
     // https://poloniex.com/support/api/v1/
     // https://poloniex.com/public?command=returnTicker&
     // https://poloniex.com/public?command=returnTicker&pair=BTC_ETH - return ALL
-    public RaterPolonex(TradersManager tradersManager, List<Object[]> pairs, int sleepSec) {
+    public RaterPolonex(TradersManager tradersManager, JSONObject pairs, int sleepSec) {
         super(tradersManager,"polonex",
                 "https://poloniex.com/public?command=returnTicker",
                 pairs, sleepSec);
@@ -32,44 +32,4 @@ public class RaterPolonex extends RaterManyPairs {
         return null;
     }
 
-    protected void parse(String result) {
-        JSONObject json = null;
-        try {
-            //READ JSON
-            json = (JSONObject) JSONValue.parse(result);
-        } catch (NullPointerException | ClassCastException e) {
-            //JSON EXCEPTION
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
-
-        if (json == null)
-            return;
-
-
-        if (json.containsKey("USDT_BTC")) {
-            pair = (JSONObject) json.get("USDT_BTC");
-            price = new BigDecimal(pair.get("last").toString());
-            /// BACK price
-            //price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
-            if (cnt.DEVELOP_USE) {
-                setRate(1105L, 1107L, this.courseName, price);
-            } else {
-                setRate(12L, 95L, this.courseName, price);
-            }
-        }
-
-        if (json.containsKey("BTC_ETH")) {
-            pair = (JSONObject) json.get("BTC_ETH");
-            price = new BigDecimal(pair.get("last").toString());
-            /// BACK price
-            //price = price.multiply(this.shiftRate).setScale(10, BigDecimal.ROUND_HALF_UP);
-            if (cnt.DEVELOP_USE) {
-                setRate(1106L, 1105L, this.courseName, price);
-            } else {
-                setRate(14L, 12L, this.courseName, price);
-            }
-        }
-
-    }
 }

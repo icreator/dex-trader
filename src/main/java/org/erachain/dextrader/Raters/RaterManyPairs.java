@@ -2,6 +2,7 @@ package org.erachain.dextrader.Raters;
 // 30/03 ++
 
 import org.erachain.dextrader.traders.TradersManager;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -17,9 +18,9 @@ public abstract class RaterManyPairs extends Rater {
     /**
      * String pair, long baseKey, long quoteKey
      */
-    final List<Object[]> pairs;
+    final JSONObject pairs;
 
-    public RaterManyPairs(TradersManager tradersManager, String name, String apiURL, List<Object[]> pairs, int sleepSec) {
+    public RaterManyPairs(TradersManager tradersManager, String name, String apiURL, JSONObject pairs, int sleepSec) {
         super(tradersManager, name, name, apiURL, sleepSec);
 
         this.pairs = pairs;
@@ -27,8 +28,9 @@ public abstract class RaterManyPairs extends Rater {
     }
 
     public void clearRates() {
-        for (Object[] pair: pairs) {
-            rates.remove(makeKey((Long)pair[1], (Long)pair[2], this.courseName));
+        for (Object pair: pairs.values()) {
+            rates.remove(makeKey((Long) ((JSONArray)pair).get(0),
+                    (Long) ((JSONArray)pair).get(1), this.courseName));
         }
     }
 
@@ -48,11 +50,11 @@ public abstract class RaterManyPairs extends Rater {
         if (json == null)
             return;
 
-        for (Object[] pair: pairs) {
-            rates.remove(makeKey((Long)pair[1], (Long)pair[2], this.courseName));
-            BigDecimal price = getValue(json, (String) pair[0], (Long)pair[1], (Long)pair[2]);
+        for (Object pairName: pairs.keySet()) {
+            JSONArray pair = (JSONArray) pairs.get(pairName);
+            BigDecimal price = getValue(json, (String) pairName, (Long)pair.get(0), (Long)pair.get(1));
             if (price != null)
-                setRate((Long)pair[1], (Long)pair[2], this.courseName, price);
+                setRate((Long)pair.get(0), (Long)pair.get(1), this.courseName, price);
         }
     }
 
