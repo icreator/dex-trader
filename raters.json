@@ -1,3 +1,4 @@
-[
-  "coinmarketcap.com"
-]
+// for TESTs
+{
+  "coinmarketcap.com" = true
+}

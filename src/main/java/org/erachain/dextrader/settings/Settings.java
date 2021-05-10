@@ -28,7 +28,7 @@ public class Settings {
     private static Settings instance;
     public JSONObject settingsJSON;
     public  JSONArray tradersJSON;
-    public  JSONArray ratersJSON;
+    public  JSONObject ratersJSON;
     public  JSONObject apiKeysJSON;
 
     private Settings() {
@@ -148,7 +148,7 @@ public class Settings {
 
     }
 
-    public List<JSONObject> readRatersJSON() {
+    public JSONObject readRatersJSON() {
 
         File file = new File(getRpcPort() == 9068? "raters-demo.json" : "raters.json");
         if (!file.exists()) {
@@ -175,7 +175,7 @@ public class Settings {
             }
 
             //CREATE JSON OBJECT
-            ratersJSON = (JSONArray) JSONValue.parse(jsonString);
+            ratersJSON = (JSONObject) JSONValue.parse(jsonString);
 
         } catch (Exception e) {
             LOGGER.info("Error while reading/creating raters.json " + file.getAbsolutePath() + " using default!");

@@ -1,11 +1,29 @@
-[
-  "static",
-  "binance",
-  "bitforex",
-  "livecoin",
-  "livecoinRUR",
-  "metals-api",
-  "polonex",
-  "wex",
-  "coinmarketcap.com"
-]
+{
+  "polonex": {
+    // sleep time
+    "sleep": 300,
+    // paitName: [asset1 Key, Asset2 Key]
+    "USDT_BTC": [1840, 12],
+    "BTC_ETH": [12, 16]
+  },
+  "binance": {
+    // paitName: [asset1 Key, Asset2 Key, Speep Time]
+    "BTCUSDT": [12, 1840, 300],
+    "DOGEUSDT": [18, 1840, 300],
+    "DOGEBTC": [18, 12, 500],
+    "BTCRUB": [12, 1643, 500],
+    "PAXGUSDT": [3003, 1840, 500]
+  },
+  // set secret key before in secret-keys.json
+  "coinmarketcap.com": {
+    "sleep": 300,
+    "Horizen_USD": [22, 1840]
+  },
+  "static": true,
+  "bitforex": true,
+  "livecoin": true,
+  "livecoinRUR": true,
+  // set secret key before in secret-keys.json
+  "metals-api":  true,
+  "wex": true
+}
