@@ -16,7 +16,8 @@ import java.util.Map;
 
 public abstract class Rater extends Thread {
 
-    protected final Logger LOGGER;
+    protected final Logger LOGGER = LoggerFactory.getLogger(Rater.class);
+
 
     // HAVE KEY + WANT KEY + COURSE NAME
     protected static HashMap<String, BigDecimal> rates = new HashMap<String, BigDecimal>();
@@ -47,8 +48,6 @@ public abstract class Rater extends Thread {
         this.tradersManager = tradersManager;
         this.sleepTimeStep = sleepSec * 1000;
         this.courseName = courseName == null? name : courseName;
-
-        LOGGER = LoggerFactory.getLogger(getName());
 
         this.start();
     }
@@ -196,7 +195,7 @@ public abstract class Rater extends Thread {
 
     public void close() {
         this.run = false;
-        interrupt();
-        LOGGER.error("STOP:" + getName());
+        //interrupt();
+        LOGGER.info("STOP:" + getName());
     }
 }

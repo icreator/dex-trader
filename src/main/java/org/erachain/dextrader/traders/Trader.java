@@ -19,7 +19,7 @@ import java.util.*;
 
 public abstract class Trader extends Thread {
 
-    protected Logger LOGGER = LoggerFactory.getLogger(Trader.class.getName());
+    protected Logger LOGGER = LoggerFactory.getLogger(Trader.class);
 
 
     private static final int INVALID_TIMESTAMP = 7;
@@ -702,7 +702,7 @@ public abstract class Trader extends Thread {
     public void run() {
 
         // можно отключить при отладке
-        boolean removaAllOn = true;
+        boolean removeAllOn = true;
 
         LOGGER.info("START");
         // WAIT START WALLET
@@ -718,7 +718,7 @@ public abstract class Trader extends Thread {
             }
         }
 
-        if (cleanAllOnStart && removaAllOn) {
+        if (cleanAllOnStart && removeAllOn) {
             removaAll();
         }
 
@@ -766,7 +766,7 @@ public abstract class Trader extends Thread {
         }
 
         // ON EXIT remove all
-        if (removaAllOn) {
+        if (removeAllOn) {
             cleanSchemeOrders();
         }
 
