@@ -195,7 +195,7 @@ public abstract class Rater extends Thread {
 
     public void close() {
         this.run = false;
-        //interrupt();
+        interrupt();
         LOGGER.info("STOP:" + getName());
     }
 }

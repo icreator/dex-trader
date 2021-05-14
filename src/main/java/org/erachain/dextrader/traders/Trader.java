@@ -767,6 +767,7 @@ public abstract class Trader extends Thread {
 
         // ON EXIT remove all
         if (removeAllOn) {
+            LOGGER.info("try clean Scheme Orders");
             cleanSchemeOrders();
         }
 

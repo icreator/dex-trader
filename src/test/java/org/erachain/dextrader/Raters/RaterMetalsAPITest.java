@@ -3,6 +3,7 @@ package org.erachain.dextrader.Raters;
 import org.erachain.dextrader.settings.Settings;
 import org.erachain.dextrader.traders.TradersManager;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -19,6 +20,7 @@ public class RaterMetalsAPITest {
         rater = new RaterMetalsAPI(tradersManager, 300);
     }
 
+    @Ignore
     /**
      * set valid API-keys in secret-keys.json
      */
